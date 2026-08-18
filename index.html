@@ -4,10 +4,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
 
   <title>📚 學員上課打卡</title>
 
@@ -33,7 +31,6 @@
     }
 
     h1 {
-      color: #333;
       margin-bottom: 25px;
     }
 
@@ -43,27 +40,36 @@
       margin: 20px 0;
     }
 
-    #name {
-      font-size: 24px;
+    #studentInfo {
+      font-size: 20px;
       font-weight: bold;
-      color: #1a73e8;
+      color: #06c755;
       margin: 20px 0;
     }
 
     button {
       width: 100%;
       padding: 15px;
+      margin-top: 10px;
       border: none;
       border-radius: 12px;
       background: #06c755;
       color: white;
       font-size: 18px;
       font-weight: bold;
-      cursor: pointer;
     }
 
     button:disabled {
       background: #999;
+    }
+
+    input {
+      width: 90%;
+      padding: 13px;
+      margin: 7px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
     }
 
     .success {
@@ -76,6 +82,10 @@
       font-weight: bold;
     }
 
+    .hidden {
+      display: none;
+    }
+
   </style>
 
 </head>
@@ -83,221 +93,141 @@
 
 <body>
 
-  <div class="card">
+<div class="card">
 
-    <h1>📚 學員上課打卡</h1>
+  <h1>📚 學員上課打卡</h1>
 
-    <div id="status">
-      正在載入 LIFF SDK...
-    </div>
+  <div id="status">
+    正在載入 LIFF SDK...
+  </div>
 
-    <div id="name"></div>
 
-    <button
-      id="loginButton"
-      style="display:none;"
-      onclick="login()"
-    >
-      使用 LINE 登入
+  <div id="studentInfo"></div>
+
+
+  <!-- 登入 -->
+
+  <button id="loginButton"
+          class="hidden"
+          onclick="login()">
+    使用 LINE 登入
+  </button>
+
+
+  <!-- 綁定 -->
+
+  <div id="bindArea" class="hidden">
+
+    <h3>🔗 綁定學員</h3>
+
+    <p>
+      請輸入你的學員編號與姓名
+    </p>
+
+    <input
+      id="studentId"
+      placeholder="學員編號">
+
+    <input
+      id="studentName"
+      placeholder="學員姓名">
+
+    <button onclick="bindStudent()">
+      綁定本人
     </button>
 
   </div>
 
+</div>
+
 
 <script>
 
+
+/* =========================
+   基本設定
+========================= */
+
+
 const LIFF_ID =
   '2011153247-E8jjjAjB';
+
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
 
 const status =
   document.getElementById('status');
 
 
-const nameBox =
-  document.getElementById('name');
-
-
 const loginButton =
   document.getElementById('loginButton');
 
 
-/*
- * 啟動 LIFF
- */
+const bindArea =
+  document.getElementById('bindArea');
+
+
+const studentInfo =
+  document.getElementById('studentInfo');
+
+
+/* =========================
+   啟動 LIFF
+========================= */
+
 
 async function startLIFF() {
 
   try {
 
-    /*
-     * 確認 SDK
-     */
-
-    if (typeof liff === 'undefined') {
-
-      status.innerText =
-        '❌ LIFF SDK 載入失敗';
-
-      status.className =
-        'error';
-
-      return;
-    }
-
-
     status.innerText =
       'LIFF SDK 已載入，正在初始化...';
 
 
-    /*
-     * 初始化 LIFF
-     */
-
     await liff.init({
-
       liffId: LIFF_ID
-
     });
 
 
-    /*
-     * 初始化成功
-     */
-
-    if (liff.isLoggedIn()) {
+    if (!liff.isLoggedIn()) {
 
       status.innerText =
-        'LINE 登入成功！\\n正在取得學員身分...';
+        '目前尚未登入 LINE';
 
-      status.className =
-        'success';
-
-
-      await getProfile();
+      loginButton.classList.remove(
+        'hidden'
+      );
 
       return;
-
     }
 
 
-    /*
-     * 尚未登入
-     */
-
     status.innerText =
-      '目前尚未登入 LINE\\n\\n請按下面的按鈕登入。';
+      '🎉 LINE 登入成功！\n' +
+      '正在取得學員資料...';
 
-
-    loginButton.style.display =
-      'block';
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    status.innerText =
-      '❌ LIFF 初始化失敗\\n\\n' +
-      '錯誤訊息：' +
-      (error.message || error);
-
-    status.className =
-      'error';
-
-  }
-
-}
-
-
-/*
- * LINE Login
- */
-
-function login() {
-
-  try {
-
-    loginButton.disabled =
-      true;
-
-    loginButton.innerText =
-      '正在開啟 LINE 登入...';
-
-
-    status.innerText =
-      '正在開啟 LINE 登入...';
-
-
-    /*
-     * 不指定 redirectUri。
-     *
-     * 讓 LIFF 使用 Endpoint URL。
-     */
-
-    liff.login();
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    status.innerText =
-      '❌ LINE 登入失敗\\n\\n' +
-      (error.message || error);
-
-    status.className =
-      'error';
-
-
-    loginButton.disabled =
-      false;
-
-    loginButton.innerText =
-      '使用 LINE 登入';
-
-  }
-
-}
-
-
-/*
- * 取得 LINE Profile
- */
-
-async function getProfile() {
-
-  try {
 
     const profile =
       await liff.getProfile();
 
 
-    status.innerText =
-      '🎉 LINE 身分取得成功！';
-
-    status.className =
-      'success';
+    const lineUserId =
+      profile.userId;
 
 
-    nameBox.innerText =
-      '你好，' +
-      profile.displayName +
-      ' 👋';
-
-
-    loginButton.style.display =
-      'none';
+    await findStudent(
+      lineUserId
+    );
 
 
   } catch (error) {
 
     console.error(error);
 
-
     status.innerText =
-      '❌ 無法取得 LINE 身分\\n\\n' +
+      '❌ 發生錯誤\n\n' +
       (error.message || error);
 
     status.className =
@@ -308,11 +238,259 @@ async function getProfile() {
 }
 
 
-/*
- * 啟動
- */
+/* =========================
+   LINE 登入
+========================= */
+
+
+function login() {
+
+  status.innerText =
+    '正在開啟 LINE 登入...';
+
+  loginButton.disabled =
+    true;
+
+  liff.login();
+
+}
+
+
+/* =========================
+   查詢學生
+========================= */
+
+
+async function findStudent(
+  lineUserId
+) {
+
+  try {
+
+    const url =
+      API_URL +
+      '?action=findStudent' +
+      '&line_user_id=' +
+      encodeURIComponent(
+        lineUserId
+      );
+
+
+    const response =
+      await fetch(url);
+
+
+    const result =
+      await response.json();
+
+
+    console.log(result);
+
+
+    if (
+      result.success &&
+      result.found
+    ) {
+
+      const student =
+        result.student;
+
+
+      studentInfo.innerText =
+        '👋 ' +
+        student.name +
+        '，歡迎上課！';
+
+
+      status.innerText =
+        '✅ LINE 已綁定學員';
+
+
+      status.className =
+        'success';
+
+
+      return;
+
+    }
+
+
+    /*
+     * 找不到學員
+     */
+
+    status.innerText =
+      'LINE 登入成功，但目前尚未綁定學員。\n\n' +
+      '請輸入你的學員編號與姓名。';
+
+
+    bindArea.classList.remove(
+      'hidden'
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerText =
+      '❌ 無法連線到學員資料庫\n\n' +
+      (error.message || error);
+
+    status.className =
+      'error';
+
+  }
+
+}
+
+
+/* =========================
+   綁定學員
+========================= */
+
+
+async function bindStudent() {
+
+  const studentId =
+    document
+      .getElementById(
+        'studentId'
+      )
+      .value
+      .trim();
+
+
+  const studentName =
+    document
+      .getElementById(
+        'studentName'
+      )
+      .value
+      .trim();
+
+
+  if (!studentId) {
+
+    alert(
+      '請輸入學員編號'
+    );
+
+    return;
+
+  }
+
+
+  if (!studentName) {
+
+    alert(
+      '請輸入學員姓名'
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    status.innerText =
+      '正在綁定學員...';
+
+
+    const profile =
+      await liff.getProfile();
+
+
+    const lineUserId =
+      profile.userId;
+
+
+    const url =
+      API_URL +
+      '?action=bindStudent' +
+      '&line_user_id=' +
+      encodeURIComponent(
+        lineUserId
+      ) +
+      '&student_id=' +
+      encodeURIComponent(
+        studentId
+      ) +
+      '&name=' +
+      encodeURIComponent(
+        studentName
+      );
+
+
+    const response =
+      await fetch(url);
+
+
+    const result =
+      await response.json();
+
+
+    console.log(result);
+
+
+    if (result.success) {
+
+      studentInfo.innerText =
+        '🎉 ' +
+        result.student.name +
+        '，綁定成功！';
+
+
+      status.innerText =
+        '✅ LINE 帳號已成功綁定學員';
+
+
+      status.className =
+        'success';
+
+
+      bindArea.classList.add(
+        'hidden'
+      );
+
+
+    } else {
+
+      status.innerText =
+        '❌ 綁定失敗\n\n' +
+        result.message;
+
+
+      status.className =
+        'error';
+
+    }
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerText =
+      '❌ 綁定發生錯誤\n\n' +
+      (error.message || error);
+
+    status.className =
+      'error';
+
+  }
+
+}
+
+
+/* =========================
+   啟動
+========================= */
+
 
 startLIFF();
+
 
 </script>
 
