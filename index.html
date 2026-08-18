@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>📚 學員上課打卡</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+
+    body {
+      margin: 0;
+      padding: 30px 20px;
+      background: #f7f7f7;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .card {
+      max-width: 420px;
+      margin: 30px auto;
+      padding: 30px 20px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    #status {
+      line-height: 1.8;
+      white-space: pre-line;
+      margin: 20px 0;
+    }
+
+    #name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1a73e8;
+      margin: 20px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #06c755;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #999;
+    }
+
+    .success {
+      color: #06c755;
+      font-weight: bold;
+    }
+
+    .error {
+      color: #d93025;
+      font-weight: bold;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="card">
+
+    <h1>📚 學員上課打卡</h1>
+
+    <div id="status">
+      正在載入 LIFF SDK...
+    </div>
+
+    <div id="name"></div>
+
+    <button
+      id="loginButton"
+      style="display:none;"
+      onclick="login()"
+    >
+      使用 LINE 登入
+    </button>
+
+  </div>
+
+
+<script>
+
+const LIFF_ID =
+  '2011153247-E8jjjAjB';
+
+
+const status =
+  document.getElementById('status');
+
+
+const nameBox =
+  document.getElementById('name');
+
+
+const loginButton =
+  document.getElementById('loginButton');
+
+
+/*
+ * 啟動 LIFF
+ */
+
+async function startLIFF() {
+
+  try {
+
+    /*
+     * 確認 SDK
+     */
+
+    if (typeof liff === 'undefined') {
+
+      status.innerText =
+        '❌ LIFF SDK 載入失敗';
+
+      status.className =
+        'error';
+
+      return;
+    }
+
+
+    status.innerText =
+      'LIFF SDK 已載入，正在初始化...';
+
+
+    /*
+     * 初始化 LIFF
+     */
+
+    await liff.init({
+
+      liffId: LIFF_ID
+
+    });
+
+
+    /*
+     * 初始化成功
+     */
+
+    if (liff.isLoggedIn()) {
+
+      status.innerText =
+        'LINE 登入成功！\\n正在取得學員身分...';
+
+      status.className =
+        'success';
+
+
+      await getProfile();
+
+      return;
+
+    }
+
+
+    /*
+     * 尚未登入
+     */
+
+    status.innerText =
+      '目前尚未登入 LINE\\n\\n請按下面的按鈕登入。';
+
+
+    loginButton.style.display =
+      'block';
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    status.innerText =
+      '❌ LIFF 初始化失敗\\n\\n' +
+      '錯誤訊息：' +
+      (error.message || error);
+
+    status.className =
+      'error';
+
+  }
+
+}
+
+
+/*
+ * LINE Login
+ */
+
+function login() {
+
+  try {
+
+    loginButton.disabled =
+      true;
+
+    loginButton.innerText =
+      '正在開啟 LINE 登入...';
+
+
+    status.innerText =
+      '正在開啟 LINE 登入...';
+
+
+    /*
+     * 不指定 redirectUri。
+     *
+     * 讓 LIFF 使用 Endpoint URL。
+     */
+
+    liff.login();
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    status.innerText =
+      '❌ LINE 登入失敗\\n\\n' +
+      (error.message || error);
+
+    status.className =
+      'error';
+
+
+    loginButton.disabled =
+      false;
+
+    loginButton.innerText =
+      '使用 LINE 登入';
+
+  }
+
+}
+
+
+/*
+ * 取得 LINE Profile
+ */
+
+async function getProfile() {
+
+  try {
+
+    const profile =
+      await liff.getProfile();
+
+
+    status.innerText =
+      '🎉 LINE 身分取得成功！';
+
+    status.className =
+      'success';
+
+
+    nameBox.innerText =
+      '你好，' +
+      profile.displayName +
+      ' 👋';
+
+
+    loginButton.style.display =
+      'none';
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    status.innerText =
+      '❌ 無法取得 LINE 身分\\n\\n' +
+      (error.message || error);
+
+    status.className =
+      'error';
+
+  }
+
+}
+
+
+/*
+ * 啟動
+ */
+
+startLIFF();
+
+</script>
+
+</body>
+
+</html>
