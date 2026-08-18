@@ -36,14 +36,18 @@
       border-radius: 20px;
       padding: 24px 20px;
       margin-bottom: 16px;
-      box-shadow:
-        0 4px 18px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
     }
 
     h1 {
       margin: 0 0 8px;
       text-align: center;
       font-size: 26px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
     }
 
     .subtitle {
@@ -67,22 +71,23 @@
 
     .points {
       text-align: center;
-      background: #fff7d6;
+      background: #eef8ff;
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 15px;
     }
 
     .points-label {
-      color: #777;
-      font-size: 14px;
+      color: #666;
+      font-size: 15px;
     }
 
     .points-number {
       font-size: 42px;
       font-weight: bold;
-      color: #e09b00;
+      color: #1976d2;
       line-height: 1.2;
+      margin: 4px 0;
     }
 
     .stats {
@@ -121,7 +126,7 @@
     .checkin-status {
       font-size: 20px;
       font-weight: bold;
-      color: #06c755;
+      color: #555;
       margin-bottom: 8px;
     }
 
@@ -152,6 +157,7 @@
 
     button:disabled {
       opacity: 0.5;
+      cursor: default;
     }
 
     .login-box {
@@ -209,6 +215,8 @@
 
 <div class="container">
 
+  <!-- 標題 -->
+
   <div class="card">
 
     <h1>📚 學員上課打卡</h1>
@@ -221,12 +229,14 @@
       正在載入 LINE...
     </div>
 
+    <!-- 尚未登入 -->
+
     <div
       id="loginBox"
       class="login-box hidden">
 
       <p>
-        尚未登入 LINE<br>
+        目前尚未登入 LINE<br>
         請使用 LINE 登入後繼續
       </p>
 
@@ -241,11 +251,14 @@
   </div>
 
 
-  <!-- 學員資料 -->
+  <!-- 學員首頁 -->
 
   <div
     id="studentArea"
     class="hidden">
+
+
+    <!-- 學員資料 -->
 
     <div class="card">
 
@@ -260,10 +273,12 @@
       </div>
 
 
+      <!-- 本期課程累計堂數 -->
+
       <div class="points">
 
         <div class="points-label">
-          🎯 我的累計集點
+          📚 本期課程累計堂數
         </div>
 
         <div
@@ -273,11 +288,13 @@
         </div>
 
         <div class="points-label">
-          點
+          堂
         </div>
 
       </div>
 
+
+      <!-- 其他統計 -->
 
       <div class="stats">
 
@@ -326,7 +343,9 @@
         <div
           id="checkinStatus"
           class="checkin-status">
-          今日尚未打卡
+
+          📚 今日尚未打卡
+
         </div>
 
         <div
@@ -341,7 +360,9 @@
         id="checkinButton"
         class="btn-green"
         onclick="doCheckin()">
+
         📚 今日上課打卡
+
       </button>
 
     </div>
@@ -368,13 +389,25 @@
 
 <script>
 
+/* =================================================
+   LIFF 設定
+================================================= */
+
 const LIFF_ID =
   '2011153247-E8jjjAjB';
 
 
+/* =================================================
+   Apps Script API
+================================================= */
+
 const API_URL =
   'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
+
+/* =================================================
+   HTML 元件
+================================================= */
 
 const message =
   document.getElementById('message');
@@ -414,7 +447,7 @@ const records =
 
 
 /* =================================================
-   初始化
+   初始化 LIFF
 ================================================= */
 
 async function init() {
@@ -433,6 +466,10 @@ async function init() {
     });
 
 
+    /*
+     * 尚未登入
+     */
+
     if (
       !liff.isLoggedIn()
     ) {
@@ -449,6 +486,10 @@ async function init() {
     }
 
 
+    /*
+     * 已登入
+     */
+
     message.innerText =
       '正在取得 LINE 身分...';
 
@@ -460,6 +501,10 @@ async function init() {
     const lineUserId =
       profile.userId;
 
+
+    /*
+     * 查詢學員
+     */
 
     message.innerText =
       '正在取得學員資料...';
@@ -487,6 +532,10 @@ async function init() {
     }
 
 
+    /*
+     * 尚未綁定
+     */
+
     if (
       !result.found
     ) {
@@ -498,6 +547,10 @@ async function init() {
 
     }
 
+
+    /*
+     * 顯示首頁
+     */
 
     studentArea
       .classList
@@ -543,7 +596,10 @@ function login() {
 
     message.innerText =
       '❌ LINE 登入失敗\n\n' +
-      error.message;
+      (
+        error.message ||
+        error
+      );
 
     message.className =
       'error';
@@ -667,6 +723,10 @@ function renderDashboard(
     data.student;
 
 
+  /*
+   * 學員姓名
+   */
+
   studentName.innerText =
     '👋 ' +
     (
@@ -674,6 +734,10 @@ function renderDashboard(
       ''
     );
 
+
+  /*
+   * 學員編號
+   */
 
   studentId.innerText =
     '學員編號：' +
@@ -683,17 +747,32 @@ function renderDashboard(
     );
 
 
+  /*
+   * 本期課程累計堂數
+   *
+   * 目前先使用後端 total_points
+   * 顯示名稱已改為「堂」
+   */
+
   totalPoints.innerText =
     Number(
       data.statistics.totalPoints
     ) || 0;
 
 
+  /*
+   * 本月上課
+   */
+
   monthlyCount.innerText =
     Number(
       data.statistics.monthlyCount
     ) || 0;
 
+
+  /*
+   * 累計上課
+   */
 
   totalCheckins.innerText =
     Number(
@@ -702,7 +781,7 @@ function renderDashboard(
 
 
   /*
-   * 今日狀態
+   * 今日打卡狀態
    */
 
   if (
@@ -717,11 +796,20 @@ function renderDashboard(
       'checkin-status success';
 
 
-    checkinTime.innerText =
+    if (
       data.today.time
-        ? '打卡時間：' +
-          data.today.time
-        : '今天已完成上課打卡';
+    ) {
+
+      checkinTime.innerText =
+        '打卡時間：' +
+        data.today.time;
+
+    } else {
+
+      checkinTime.innerText =
+        '今天已完成上課打卡';
+
+    }
 
 
     checkinButton.innerText =
@@ -740,7 +828,7 @@ function renderDashboard(
 
 
     checkinTime.innerText =
-      '完成打卡即可累積 1 點';
+      '完成打卡即可累積 1 堂';
 
 
     checkinButton.innerText =
@@ -764,7 +852,7 @@ function renderDashboard(
 
 
 /* =================================================
-   顯示紀錄
+   顯示上課紀錄
 ================================================= */
 
 function renderRecords(
@@ -792,29 +880,41 @@ function renderRecords(
         function(item) {
 
           return `
+
             <div class="record">
 
               <div>
 
                 <div class="record-date">
-                  📅 ${escapeHtml(
-                    item.date || ''
-                  )}
+
+                  📅 ${
+                    escapeHtml(
+                      item.date || ''
+                    )
+                  }
+
                 </div>
 
                 <div class="record-time">
+
                   上課打卡
+
                 </div>
 
               </div>
 
               <div class="record-time">
-                ${escapeHtml(
-                  item.time || ''
-                )}
+
+                ${
+                  escapeHtml(
+                    item.time || ''
+                  )
+                }
+
               </div>
 
             </div>
+
           `;
 
         }
@@ -825,7 +925,7 @@ function renderRecords(
 
 
 /* =================================================
-   打卡
+   執行打卡
 ================================================= */
 
 async function doCheckin() {
@@ -846,6 +946,13 @@ async function doCheckin() {
 
     checkinButton.innerText =
       '⏳ 打卡中...';
+
+
+    message.innerText =
+      '正在完成今日打卡...';
+
+    message.className =
+      '';
 
 
     const profile =
@@ -875,9 +982,18 @@ async function doCheckin() {
 
 
     /*
-     * 不論第一次打卡或今天已打卡
-     * 都重新從後端讀取最新資料
+     * 打卡成功後
+     * 重新從後端取得最新資料
      */
+
+    message.innerText =
+      result.alreadyCheckedIn
+        ? '今天已經完成打卡'
+        : '✅ 今日上課打卡成功！';
+
+    message.className =
+      'success';
+
 
     await loadDashboard(
       profile.userId
@@ -909,7 +1025,7 @@ async function doCheckin() {
 
 
 /* =================================================
-   防止 HTML 注入
+   HTML 安全處理
 ================================================= */
 
 function escapeHtml(
