@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>學員上課打卡</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -62,8 +54,7 @@
       border-radius: 20px;
       padding: 22px;
       margin-bottom: 16px;
-      box-shadow:
-        0 3px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
     }
 
     .student-name {
@@ -119,6 +110,7 @@
       border-radius: 14px;
       font-weight: bold;
       line-height: 1.6;
+      white-space: pre-line;
     }
 
     .status-success {
@@ -147,16 +139,12 @@
       margin-top: 10px;
     }
 
-    .checkin-button {
-      background: #06c755;
-      color: white;
-    }
-
-    .checkin-button:disabled {
-      background: #b9b9b9;
+    button:disabled {
+      background: #b9b9b9 !important;
       cursor: not-allowed;
     }
 
+    .checkin-button,
     .login-button {
       background: #06c755;
       color: white;
@@ -213,51 +201,40 @@
       margin-top: 20px;
     }
 
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 7px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+    }
   </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
 
-
-  <!-- =========================
-       載入畫面
-  ========================== -->
-
-  <div
-    id="loading"
-    class="loading"
-  >
-
-    <div style="font-size:40px;">
-      📚
-    </div>
-
+  <!-- 載入 -->
+  <div id="loading" class="loading">
+    <div style="font-size:40px;">📚</div>
     正在載入學員資料……
-
   </div>
 
 
-  <!-- =========================
-       尚未登入
-  ========================== -->
-
-  <div
-    id="loginPage"
-    class="hidden"
-  >
+  <!-- LINE 登入 -->
+  <div id="loginPage" class="hidden">
 
     <div class="header">
-
       <div class="icon">📚</div>
-
       <h1>學員上課打卡</h1>
-
       <p>請先使用 LINE 登入</p>
-
     </div>
 
     <div class="card">
@@ -281,23 +258,13 @@
   </div>
 
 
-  <!-- =========================
-       綁定學員
-  ========================== -->
-
-  <div
-    id="bindPage"
-    class="hidden"
-  >
+  <!-- 綁定 -->
+  <div id="bindPage" class="hidden">
 
     <div class="header">
-
       <div class="icon">📚</div>
-
       <h1>學員上課打卡</h1>
-
       <p>第一次使用請綁定學員</p>
-
     </div>
 
     <div class="card">
@@ -309,52 +276,29 @@
         請輸入你的學員編號與姓名
       </div>
 
-
       <div style="margin-top:18px;">
 
-        <label>
-          學員編號
-        </label>
+        <label>學員編號</label>
 
         <input
           id="studentIdInput"
           type="text"
           placeholder="例如：wushu_0001"
-          style="
-            width:100%;
-            padding:14px;
-            margin-top:7px;
-            border:1px solid #ddd;
-            border-radius:12px;
-            font-size:16px;
-          "
         >
 
       </div>
 
-
       <div style="margin-top:15px;">
 
-        <label>
-          姓名
-        </label>
+        <label>姓名</label>
 
         <input
           id="nameInput"
           type="text"
           placeholder="請輸入姓名"
-          style="
-            width:100%;
-            padding:14px;
-            margin-top:7px;
-            border:1px solid #ddd;
-            border-radius:12px;
-            font-size:16px;
-          "
         >
 
       </div>
-
 
       <button
         class="checkin-button"
@@ -369,14 +313,8 @@
   </div>
 
 
-  <!-- =========================
-       學員首頁
-  ========================== -->
-
-  <div
-    id="mainPage"
-    class="hidden"
-  >
+  <!-- 主頁 -->
+  <div id="mainPage" class="hidden">
 
     <div class="header">
 
@@ -389,8 +327,7 @@
     </div>
 
 
-    <!-- 學員資料 -->
-
+    <!-- 學員 -->
     <div class="card">
 
       <div
@@ -400,20 +337,15 @@
         -
       </div>
 
-      <div
-        class="student-id"
-      >
+      <div class="student-id">
         學員編號：
-        <span id="studentId">
-          -
-        </span>
+        <span id="studentId">-</span>
       </div>
 
     </div>
 
 
     <!-- 課程 -->
-
     <div class="card">
 
       <div
@@ -433,8 +365,7 @@
     </div>
 
 
-    <!-- 本期累計 -->
-
+    <!-- 本期堂數 -->
     <div class="card">
 
       <div class="count-box">
@@ -459,8 +390,7 @@
     </div>
 
 
-    <!-- 今日狀態 -->
-
+    <!-- 今日打卡 -->
     <div class="card">
 
       <div
@@ -469,7 +399,6 @@
       >
         正在確認今日打卡狀態……
       </div>
-
 
       <button
         id="checkinButton"
@@ -483,19 +412,14 @@
 
 
     <!-- 最近紀錄 -->
-
     <div class="card">
 
-      <h3>
-        📋 最近上課紀錄
-      </h3>
+      <h3>📋 最近上課紀錄</h3>
 
       <div id="recentRecords">
-
         <div class="empty">
           載入中……
         </div>
-
       </div>
 
     </div>
@@ -507,7 +431,6 @@
     >
       🔄 更新資料
     </button>
-
 
     <div class="small">
       LINE 學員上課打卡系統
@@ -521,7 +444,7 @@
 <script>
 
 /* =================================================
-   基本設定
+   你的正式設定
 ================================================= */
 
 const LIFF_ID =
@@ -529,52 +452,37 @@ const LIFF_ID =
 
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec';
-
-
-/*
- * ⚠️ 如果你的 Apps Script Web App URL
- * 已經在之前的 index.html 裡面，
- * 請把上面的 API_URL 換成你原本那一條。
- *
- * 不要使用 LIFF 網址。
- */
+  'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
 
 /* =================================================
-   工具
+   畫面工具
 ================================================= */
 
 function show(id) {
-
   document
     .getElementById(id)
     .classList
     .remove('hidden');
-
 }
 
 
 function hide(id) {
-
   document
     .getElementById(id)
     .classList
     .add('hidden');
-
 }
 
 
 function setStatus(
-  elementId,
+  id,
   message,
   type
 ) {
 
   const el =
-    document.getElementById(
-      elementId
-    );
+    document.getElementById(id);
 
   el.innerText =
     message;
@@ -588,7 +496,6 @@ function setStatus(
           ? 'status-error'
           : 'status-warning'
     );
-
 }
 
 
@@ -609,26 +516,21 @@ async function api(
     action
   );
 
-
-  Object.keys(params)
-    .forEach(function(key) {
+  Object.keys(params).forEach(
+    function(key) {
 
       url.searchParams.set(
         key,
         params[key]
       );
 
-    });
-
+    }
+  );
 
   const response =
     await fetch(
-      url.toString(),
-      {
-        method: 'GET'
-      }
+      url.toString()
     );
-
 
   if (!response.ok) {
 
@@ -639,13 +541,7 @@ async function api(
 
   }
 
-
-  const data =
-    await response.json();
-
-
-  return data;
-
+  return await response.json();
 }
 
 
@@ -658,8 +554,7 @@ async function initLIFF() {
   try {
 
     if (
-      typeof liff ===
-      'undefined'
+      typeof liff === 'undefined'
     ) {
 
       throw new Error(
@@ -668,35 +563,22 @@ async function initLIFF() {
 
     }
 
-
     await liff.init({
-
-      liffId:
-        LIFF_ID
-
+      liffId: LIFF_ID
     });
 
-
-    /*
-     * 尚未登入
-     */
 
     if (
       !liff.isLoggedIn()
     ) {
 
       hide('loading');
-
       show('loginPage');
 
       return;
 
     }
 
-
-    /*
-     * 已登入
-     */
 
     await loadDashboard();
 
@@ -705,6 +587,7 @@ async function initLIFF() {
   catch(error) {
 
     hide('loading');
+    show('loginPage');
 
     setStatus(
       'loginMessage',
@@ -715,8 +598,6 @@ async function initLIFF() {
       ),
       'error'
     );
-
-    show('loginPage');
 
   }
 
@@ -739,7 +620,7 @@ function login() {
 
     setStatus(
       'loginMessage',
-      '❌ LINE 登入失敗：' +
+      '❌ LINE 登入失敗\n' +
       (
         error.message ||
         error
@@ -753,7 +634,7 @@ function login() {
 
 
 /* =================================================
-   取得 LINE User ID
+   LINE User ID
 ================================================= */
 
 async function getLineUserId() {
@@ -762,12 +643,11 @@ async function getLineUserId() {
     await liff.getProfile();
 
   return profile.userId;
-
 }
 
 
 /* =================================================
-   載入 Dashboard
+   Dashboard
 ================================================= */
 
 async function loadDashboard() {
@@ -775,11 +655,8 @@ async function loadDashboard() {
   try {
 
     hide('loginPage');
-
     hide('bindPage');
-
     hide('mainPage');
-
     show('loading');
 
 
@@ -797,26 +674,17 @@ async function loadDashboard() {
       );
 
 
-    /*
-     * 尚未綁定
-     */
-
     if (
       result.found === false
     ) {
 
       hide('loading');
-
       show('bindPage');
 
       return;
 
     }
 
-
-    /*
-     * API 錯誤
-     */
 
     if (
       result.success === false
@@ -830,13 +698,8 @@ async function loadDashboard() {
     }
 
 
-    /*
-     * 顯示學生資料
-     */
-
     const student =
-      result.student ||
-      {};
+      result.student || {};
 
 
     document
@@ -844,8 +707,7 @@ async function loadDashboard() {
         'studentName'
       )
       .innerText =
-        student.name ||
-        '-';
+        student.name || '-';
 
 
     document
@@ -853,8 +715,7 @@ async function loadDashboard() {
         'studentId'
       )
       .innerText =
-        student.student_id ||
-        '-';
+        student.student_id || '-';
 
 
     /*
@@ -863,8 +724,8 @@ async function loadDashboard() {
 
     const count =
       Number(
-        student.total_points ||
-        result.statistics?.totalPoints ||
+        student.total_points ??
+        result.statistics?.totalPoints ??
         0
       );
 
@@ -902,13 +763,11 @@ async function loadDashboard() {
         )
         .innerText =
           (
-            course.start_date ||
-            ''
+            course.start_date || ''
           ) +
           ' ～ ' +
           (
-            course.end_date ||
-            ''
+            course.end_date || ''
           );
 
     }
@@ -921,7 +780,6 @@ async function loadDashboard() {
         )
         .innerText =
           '目前沒有進行中的課程';
-
 
       document
         .getElementById(
@@ -938,8 +796,7 @@ async function loadDashboard() {
      */
 
     const today =
-      result.today ||
-      {};
+      result.today || {};
 
 
     const button =
@@ -965,10 +822,7 @@ async function loadDashboard() {
         'success'
       );
 
-
-      button.disabled =
-        true;
-
+      button.disabled = true;
 
       button.innerText =
         '✅ 今日已完成打卡';
@@ -983,10 +837,7 @@ async function loadDashboard() {
         'warning'
       );
 
-
-      button.disabled =
-        false;
-
+      button.disabled = false;
 
       button.innerText =
         '📚 今日上課打卡';
@@ -994,18 +845,12 @@ async function loadDashboard() {
     }
 
 
-    /*
-     * 最近紀錄
-     */
-
     renderRecent(
-      result.recent ||
-      []
+      result.recent || []
     );
 
 
     hide('loading');
-
     show('mainPage');
 
   }
@@ -1013,9 +858,7 @@ async function loadDashboard() {
   catch(error) {
 
     hide('loading');
-
     show('mainPage');
-
 
     setStatus(
       'todayStatus',
@@ -1089,9 +932,7 @@ async function bindStudent() {
       );
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.innerText =
     '綁定中……';
@@ -1107,7 +948,6 @@ async function bindStudent() {
       await api(
         'bindStudent',
         {
-
           line_user_id:
             lineUserId,
 
@@ -1116,7 +956,6 @@ async function bindStudent() {
 
           name:
             name
-
         }
       );
 
@@ -1135,18 +974,13 @@ async function bindStudent() {
 
     setStatus(
       'bindMessage',
-      '✅ 學員綁定成功！\n\n' +
-      '正在載入資料……',
+      '✅ 學員綁定成功！\n\n正在載入資料……',
       'success'
     );
 
 
     setTimeout(
-      function() {
-
-        loadDashboard();
-
-      },
+      loadDashboard,
       500
     );
 
@@ -1165,9 +999,7 @@ async function bindStudent() {
     );
 
 
-    button.disabled =
-      false;
-
+    button.disabled = false;
 
     button.innerText =
       '綁定學員';
@@ -1199,9 +1031,7 @@ async function checkin() {
   }
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.innerText =
     '打卡處理中……';
@@ -1224,10 +1054,8 @@ async function checkin() {
       await api(
         'checkin',
         {
-
           line_user_id:
             lineUserId
-
         }
       );
 
@@ -1243,10 +1071,6 @@ async function checkin() {
 
     }
 
-
-    /*
-     * 已經打過
-     */
 
     if (
       result.alreadyCheckedIn
@@ -1283,10 +1107,6 @@ async function checkin() {
     }
 
 
-    /*
-     * 更新本期堂數
-     */
-
     if (
       result.total_points !==
       undefined
@@ -1306,17 +1126,8 @@ async function checkin() {
       '✅ 今日已完成打卡';
 
 
-    /*
-     * 再重新讀一次 Dashboard
-     * 確保資料同步
-     */
-
     setTimeout(
-      function() {
-
-        loadDashboard();
-
-      },
+      loadDashboard,
       800
     );
 
@@ -1335,9 +1146,7 @@ async function checkin() {
     );
 
 
-    button.disabled =
-      false;
-
+    button.disabled = false;
 
     button.innerText =
       '📚 今日上課打卡';
@@ -1351,9 +1160,7 @@ async function checkin() {
    最近紀錄
 ================================================= */
 
-function renderRecent(
-  records
-) {
+function renderRecent(records) {
 
   const container =
     document
@@ -1377,8 +1184,7 @@ function renderRecent(
   }
 
 
-  container.innerHTML =
-    '';
+  container.innerHTML = '';
 
 
   records.forEach(
@@ -1394,31 +1200,31 @@ function renderRecent(
         'record';
 
 
+      const date =
+        escapeHtml(
+          record.date || ''
+        );
+
+
+      const time =
+        escapeHtml(
+          record.time || ''
+        );
+
+
       div.innerHTML =
-
         '<div>' +
-
           '<div class="record-date">' +
-            escapeHtml(
-              record.date ||
-              ''
-            ) +
+            date +
           '</div>' +
-
         '</div>' +
-
         '<div class="record-time">' +
           '✅ ' +
-          escapeHtml(
-            record.time ||
-            ''
-          ) +
+          time +
         '</div>';
 
 
-      container.appendChild(
-        div
-      );
+      container.appendChild(div);
 
     }
   );
@@ -1430,38 +1236,14 @@ function renderRecent(
    HTML 安全
 ================================================= */
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
-  return String(
-    value || ''
-  )
-
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-
-    .replace(
-      /</g,
-      '&lt;'
-    )
-
-    .replace(
-      />/g,
-      '&gt;'
-    )
-
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-
-    .replace(
-      /'/g,
-      '&#039;'
-    );
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 
 }
 
