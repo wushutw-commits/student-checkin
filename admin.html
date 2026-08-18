@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>武術協會管理中心</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+
+  margin: 0;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans TC",
+    Arial,
+    sans-serif;
+
+  background:
+    #f4f6f8;
+
+  color:
+    #222;
+
+}
+
+.container {
+
+  max-width:
+    1100px;
+
+  margin:
+    auto;
+
+  padding:
+    20px;
+
+}
+
+.header {
+
+  background:
+    linear-gradient(
+      135deg,
+      #111827,
+      #374151
+    );
+
+  color:
+    white;
+
+  border-radius:
+    20px;
+
+  padding:
+    25px;
+
+  margin-bottom:
+    20px;
+
+}
+
+.header h1 {
+
+  margin:
+    0 0 8px;
+
+}
+
+.header p {
+
+  margin:
+    0;
+
+  opacity:
+    .8;
+
+}
+
+.course {
+
+  background:
+    white;
+
+  border-radius:
+    18px;
+
+  padding:
+    20px;
+
+  margin-bottom:
+    20px;
+
+  box-shadow:
+    0 4px 15px
+    rgba(0,0,0,.06);
+
+}
+
+.course-title {
+
+  font-size:
+    22px;
+
+  font-weight:
+    bold;
+
+}
+
+.stats {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    15px;
+
+  margin-bottom:
+    20px;
+
+}
+
+.stat {
+
+  background:
+    white;
+
+  border-radius:
+    18px;
+
+  padding:
+    20px;
+
+  box-shadow:
+    0 4px 15px
+    rgba(0,0,0,.06);
+
+}
+
+.stat-number {
+
+  font-size:
+    32px;
+
+  font-weight:
+    bold;
+
+  margin-top:
+    8px;
+
+}
+
+.green {
+  color:
+    #06c755;
+}
+
+.red {
+  color:
+    #d93025;
+}
+
+.blue {
+  color:
+    #2563eb;
+}
+
+.section {
+
+  background:
+    white;
+
+  border-radius:
+    18px;
+
+  padding:
+    20px;
+
+  margin-bottom:
+    20px;
+
+  box-shadow:
+    0 4px 15px
+    rgba(0,0,0,.06);
+
+}
+
+.section h2 {
+
+  margin-top:
+    0;
+
+}
+
+button {
+
+  border:
+    0;
+
+  border-radius:
+    10px;
+
+  padding:
+    11px 18px;
+
+  background:
+    #111827;
+
+  color:
+    white;
+
+  font-size:
+    15px;
+
+  cursor:
+    pointer;
+
+}
+
+button:hover {
+
+  opacity:
+    .9;
+
+}
+
+.table-wrap {
+
+  overflow-x:
+    auto;
+
+}
+
+table {
+
+  width:
+    100%;
+
+  border-collapse:
+    collapse;
+
+  min-width:
+    650px;
+
+}
+
+th,
+td {
+
+  padding:
+    12px 10px;
+
+  border-bottom:
+    1px solid #eee;
+
+  text-align:
+    left;
+
+}
+
+th {
+
+  background:
+    #f8fafc;
+
+}
+
+.badge {
+
+  display:
+    inline-block;
+
+  padding:
+    5px 10px;
+
+  border-radius:
+    20px;
+
+  font-size:
+    13px;
+
+}
+
+.badge-ok {
+
+  background:
+    #dcfce7;
+
+  color:
+    #15803d;
+
+}
+
+.badge-no {
+
+  background:
+    #fee2e2;
+
+  color:
+    #b91c1c;
+
+}
+
+.badge-line {
+
+  background:
+    #dcfce7;
+
+  color:
+    #15803d;
+
+}
+
+.loading {
+
+  text-align:
+    center;
+
+  padding:
+    40px;
+
+}
+
+.error {
+
+  color:
+    #d93025;
+
+  white-space:
+    pre-line;
+
+}
+
+.toolbar {
+
+  display:
+    flex;
+
+  gap:
+    10px;
+
+  flex-wrap:
+    wrap;
+
+  margin-bottom:
+    15px;
+
+}
+
+@media(max-width:700px) {
+
+  .stats {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+  <div class="header">
+
+    <h1>
+      📊 武術協會管理中心
+    </h1>
+
+    <p>
+      學員上課打卡管理系統
+    </p>
+
+  </div>
+
+
+  <div id="loading"
+       class="loading">
+
+    正在載入管理資料……
+
+  </div>
+
+
+  <div id="app"
+       style="display:none;">
+
+
+    <!-- 課程 -->
+
+    <div class="course">
+
+      <div
+        class="course-title"
+        id="courseName">
+      </div>
+
+      <div
+        id="courseDate">
+      </div>
+
+    </div>
+
+
+    <!-- 統計 -->
+
+    <div class="stats">
+
+
+      <div class="stat">
+
+        👥 學員總數
+
+        <div
+          id="totalStudents"
+          class="stat-number blue">
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        ✅ 今日出席
+
+        <div
+          id="todayPresent"
+          class="stat-number green">
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        ❌ 今日未到
+
+        <div
+          id="todayAbsent"
+          class="stat-number red">
+          0
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- 學員 -->
+
+    <div class="section">
+
+      <h2>
+        👥 學員名單
+      </h2>
+
+
+      <div class="toolbar">
+
+        <button
+          onclick="loadData()">
+          🔄 重新整理
+        </button>
+
+        <button
+          onclick="downloadCSV()">
+          📥 匯出 CSV
+        </button>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                學員編號
+              </th>
+
+              <th>
+                姓名
+              </th>
+
+              <th>
+                本期堂數
+              </th>
+
+              <th>
+                今日
+              </th>
+
+              <th>
+                LINE
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="studentTable">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- 最近打卡 -->
+
+    <div class="section">
+
+      <h2>
+        📋 最近打卡紀錄
+      </h2>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                日期
+              </th>
+
+              <th>
+                時間
+              </th>
+
+              <th>
+                學員編號
+              </th>
+
+              <th>
+                姓名
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="recentTable">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <div
+    id="error"
+    class="section error"
+    style="display:none;">
+  </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   後端 API
+========================================= */
+
+const API_URL =
+'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
+
+
+const ADMIN_KEY =
+'wushu_admin_2026';
+
+
+let dashboardData =
+null;
+
+
+/* =========================================
+   載入
+========================================= */
+
+async function loadData() {
+
+  document
+    .getElementById('loading')
+    .style.display =
+    'block';
+
+  document
+    .getElementById('app')
+    .style.display =
+    'none';
+
+  document
+    .getElementById('error')
+    .style.display =
+    'none';
+
+
+  try {
+
+    const url =
+      API_URL +
+      '?action=adminDashboard' +
+      '&key=' +
+      encodeURIComponent(
+        ADMIN_KEY
+      );
+
+
+    const response =
+      await fetch(url);
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !data.success
+    ) {
+
+      throw new Error(
+        data.message ||
+        '管理資料取得失敗'
+      );
+
+    }
+
+
+    dashboardData =
+      data;
+
+
+    render(data);
+
+
+    document
+      .getElementById('loading')
+      .style.display =
+      'none';
+
+    document
+      .getElementById('app')
+      .style.display =
+      'block';
+
+
+  }
+
+  catch(error) {
+
+    document
+      .getElementById('loading')
+      .style.display =
+      'none';
+
+    const errorBox =
+      document
+        .getElementById('error');
+
+    errorBox.innerText =
+      '❌ 管理資料取得失敗\n\n' +
+      error.message;
+
+    errorBox.style.display =
+      'block';
+
+  }
+
+}
+
+
+/* =========================================
+   顯示資料
+========================================= */
+
+function render(data) {
+
+  const course =
+    data.course;
+
+
+  if (course) {
+
+    document
+      .getElementById('courseName')
+      .innerText =
+      '📚 ' +
+      (course.name ||
+       '本期課程');
+
+
+    document
+      .getElementById('courseDate')
+      .innerText =
+      course.start_date +
+      ' ～ ' +
+      course.end_date;
+
+  }
+
+  else {
+
+    document
+      .getElementById('courseName')
+      .innerText =
+      '📚 目前沒有進行中的課程';
+
+    document
+      .getElementById('courseDate')
+      .innerText =
+      '';
+
+  }
+
+
+  document
+    .getElementById('totalStudents')
+    .innerText =
+    data.statistics.totalStudents;
+
+
+  document
+    .getElementById('todayPresent')
+    .innerText =
+    data.statistics.todayPresent;
+
+
+  document
+    .getElementById('todayAbsent')
+    .innerText =
+    data.statistics.todayAbsent;
+
+
+  renderStudents(
+    data.students || []
+  );
+
+
+  renderRecent(
+    data.recent || []
+  );
+
+}
+
+
+/* =========================================
+   學員表
+========================================= */
+
+function renderStudents(
+  students
+) {
+
+  const tbody =
+    document
+      .getElementById(
+        'studentTable'
+      );
+
+
+  tbody.innerHTML =
+    '';
+
+
+  students.forEach(
+    function(student) {
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHTML(
+            student.student_id
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            student.name
+          )}
+        </td>
+
+        <td>
+          <strong>
+            ${student.course_count}
+          </strong>
+        </td>
+
+        <td>
+
+          ${
+            student.today
+
+            ? '<span class="badge badge-ok">✅ 已到</span>'
+
+            : '<span class="badge badge-no">❌ 未到</span>'
+          }
+
+        </td>
+
+        <td>
+
+          ${
+            student.line_bound
+
+            ? '<span class="badge badge-line">已綁定</span>'
+
+            : '<span class="badge badge-no">未綁定</span>'
+          }
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   最近紀錄
+========================================= */
+
+function renderRecent(
+  records
+) {
+
+  const tbody =
+    document
+      .getElementById(
+        'recentTable'
+      );
+
+
+  tbody.innerHTML =
+    '';
+
+
+  records.forEach(
+    function(record) {
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHTML(
+            record.date
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            record.time
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            record.student_id
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            record.name
+          )}
+        </td>
+
+      `;
+
+
+      tbody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   CSV
+========================================= */
+
+function downloadCSV() {
+
+  if (
+    !dashboardData
+  ) {
+
+    return;
+
+  }
+
+
+  const students =
+    dashboardData.students ||
+    [];
+
+
+  let csv =
+    '\uFEFF學員編號,姓名,本期堂數,今日出席,LINE綁定\n';
+
+
+  students.forEach(
+    function(student) {
+
+      csv +=
+        csvEscape(
+          student.student_id
+        ) +
+        ',' +
+        csvEscape(
+          student.name
+        ) +
+        ',' +
+        student.course_count +
+        ',' +
+        (
+          student.today
+            ? '是'
+            : '否'
+        ) +
+        ',' +
+        (
+          student.line_bound
+            ? '是'
+            : '否'
+        ) +
+        '\n';
+
+    }
+  );
+
+
+  const blob =
+    new Blob(
+      [csv],
+      {
+        type:
+          'text/csv;charset=utf-8;'
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a =
+    document.createElement(
+      'a'
+    );
+
+
+  a.href =
+    url;
+
+  a.download =
+    '學員出席_' +
+    getToday() +
+    '.csv';
+
+
+  a.click();
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+}
+
+
+/* =========================================
+   工具
+========================================= */
+
+function csvEscape(value) {
+
+  const text =
+    String(
+      value ?? ''
+    );
+
+
+  return '"' +
+    text.replace(
+      /"/g,
+      '""'
+    ) +
+    '"';
+
+}
+
+
+function escapeHTML(value) {
+
+  return String(
+    value ?? ''
+  )
+  .replace(
+    /&/g,
+    '&amp;'
+  )
+  .replace(
+    /</g,
+    '&lt;'
+  )
+  .replace(
+    />/g,
+    '&gt;'
+  )
+  .replace(
+    /"/g,
+    '&quot;'
+  )
+  .replace(
+    /'/g,
+    '&#039;'
+  );
+
+}
+
+
+function getToday() {
+
+  const d =
+    new Date();
+
+
+  return d
+    .toISOString()
+    .slice(
+      0,
+      10
+    );
+
+}
+
+
+/* =========================================
+   開始
+========================================= */
+
+loadData();
+
+</script>
+
+
+</body>
+
+</html>
