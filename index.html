@@ -3,16 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>📚 學員上課打卡</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
-
     body {
       margin: 0;
       padding: 30px 20px;
@@ -86,11 +83,8 @@
     .hidden {
       display: none;
     }
-
   </style>
-
 </head>
-
 
 <body>
 
@@ -98,37 +92,24 @@
 
   <h1>📚 學員上課打卡</h1>
 
-
   <div id="status">
     正在載入 LIFF SDK...
   </div>
 
-
   <div id="studentInfo"></div>
-
-
-  <!-- LINE 登入 -->
 
   <button
     id="loginButton"
     class="hidden"
     onclick="login()">
-
     使用 LINE 登入
-
   </button>
 
-
-  <!-- 學員綁定 -->
-
-  <div id="bindArea"
-       class="hidden">
+  <div id="bindArea" class="hidden">
 
     <h3>🔗 綁定學員</h3>
 
-    <p>
-      請輸入你的姓名
-    </p>
+    <p>請輸入你的姓名</p>
 
     <input
       id="studentName"
@@ -136,22 +117,15 @@
       placeholder="請輸入姓名"
       autocomplete="name">
 
-
     <button
       id="searchButton"
       onclick="searchStudent()">
-
       查詢我的學員資料
-
     </button>
 
   </div>
 
-
-  <!-- 找到學員後確認 -->
-
-  <div id="confirmArea"
-       class="hidden">
+  <div id="confirmArea" class="hidden">
 
     <h3>請確認這是你本人</h3>
 
@@ -160,65 +134,41 @@
     <button
       id="confirmButton"
       onclick="confirmBind()">
-
       確認綁定
-
     </button>
 
   </div>
 
-
 </div>
 
-
 <script>
-
-
-/* =========================
-   基本設定
-========================= */
-
 
 const LIFF_ID =
   '2011153247-E8jjjAjB';
 
-
 const API_URL =
   'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
-
 let currentLineUserId = '';
-
 let currentStudent = null;
-
 
 const status =
   document.getElementById('status');
 
-
 const loginButton =
   document.getElementById('loginButton');
-
 
 const bindArea =
   document.getElementById('bindArea');
 
-
 const confirmArea =
   document.getElementById('confirmArea');
-
 
 const studentInfo =
   document.getElementById('studentInfo');
 
-
 const confirmInfo =
   document.getElementById('confirmInfo');
-
-
-/* =========================
-   啟動 LIFF
-========================= */
 
 
 async function startLIFF() {
@@ -228,81 +178,48 @@ async function startLIFF() {
     status.innerText =
       'LIFF SDK 已載入，正在初始化...';
 
-
     await liff.init({
-
       liffId: LIFF_ID
-
     });
-
-
-    /*
-     * 尚未登入
-     */
 
     if (!liff.isLoggedIn()) {
 
       status.innerText =
         '目前尚未登入 LINE';
 
-
       loginButton.classList.remove(
         'hidden'
       );
 
-
       return;
-
     }
-
-
-    /*
-     * 已登入
-     */
 
     status.innerText =
       '🎉 LINE 登入成功！\n' +
       '正在取得學員資料...';
 
-
     const profile =
       await liff.getProfile();
 
-
     currentLineUserId =
       profile.userId;
-
-
-    /*
-     * 查詢是否已綁定
-     */
 
     await findStudent(
       currentLineUserId
     );
 
-
   } catch (error) {
 
     console.error(error);
-
 
     status.innerText =
       '❌ LIFF 發生錯誤\n\n' +
       (error.message || error);
 
-
     status.className =
       'error';
-
   }
-
 }
-
-
-/* =========================
-   LINE 登入
-========================= */
 
 
 function login() {
@@ -310,19 +227,11 @@ function login() {
   status.innerText =
     '正在開啟 LINE 登入...';
 
-
   loginButton.disabled =
     true;
 
-
   liff.login();
-
 }
-
-
-/* =========================
-   查詢 LINE 是否已綁定
-========================= */
 
 
 async function findStudent(
@@ -335,25 +244,13 @@ async function findStudent(
       API_URL +
       '?action=findStudent' +
       '&line_user_id=' +
-      encodeURIComponent(
-        lineUserId
-      );
-
+      encodeURIComponent(lineUserId);
 
     const response =
       await fetch(url);
 
-
     const result =
       await response.json();
-
-
-    console.log(result);
-
-
-    /*
-     * 已經綁定
-     */
 
     if (
       result.success &&
@@ -363,202 +260,124 @@ async function findStudent(
       const student =
         result.student;
 
-
       studentInfo.innerText =
         '👋 ' +
         student.name +
         '，歡迎上課！';
-
 
       status.innerText =
         '✅ LINE 已綁定學員\n' +
         '學員編號：' +
         student.student_id;
 
-
       status.className =
         'success';
 
-
       return;
-
     }
-
-
-    /*
-     * 尚未綁定
-     */
 
     status.innerText =
       'LINE 登入成功！\n\n' +
       '請輸入你的姓名。';
 
-
     bindArea.classList.remove(
       'hidden'
     );
-
 
   } catch (error) {
 
     console.error(error);
 
-
     status.innerText =
       '❌ 無法連線到學員資料庫\n\n' +
       (error.message || error);
 
-
     status.className =
       'error';
-
   }
-
 }
-
-
-/* =========================
-   用姓名搜尋學生
-========================= */
 
 
 async function searchStudent() {
 
-  const nameInput =
-    document.getElementById(
-      'studentName'
-    );
-
-
   const name =
-    nameInput.value.trim();
-
+    document
+      .getElementById('studentName')
+      .value
+      .trim();
 
   if (!name) {
 
-    alert(
-      '請先輸入姓名'
-    );
-
+    alert('請先輸入姓名');
     return;
-
   }
-
 
   const searchButton =
     document.getElementById(
       'searchButton'
     );
 
-
   try {
 
     searchButton.disabled =
       true;
 
-
     searchButton.innerText =
       '正在查詢...';
 
-
     status.innerText =
       '正在從學生資料表查詢...';
-
 
     const url =
       API_URL +
       '?action=findStudentByName' +
       '&name=' +
-      encodeURIComponent(
-        name
-      );
-
+      encodeURIComponent(name);
 
     const response =
       await fetch(url);
 
-
     const result =
       await response.json();
 
-
-    console.log(result);
-
-
-    /*
-     * 查不到
-     */
-
-    if (
-      !result.success
-    ) {
+    if (!result.success) {
 
       status.innerText =
         '❌ ' +
         result.message;
 
-
       status.className =
         'error';
 
-
       return;
-
     }
 
-
-    /*
-     * 姓名不存在
-     */
-
-    if (
-      !result.found
-    ) {
+    if (!result.found) {
 
       status.innerText =
         '❌ 找不到這個姓名\n\n' +
         '請確認姓名是否與學生資料表完全相同。';
 
-
       status.className =
         'error';
 
-
       return;
-
     }
 
-
-    /*
-     * 姓名重複
-     */
-
-    if (
-      result.multiple
-    ) {
+    if (result.multiple) {
 
       status.innerText =
         '⚠️ 找到多位同名學員\n\n' +
-        '目前無法自動判斷是哪一位。\n' +
         '請聯絡管理員處理。';
-
 
       status.className =
         'error';
 
-
       return;
-
     }
-
-
-    /*
-     * 找到唯一學生
-     */
 
     currentStudent =
       result.student;
-
 
     confirmInfo.innerHTML =
       '姓名：<strong>' +
@@ -575,55 +394,39 @@ async function searchStudent() {
       ) +
       '</strong>';
 
-
     bindArea.classList.add(
       'hidden'
     );
-
 
     confirmArea.classList.remove(
       'hidden'
     );
 
-
     status.innerText =
       '請確認以下資料是否為本人。';
 
-
     status.className = '';
-
 
   } catch (error) {
 
     console.error(error);
 
-
     status.innerText =
       '❌ 查詢發生錯誤\n\n' +
       (error.message || error);
 
-
     status.className =
       'error';
-
 
   } finally {
 
     searchButton.disabled =
       false;
 
-
     searchButton.innerText =
       '查詢我的學員資料';
-
   }
-
 }
-
-
-/* =========================
-   確認綁定
-========================= */
 
 
 async function confirmBind() {
@@ -636,35 +439,27 @@ async function confirmBind() {
     status.innerText =
       '❌ 找不到綁定資料';
 
-
     status.className =
       'error';
 
-
     return;
-
   }
-
 
   const confirmButton =
     document.getElementById(
       'confirmButton'
     );
 
-
   try {
 
     confirmButton.disabled =
       true;
 
-
     confirmButton.innerText =
       '正在綁定...';
 
-
     status.innerText =
-      '正在將 LINE 帳號綁定到你的學員資料...';
-
+      '正在綁定學員...';
 
     const url =
       API_URL +
@@ -682,42 +477,30 @@ async function confirmBind() {
         currentStudent.name
       );
 
-
     const response =
       await fetch(url);
-
 
     const result =
       await response.json();
 
-
-    console.log(result);
-
-
-    if (
-      result.success
-    ) {
+    if (result.success) {
 
       studentInfo.innerText =
         '🎉 ' +
         result.student.name +
         '，綁定成功！';
 
-
       status.innerText =
         '✅ LINE 帳號已成功綁定\n' +
         '學員編號：' +
         result.student.student_id;
 
-
       status.className =
         'success';
-
 
       confirmArea.classList.add(
         'hidden'
       );
-
 
     } else {
 
@@ -725,66 +508,42 @@ async function confirmBind() {
         '❌ 綁定失敗\n\n' +
         result.message;
 
-
       status.className =
         'error';
-
     }
-
 
   } catch (error) {
 
     console.error(error);
 
-
     status.innerText =
       '❌ 綁定發生錯誤\n\n' +
       (error.message || error);
 
-
     status.className =
       'error';
-
 
   } finally {
 
     confirmButton.disabled =
       false;
 
-
     confirmButton.innerText =
       '確認綁定';
-
   }
-
 }
-
-
-/* =========================
-   防止 HTML 注入
-========================= */
 
 
 function escapeHtml(text) {
 
   const div =
-    document.createElement(
-      'div'
-    );
-
+    document.createElement('div');
 
   div.textContent =
     text;
 
-
   return div.innerHTML;
-
 }
-
-
-/* =========================
-   啟動
-========================= */
 
 
 startLIFF();
