@@ -2,142 +2,154 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>學員上課打卡</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 20px;
-      background: #f3f5f7;
+      padding: 20px 15px 40px;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Noto Sans TC",
+        "Microsoft JhengHei",
         Arial,
         sans-serif;
-      color: #333;
+      background: #f3f7f4;
+      color: #222;
     }
 
     .container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
     }
 
     .card {
-      background: #fff;
+      background: #ffffff;
       border-radius: 20px;
-      padding: 24px 20px;
+      padding: 22px;
       margin-bottom: 16px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
     }
 
     h1 {
-      margin: 0 0 8px;
       text-align: center;
-      font-size: 26px;
+      margin: 5px 0 8px;
+      font-size: 27px;
     }
 
     h2 {
-      margin-top: 0;
-      font-size: 20px;
+      font-size: 19px;
+      margin: 0 0 15px;
     }
 
     .subtitle {
-      text-align: center;
-      color: #888;
-      margin-bottom: 22px;
-    }
-
-    .student-name {
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 5px;
-    }
-
-    .student-id {
       text-align: center;
       color: #777;
       margin-bottom: 20px;
     }
 
-    .points {
+    .status {
       text-align: center;
-      background: #eef8ff;
-      border-radius: 16px;
-      padding: 18px;
+      padding: 15px;
+      border-radius: 14px;
+      background: #f5f5f5;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .success {
+      color: #07883f;
+      background: #eaf8f0;
+    }
+
+    .error {
+      color: #c62828;
+      background: #ffebee;
+    }
+
+    .info {
+      color: #555;
+      background: #f5f5f5;
+    }
+
+    .student-name {
+      font-size: 25px;
+      font-weight: bold;
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    .student-id {
+      text-align: center;
+      color: #666;
       margin-bottom: 15px;
     }
 
-    .points-label {
-      color: #666;
-      font-size: 15px;
+    .course-box {
+      background: #f0f8f3;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 12px;
     }
 
-    .points-number {
-      font-size: 42px;
+    .course-name {
+      font-size: 20px;
       font-weight: bold;
-      color: #1976d2;
-      line-height: 1.2;
-      margin: 4px 0;
+      color: #087f3e;
+      margin-bottom: 7px;
+    }
+
+    .course-date {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
     .stat {
-      background: #f7f8fa;
-      border-radius: 14px;
-      padding: 16px;
+      background: #f7f7f7;
+      border-radius: 15px;
+      padding: 15px 8px;
       text-align: center;
     }
 
     .stat-number {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: bold;
-      color: #333;
+      color: #06a94d;
+      margin-bottom: 5px;
     }
 
     .stat-label {
-      color: #888;
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .checkin-box {
-      text-align: center;
-      padding: 20px;
-      border-radius: 16px;
-      background: #f0fff5;
-      margin-bottom: 15px;
-    }
-
-    .checkin-status {
-      font-size: 20px;
-      font-weight: bold;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
-    .checkin-time {
-      color: #777;
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
     }
 
     button {
       width: 100%;
       border: none;
-      border-radius: 14px;
+      border-radius: 15px;
       padding: 16px;
       font-size: 18px;
       font-weight: bold;
@@ -145,69 +157,87 @@
       margin-top: 10px;
     }
 
-    .btn-green {
+    .login-button {
       background: #06c755;
       color: white;
     }
 
-    .btn-gray {
-      background: #eeeeee;
+    .checkin-button {
+      background: #06c755;
+      color: white;
+      font-size: 20px;
+      padding: 18px;
+    }
+
+    .checkin-button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .bind-button {
+      background: #333;
+      color: white;
+    }
+
+    .logout-button {
+      background: #eee;
       color: #555;
+      font-size: 15px;
     }
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: default;
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 17px;
+      margin-bottom: 10px;
+      outline: none;
     }
 
-    .login-box {
-      text-align: center;
-    }
-
-    .login-box p {
-      color: #777;
-      line-height: 1.7;
-    }
-
-    .record {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 4px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .record:last-child {
-      border-bottom: none;
-    }
-
-    .record-date {
-      font-weight: bold;
-    }
-
-    .record-time {
-      color: #888;
-      font-size: 14px;
+    input:focus {
+      border-color: #06c755;
     }
 
     .hidden {
       display: none !important;
     }
 
-    #message {
+    .today-done {
       text-align: center;
-      padding: 10px;
-      color: #666;
-      white-space: pre-line;
+      background: #eaf8f0;
+      color: #087f3e;
+      padding: 17px;
+      border-radius: 15px;
+      font-weight: bold;
+      line-height: 1.7;
     }
 
-    .error {
-      color: #d93025 !important;
+    .recent-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 5px;
+      border-bottom: 1px solid #eee;
+      color: #555;
     }
 
-    .success {
-      color: #06c755 !important;
+    .recent-item:last-child {
+      border-bottom: none;
     }
+
+    .empty {
+      text-align: center;
+      color: #999;
+      padding: 15px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 25px;
+    }
+
   </style>
 </head>
 
@@ -216,172 +246,247 @@
 <div class="container">
 
   <!-- 標題 -->
-
   <div class="card">
 
     <h1>📚 學員上課打卡</h1>
 
     <div class="subtitle">
-      學員專屬服務
+      武術協會學員系統
     </div>
 
-    <div id="message">
+    <div
+      id="status"
+      class="status info"
+    >
       正在載入 LINE...
     </div>
 
-    <!-- 尚未登入 -->
+  </div>
+
+
+  <!-- 登入 -->
+  <div
+    id="loginCard"
+    class="card hidden"
+  >
+
+    <h2>🔐 LINE 登入</h2>
+
+    <p>
+      請使用 LINE 登入後繼續。
+    </p>
+
+    <button
+      id="loginButton"
+      class="login-button"
+      onclick="login()"
+    >
+      使用 LINE 登入
+    </button>
+
+  </div>
+
+
+  <!-- 綁定 -->
+  <div
+    id="bindCard"
+    class="card hidden"
+  >
+
+    <h2>🔗 綁定學員</h2>
+
+    <p>
+      第一次使用請輸入學生資料。
+    </p>
+
+    <input
+      id="studentId"
+      type="text"
+      placeholder="請輸入學員編號"
+      autocomplete="off"
+    >
+
+    <input
+      id="studentName"
+      type="text"
+      placeholder="請輸入姓名"
+      autocomplete="name"
+    >
+
+    <button
+      id="bindButton"
+      class="bind-button"
+      onclick="bindStudent()"
+    >
+      綁定學員
+    </button>
+
+  </div>
+
+
+  <!-- 學員資料 -->
+  <div
+    id="studentCard"
+    class="card hidden"
+  >
+
+    <div class="student-name">
+      <span id="studentNameDisplay"></span>
+    </div>
+
+    <div class="student-id">
+      學員編號：
+      <strong id="studentIdDisplay"></strong>
+    </div>
 
     <div
-      id="loginBox"
-      class="login-box hidden">
+      id="courseBox"
+      class="course-box"
+    >
 
-      <p>
-        目前尚未登入 LINE<br>
-        請使用 LINE 登入後繼續
-      </p>
+      <div
+        id="courseName"
+        class="course-name"
+      >
+        📚 本期課程
+      </div>
 
-      <button
-        class="btn-green"
-        onclick="login()">
-        使用 LINE 登入
-      </button>
+      <div
+        id="courseDate"
+        class="course-date"
+      >
+      </div>
 
     </div>
 
   </div>
 
 
-  <!-- 學員首頁 -->
-
+  <!-- 統計 -->
   <div
-    id="studentArea"
-    class="hidden">
+    id="statsCard"
+    class="card hidden"
+  >
 
+    <h2>📊 上課紀錄</h2>
 
-    <!-- 學員資料 -->
+    <div class="stats">
 
-    <div class="card">
-
-      <div
-        id="studentName"
-        class="student-name">
-      </div>
-
-      <div
-        id="studentId"
-        class="student-id">
-      </div>
-
-
-      <!-- 本期課程累計堂數 -->
-
-      <div class="points">
-
-        <div class="points-label">
-          📚 本期課程累計堂數
-        </div>
+      <div class="stat">
 
         <div
-          id="totalPoints"
-          class="points-number">
+          id="courseCount"
+          class="stat-number"
+        >
           0
         </div>
 
-        <div class="points-label">
-          堂
+        <div class="stat-label">
+          本期課程<br>
+          累計堂數
         </div>
 
       </div>
 
 
-      <!-- 其他統計 -->
-
-      <div class="stats">
-
-        <div class="stat">
-
-          <div
-            id="monthlyCount"
-            class="stat-number">
-            0
-          </div>
-
-          <div class="stat-label">
-            📅 本月上課
-          </div>
-
-        </div>
-
-
-        <div class="stat">
-
-          <div
-            id="totalCheckins"
-            class="stat-number">
-            0
-          </div>
-
-          <div class="stat-label">
-            📚 累計上課
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- 今日打卡 -->
-
-    <div class="card">
-
-      <div
-        id="checkinBox"
-        class="checkin-box">
+      <div class="stat">
 
         <div
-          id="checkinStatus"
-          class="checkin-status">
-
-          📚 今日尚未打卡
-
+          id="monthlyCount"
+          class="stat-number"
+        >
+          0
         </div>
+
+        <div class="stat-label">
+          本月<br>
+          上課堂數
+        </div>
+
+      </div>
+
+
+      <div class="stat">
 
         <div
-          id="checkinTime"
-          class="checkin-time">
+          id="totalCount"
+          class="stat-number"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          累計<br>
+          上課堂數
         </div>
 
       </div>
 
-
-      <button
-        id="checkinButton"
-        class="btn-green"
-        onclick="doCheckin()">
-
-        📚 今日上課打卡
-
-      </button>
-
     </div>
 
+  </div>
 
-    <!-- 最近紀錄 -->
 
-    <div class="card">
+  <!-- 今日打卡 -->
+  <div
+    id="checkinCard"
+    class="card hidden"
+  >
 
-      <h2>
-        📋 最近上課紀錄
-      </h2>
+    <h2>📅 今日上課</h2>
 
-      <div id="records">
-        載入中...
-      </div>
-
+    <div
+      id="todayDone"
+      class="today-done hidden"
+    >
+      ✅ 今日已完成打卡
+      <br>
+      <span id="todayTime"></span>
     </div>
 
+    <button
+      id="checkinButton"
+      class="checkin-button"
+      onclick="checkin()"
+    >
+      📚 今日上課打卡
+    </button>
+
+  </div>
+
+
+  <!-- 最近紀錄 -->
+  <div
+    id="recentCard"
+    class="card hidden"
+  >
+
+    <h2>📝 最近打卡紀錄</h2>
+
+    <div id="recentList">
+    </div>
+
+  </div>
+
+
+  <!-- 登出 -->
+  <div
+    id="logoutCard"
+    class="card hidden"
+  >
+
+    <button
+      class="logout-button"
+      onclick="logout()"
+    >
+      登出 LINE
+    </button>
+
+  </div>
+
+
+  <div class="footer">
+    學員上課打卡系統 第 27 版
   </div>
 
 </div>
@@ -389,128 +494,375 @@
 
 <script>
 
-/* =================================================
-   LIFF 設定
-================================================= */
+  /* =================================================
+     基本設定
+  ================================================= */
 
-const LIFF_ID =
-  '2011153247-E8jjjAjB';
+  const LIFF_ID =
+    '2011153247-E8jjjAjB';
 
-
-/* =================================================
-   Apps Script API
-================================================= */
-
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
+  const API_URL =
+    'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
 
-/* =================================================
-   HTML 元件
-================================================= */
+  /* =================================================
+     DOM
+  ================================================= */
 
-const message =
-  document.getElementById('message');
+  const statusEl =
+    document.getElementById(
+      'status'
+    );
 
-const loginBox =
-  document.getElementById('loginBox');
+  const loginCard =
+    document.getElementById(
+      'loginCard'
+    );
 
-const studentArea =
-  document.getElementById('studentArea');
+  const bindCard =
+    document.getElementById(
+      'bindCard'
+    );
 
-const studentName =
-  document.getElementById('studentName');
+  const studentCard =
+    document.getElementById(
+      'studentCard'
+    );
 
-const studentId =
-  document.getElementById('studentId');
+  const statsCard =
+    document.getElementById(
+      'statsCard'
+    );
 
-const totalPoints =
-  document.getElementById('totalPoints');
+  const checkinCard =
+    document.getElementById(
+      'checkinCard'
+    );
 
-const monthlyCount =
-  document.getElementById('monthlyCount');
+  const recentCard =
+    document.getElementById(
+      'recentCard'
+    );
 
-const totalCheckins =
-  document.getElementById('totalCheckins');
-
-const checkinStatus =
-  document.getElementById('checkinStatus');
-
-const checkinTime =
-  document.getElementById('checkinTime');
-
-const checkinButton =
-  document.getElementById('checkinButton');
-
-const records =
-  document.getElementById('records');
-
-
-/* =================================================
-   初始化 LIFF
-================================================= */
-
-async function init() {
-
-  try {
-
-    message.innerText =
-      '正在初始化 LINE...';
+  const logoutCard =
+    document.getElementById(
+      'logoutCard'
+    );
 
 
-    await liff.init({
+  /* =================================================
+     狀態
+  ================================================= */
 
-      liffId:
-        LIFF_ID
+  let lineUserId = '';
 
-    });
+  let currentStudent = null;
 
 
-    /*
-     * 尚未登入
-     */
+  /* =================================================
+     顯示狀態
+  ================================================= */
+
+  function setStatus(
+    message,
+    type = 'info'
+  ) {
+
+    statusEl.innerText =
+      message;
+
+    statusEl.className =
+      'status ' + type;
+
+  }
+
+
+  /* =================================================
+     隱藏全部
+  ================================================= */
+
+  function hideAllCards() {
+
+    loginCard.classList.add(
+      'hidden'
+    );
+
+    bindCard.classList.add(
+      'hidden'
+    );
+
+    studentCard.classList.add(
+      'hidden'
+    );
+
+    statsCard.classList.add(
+      'hidden'
+    );
+
+    checkinCard.classList.add(
+      'hidden'
+    );
+
+    recentCard.classList.add(
+      'hidden'
+    );
+
+    logoutCard.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  /* =================================================
+     初始化 LIFF
+  ================================================= */
+
+  async function initLIFF() {
+
+    try {
+
+      setStatus(
+        '正在載入 LIFF SDK...',
+        'info'
+      );
+
+
+      if (
+        typeof liff ===
+        'undefined'
+      ) {
+
+        throw new Error(
+          'LIFF SDK 載入失敗'
+        );
+
+      }
+
+
+      setStatus(
+        '第 1 階段\nLIFF SDK 已載入，正在初始化...',
+        'info'
+      );
+
+
+      await liff.init({
+
+        liffId:
+          LIFF_ID
+
+      });
+
+
+      setStatus(
+        '第 2 階段\nLIFF 初始化成功，正在確認 LINE 身分...',
+        'info'
+      );
+
+
+      if (
+        !liff.isLoggedIn()
+      ) {
+
+        hideAllCards();
+
+        loginCard.classList.remove(
+          'hidden'
+        );
+
+        setStatus(
+          '尚未登入 LINE',
+          'info'
+        );
+
+        return;
+
+      }
+
+
+      await getLineProfile();
+
+      await loadStudent();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+      setStatus(
+        '❌ 初始化失敗\n\n' +
+        getErrorMessage(error),
+        'error'
+      );
+
+    }
+
+  }
+
+
+  /* =================================================
+     取得 LINE User ID
+  ================================================= */
+
+  async function getLineProfile() {
+
+    try {
+
+      const profile =
+        await liff.getProfile();
+
+
+      lineUserId =
+        profile.userId;
+
+
+      if (!lineUserId) {
+
+        throw new Error(
+          '無法取得 LINE User ID'
+        );
+
+      }
+
+
+      console.log(
+        'LINE User ID:',
+        lineUserId
+      );
+
+    }
+
+    catch (error) {
+
+      throw new Error(
+        '無法取得 LINE 身分：' +
+        getErrorMessage(error)
+      );
+
+    }
+
+  }
+
+
+  /* =================================================
+     呼叫 API
+  ================================================= */
+
+  async function api(
+    action,
+    params = {}
+  ) {
+
+    const query =
+      new URLSearchParams();
+
+
+    query.set(
+      'action',
+      action
+    );
+
+
+    Object.keys(params)
+      .forEach(
+        function(key) {
+
+          query.set(
+            key,
+            params[key]
+          );
+
+        }
+      );
+
+
+    const url =
+      API_URL +
+      '?' +
+      query.toString();
+
+
+    console.log(
+      'API:',
+      url
+    );
+
+
+    const response =
+      await fetch(
+        url,
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      );
+
 
     if (
-      !liff.isLoggedIn()
+      !response.ok
     ) {
 
-      message.innerText =
-        '目前尚未登入 LINE';
-
-      loginBox
-        .classList
-        .remove('hidden');
-
-      return;
+      throw new Error(
+        'API HTTP 錯誤：' +
+        response.status
+      );
 
     }
 
 
-    /*
-     * 已登入
-     */
-
-    message.innerText =
-      '正在取得 LINE 身分...';
+    const text =
+      await response.text();
 
 
-    const profile =
-      await liff.getProfile();
+    console.log(
+      'API 回應:',
+      text
+    );
 
 
-    const lineUserId =
-      profile.userId;
+    let data;
 
 
-    /*
-     * 查詢學員
-     */
+    try {
 
-    message.innerText =
-      '正在取得學員資料...';
+      data =
+        JSON.parse(text);
+
+    }
+
+    catch (error) {
+
+      throw new Error(
+        'API 回傳不是有效 JSON'
+      );
+
+    }
 
 
-    const result =
+    return data;
+
+  }
+
+
+  /* =================================================
+     載入學生
+  ================================================= */
+
+  async function loadStudent() {
+
+    hideAllCards();
+
+
+    setStatus(
+      '正在取得學員資料...',
+      'info'
+    );
+
+
+    const data =
       await api(
         'findStudent',
         {
@@ -520,550 +872,777 @@ async function init() {
       );
 
 
+    console.log(
+      'findStudent:',
+      data
+    );
+
+
     if (
-      !result.success
+      !data.success
     ) {
 
       throw new Error(
-        result.message ||
-        '無法取得學員資料'
+        data.message ||
+        '取得學員資料失敗'
       );
 
     }
 
 
-    /*
-     * 尚未綁定
-     */
-
     if (
-      !result.found
+      !data.found
     ) {
 
-      message.innerText =
-        'LINE 已登入，但尚未綁定學員。';
+      bindCard.classList.remove(
+        'hidden'
+      );
+
+      setStatus(
+        '尚未綁定學員\n請輸入你的學員編號與姓名',
+        'info'
+      );
 
       return;
 
     }
 
 
-    /*
-     * 顯示首頁
-     */
-
-    studentArea
-      .classList
-      .remove('hidden');
-
-    message.innerText =
-      '';
+    currentStudent =
+      data.student;
 
 
-    await loadDashboard(
-      lineUserId
+    await loadDashboard();
+
+  }
+
+
+  /* =================================================
+     載入 Dashboard
+  ================================================= */
+
+  async function loadDashboard() {
+
+    setStatus(
+      '正在載入學員資料...',
+      'info'
     );
 
 
-  } catch (error) {
-
-    message.innerText =
-      '❌ 發生錯誤\n\n' +
-      (
-        error.message ||
-        error
+    const data =
+      await api(
+        'studentDashboard',
+        {
+          line_user_id:
+            lineUserId
+        }
       );
 
-    message.className =
-      'error';
+
+    console.log(
+      'Dashboard:',
+      data
+    );
+
+
+    if (
+      !data.success
+    ) {
+
+      throw new Error(
+        data.message ||
+        '無法取得最新資料'
+      );
+
+    }
+
+
+    if (
+      !data.found
+    ) {
+
+      await loadStudent();
+
+      return;
+
+    }
+
+
+    currentStudent =
+      data.student;
+
+
+    showDashboard(
+      data
+    );
 
   }
 
-}
+
+  /* =================================================
+     顯示 Dashboard
+  ================================================= */
+
+  function showDashboard(
+    data
+  ) {
+
+    hideAllCards();
 
 
-/* =================================================
-   LINE 登入
-================================================= */
+    studentCard.classList.remove(
+      'hidden'
+    );
 
-function login() {
+    statsCard.classList.remove(
+      'hidden'
+    );
 
-  try {
+    checkinCard.classList.remove(
+      'hidden'
+    );
 
-    liff.login();
+    recentCard.classList.remove(
+      'hidden'
+    );
 
-  } catch (error) {
+    logoutCard.classList.remove(
+      'hidden'
+    );
 
-    message.innerText =
-      '❌ LINE 登入失敗\n\n' +
-      (
-        error.message ||
-        error
+
+    setStatus(
+      '✅ LINE 已綁定學員',
+      'success'
+    );
+
+
+    /* -----------------------------
+       學員
+    ----------------------------- */
+
+    document.getElementById(
+      'studentNameDisplay'
+    ).innerText =
+      data.student.name ||
+      '';
+
+
+    document.getElementById(
+      'studentIdDisplay'
+    ).innerText =
+      data.student.student_id ||
+      '';
+
+
+    /* -----------------------------
+       課程
+    ----------------------------- */
+
+    if (
+      data.course
+    ) {
+
+      document.getElementById(
+        'courseName'
+      ).innerText =
+        '📚 ' +
+        (
+          data.course.name ||
+          '本期課程'
+        );
+
+
+      document.getElementById(
+        'courseDate'
+      ).innerText =
+        '課程期間：' +
+        (
+          data.course.start_date ||
+          ''
+        ) +
+        ' ～ ' +
+        (
+          data.course.end_date ||
+          ''
+        );
+
+    }
+
+
+    /* -----------------------------
+       統計
+    ----------------------------- */
+
+    const statistics =
+      data.statistics ||
+      {};
+
+
+    document.getElementById(
+      'courseCount'
+    ).innerText =
+      Number(
+        statistics.totalPoints ||
+        0
       );
 
-    message.className =
-      'error';
+
+    document.getElementById(
+      'monthlyCount'
+    ).innerText =
+      Number(
+        statistics.monthlyCount ||
+        0
+      );
+
+
+    document.getElementById(
+      'totalCount'
+    ).innerText =
+      Number(
+        statistics.totalCheckins ||
+        0
+      );
+
+
+    /* -----------------------------
+       今日打卡
+    ----------------------------- */
+
+    updateTodayStatus(
+      data.today
+    );
+
+
+    /* -----------------------------
+       最近紀錄
+    ----------------------------- */
+
+    renderRecent(
+      data.recent || []
+    );
 
   }
 
-}
+
+  /* =================================================
+     今日狀態
+  ================================================= */
+
+  function updateTodayStatus(
+    today
+  ) {
+
+    const button =
+      document.getElementById(
+        'checkinButton'
+      );
+
+    const done =
+      document.getElementById(
+        'todayDone'
+      );
+
+    const time =
+      document.getElementById(
+        'todayTime'
+      );
 
 
-/* =================================================
-   API
-================================================= */
+    if (
+      today &&
+      today.checkedIn
+    ) {
 
-async function api(
-  action,
-  params = {}
-) {
+      button.classList.add(
+        'hidden'
+      );
 
-  const query =
-    new URLSearchParams();
-
-
-  query.append(
-    'action',
-    action
-  );
+      done.classList.remove(
+        'hidden'
+      );
 
 
-  Object.keys(params)
-    .forEach(
-      function(key) {
+      if (
+        today.time
+      ) {
 
-        query.append(
-          key,
-          params[key]
+        time.innerText =
+          '打卡時間：' +
+          today.time;
+
+      } else {
+
+        time.innerText =
+          '';
+
+      }
+
+    }
+
+    else {
+
+      button.classList.remove(
+        'hidden'
+      );
+
+      button.disabled =
+        false;
+
+      done.classList.add(
+        'hidden'
+      );
+
+      time.innerText =
+        '';
+
+    }
+
+  }
+
+
+  /* =================================================
+     綁定學員
+  ================================================= */
+
+  async function bindStudent() {
+
+    const studentId =
+      document.getElementById(
+        'studentId'
+      ).value.trim();
+
+
+    const name =
+      document.getElementById(
+        'studentName'
+      ).value.trim();
+
+
+    if (!studentId) {
+
+      alert(
+        '請輸入學員編號'
+      );
+
+      return;
+
+    }
+
+
+    if (!name) {
+
+      alert(
+        '請輸入姓名'
+      );
+
+      return;
+
+    }
+
+
+    const button =
+      document.getElementById(
+        'bindButton'
+      );
+
+
+    button.disabled =
+      true;
+
+    button.innerText =
+      '正在綁定...';
+
+
+    setStatus(
+      '正在確認學員資料...',
+      'info'
+    );
+
+
+    try {
+
+      const data =
+        await api(
+          'bindStudent',
+          {
+
+            line_user_id:
+              lineUserId,
+
+            student_id:
+              studentId,
+
+            name:
+              name
+
+          }
+        );
+
+
+      console.log(
+        'bindStudent:',
+        data
+      );
+
+
+      if (
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          '學員綁定失敗'
+        );
+
+      }
+
+
+      setStatus(
+        '✅ 學員綁定成功',
+        'success'
+      );
+
+
+      await loadDashboard();
+
+    }
+
+    catch (error) {
+
+      setStatus(
+        '❌ 綁定失敗\n\n' +
+        getErrorMessage(error),
+        'error'
+      );
+
+    }
+
+    finally {
+
+      button.disabled =
+        false;
+
+      button.innerText =
+        '綁定學員';
+
+    }
+
+  }
+
+
+  /* =================================================
+     今日打卡
+  ================================================= */
+
+  async function checkin() {
+
+    const button =
+      document.getElementById(
+        'checkinButton'
+      );
+
+
+    if (
+      button.disabled
+    ) {
+
+      return;
+
+    }
+
+
+    button.disabled =
+      true;
+
+    button.innerText =
+      '正在打卡...';
+
+
+    setStatus(
+      '第 3 階段\n正在寫入今日打卡...',
+      'info'
+    );
+
+
+    try {
+
+      const data =
+        await api(
+          'checkin',
+          {
+
+            line_user_id:
+              lineUserId
+
+          }
+        );
+
+
+      console.log(
+        'checkin:',
+        data
+      );
+
+
+      if (
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          '打卡失敗'
+        );
+
+      }
+
+
+      if (
+        data.alreadyCheckedIn
+      ) {
+
+        setStatus(
+          '✅ 今日已完成打卡',
+          'success'
+        );
+
+      }
+
+      else {
+
+        setStatus(
+          '🎉 打卡成功！',
+          'success'
+        );
+
+      }
+
+
+      /*
+       * 重新讀取後端資料
+       * 讓本期堂數立即更新
+       */
+
+      await loadDashboard();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      setStatus(
+        '❌ 打卡失敗\n\n' +
+        getErrorMessage(error),
+        'error'
+      );
+
+
+      button.disabled =
+        false;
+
+      button.innerText =
+        '📚 今日上課打卡';
+
+    }
+
+  }
+
+
+  /* =================================================
+     最近打卡
+  ================================================= */
+
+  function renderRecent(
+    list
+  ) {
+
+    const container =
+      document.getElementById(
+        'recentList'
+      );
+
+
+    container.innerHTML =
+      '';
+
+
+    if (
+      !list ||
+      list.length === 0
+    ) {
+
+      container.innerHTML =
+        '<div class="empty">' +
+        '目前還沒有打卡紀錄' +
+        '</div>';
+
+      return;
+
+    }
+
+
+    list.forEach(
+      function(item) {
+
+        const div =
+          document.createElement(
+            'div'
+          );
+
+
+        div.className =
+          'recent-item';
+
+
+        const date =
+          document.createElement(
+            'span'
+          );
+
+
+        date.innerText =
+          item.date ||
+          '';
+
+
+        const time =
+          document.createElement(
+            'span'
+          );
+
+
+        time.innerText =
+          item.time ||
+          '';
+
+
+        div.appendChild(
+          date
+        );
+
+        div.appendChild(
+          time
+        );
+
+
+        container.appendChild(
+          div
         );
 
       }
     );
 
-
-  const url =
-    API_URL +
-    '?' +
-    query.toString();
-
-
-  const response =
-    await fetch(
-      url,
-      {
-        method: 'GET',
-        cache: 'no-store'
-      }
-    );
-
-
-  if (
-    !response.ok
-  ) {
-
-    throw new Error(
-      'API HTTP 錯誤：' +
-      response.status
-    );
-
   }
 
 
-  return await response.json();
+  /* =================================================
+     LINE 登入
+  ================================================= */
 
-}
+  function login() {
 
+    try {
 
-/* =================================================
-   取得 Dashboard
-================================================= */
-
-async function loadDashboard(
-  lineUserId
-) {
-
-  const result =
-    await api(
-      'studentDashboard',
-      {
-        line_user_id:
-          lineUserId
-      }
-    );
-
-
-  if (
-    !result.success
-  ) {
-
-    throw new Error(
-      result.message ||
-      '無法取得最新資料'
-    );
-
-  }
-
-
-  renderDashboard(
-    result
-  );
-
-}
-
-
-/* =================================================
-   顯示 Dashboard
-================================================= */
-
-function renderDashboard(
-  data
-) {
-
-  const student =
-    data.student;
-
-
-  /*
-   * 學員姓名
-   */
-
-  studentName.innerText =
-    '👋 ' +
-    (
-      student.name ||
-      ''
-    );
-
-
-  /*
-   * 學員編號
-   */
-
-  studentId.innerText =
-    '學員編號：' +
-    (
-      student.student_id ||
-      ''
-    );
-
-
-  /*
-   * 本期課程累計堂數
-   *
-   * 目前先使用後端 total_points
-   * 顯示名稱已改為「堂」
-   */
-
-  totalPoints.innerText =
-    Number(
-      data.statistics.totalPoints
-    ) || 0;
-
-
-  /*
-   * 本月上課
-   */
-
-  monthlyCount.innerText =
-    Number(
-      data.statistics.monthlyCount
-    ) || 0;
-
-
-  /*
-   * 累計上課
-   */
-
-  totalCheckins.innerText =
-    Number(
-      data.statistics.totalCheckins
-    ) || 0;
-
-
-  /*
-   * 今日打卡狀態
-   */
-
-  if (
-    data.today &&
-    data.today.checkedIn
-  ) {
-
-    checkinStatus.innerText =
-      '✅ 今日已完成打卡';
-
-    checkinStatus.className =
-      'checkin-status success';
-
-
-    if (
-      data.today.time
-    ) {
-
-      checkinTime.innerText =
-        '打卡時間：' +
-        data.today.time;
-
-    } else {
-
-      checkinTime.innerText =
-        '今天已完成上課打卡';
-
-    }
-
-
-    checkinButton.innerText =
-      '✅ 今日已打卡';
-
-    checkinButton.disabled =
-      true;
-
-  } else {
-
-    checkinStatus.innerText =
-      '📚 今日尚未打卡';
-
-    checkinStatus.className =
-      'checkin-status';
-
-
-    checkinTime.innerText =
-      '完成打卡即可累積 1 堂';
-
-
-    checkinButton.innerText =
-      '📚 今日上課打卡';
-
-    checkinButton.disabled =
-      false;
-
-  }
-
-
-  /*
-   * 最近紀錄
-   */
-
-  renderRecords(
-    data.recent || []
-  );
-
-}
-
-
-/* =================================================
-   顯示上課紀錄
-================================================= */
-
-function renderRecords(
-  list
-) {
-
-  if (
-    !list ||
-    list.length === 0
-  ) {
-
-    records.innerHTML =
-      '<div style="color:#888;text-align:center;padding:20px;">' +
-      '目前還沒有上課紀錄' +
-      '</div>';
-
-    return;
-
-  }
-
-
-  records.innerHTML =
-    list
-      .map(
-        function(item) {
-
-          return `
-
-            <div class="record">
-
-              <div>
-
-                <div class="record-date">
-
-                  📅 ${
-                    escapeHtml(
-                      item.date || ''
-                    )
-                  }
-
-                </div>
-
-                <div class="record-time">
-
-                  上課打卡
-
-                </div>
-
-              </div>
-
-              <div class="record-time">
-
-                ${
-                  escapeHtml(
-                    item.time || ''
-                  )
-                }
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join('');
-
-}
-
-
-/* =================================================
-   執行打卡
-================================================= */
-
-async function doCheckin() {
-
-  if (
-    checkinButton.disabled
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    checkinButton.disabled =
-      true;
-
-    checkinButton.innerText =
-      '⏳ 打卡中...';
-
-
-    message.innerText =
-      '正在完成今日打卡...';
-
-    message.className =
-      '';
-
-
-    const profile =
-      await liff.getProfile();
-
-
-    const result =
-      await api(
-        'checkin',
-        {
-          line_user_id:
-            profile.userId
-        }
+      setStatus(
+        '第 3 階段\n正在開啟 LINE 登入...',
+        'info'
       );
 
 
-    if (
-      !result.success
-    ) {
+      liff.login();
 
-      throw new Error(
-        result.message ||
-        '打卡失敗'
+    }
+
+    catch (error) {
+
+      setStatus(
+        '❌ LINE 登入失敗\n\n' +
+        getErrorMessage(error),
+        'error'
       );
 
     }
 
-
-    /*
-     * 打卡成功後
-     * 重新從後端取得最新資料
-     */
-
-    message.innerText =
-      result.alreadyCheckedIn
-        ? '今天已經完成打卡'
-        : '✅ 今日上課打卡成功！';
-
-    message.className =
-      'success';
+  }
 
 
-    await loadDashboard(
-      profile.userId
-    );
+  /* =================================================
+     LINE 登出
+  ================================================= */
+
+  function logout() {
+
+    try {
+
+      if (
+        liff.isLoggedIn()
+      ) {
+
+        liff.logout();
+
+      }
 
 
-  } catch (error) {
+      location.reload();
 
-    message.innerText =
-      '❌ 打卡失敗\n\n' +
-      (
-        error.message ||
+    }
+
+    catch (error) {
+
+      console.error(
         error
       );
 
-    message.className =
-      'error';
+      location.reload();
 
-
-    checkinButton.disabled =
-      false;
-
-    checkinButton.innerText =
-      '📚 今日上課打卡';
+    }
 
   }
 
-}
+
+  /* =================================================
+     錯誤訊息
+  ================================================= */
+
+  function getErrorMessage(
+    error
+  ) {
+
+    if (
+      !error
+    ) {
+
+      return '未知錯誤';
+
+    }
 
 
-/* =================================================
-   HTML 安全處理
-================================================= */
+    if (
+      error.message
+    ) {
 
-function escapeHtml(
-  value
-) {
+      return error.message;
 
-  return String(
-    value || ''
-  )
-  .replace(
-    /&/g,
-    '&amp;'
-  )
-  .replace(
-    /</g,
-    '&lt;'
-  )
-  .replace(
-    />/g,
-    '&gt;'
-  )
-  .replace(
-    /"/g,
-    '&quot;'
-  )
-  .replace(
-    /'/g,
-    '&#039;'
-  );
-
-}
+    }
 
 
-/* =================================================
-   啟動
-================================================= */
+    return String(
+      error
+    );
 
-init();
+  }
+
+
+  /* =================================================
+     啟動
+  ================================================= */
+
+  initLIFF();
 
 </script>
 
