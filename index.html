@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>📚 學員上課打卡</title>
+  <title>學員上課打卡</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -13,75 +12,65 @@
     body {
       margin: 0;
       padding: 30px 20px;
-      background: #f7f7f7;
+      background: #f5f5f5;
       font-family: Arial, sans-serif;
       text-align: center;
     }
 
     .card {
       max-width: 420px;
-      margin: 30px auto;
+      margin: auto;
       padding: 30px 20px;
       background: white;
       border-radius: 20px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
     }
 
     h1 {
-      margin-bottom: 25px;
+      margin-top: 0;
     }
 
     #status {
+      margin: 25px 0;
       line-height: 1.8;
       white-space: pre-line;
-      margin: 20px 0;
     }
 
-    #studentInfo {
-      font-size: 20px;
-      font-weight: bold;
+    .student {
+      background: #f0fff5;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      line-height: 2;
+    }
+
+    .id {
       color: #06c755;
-      margin: 20px 0;
-    }
-
-    input {
-      width: 90%;
-      padding: 14px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 17px;
-      box-sizing: border-box;
+      font-size: 26px;
+      font-weight: bold;
     }
 
     button {
       width: 100%;
-      padding: 15px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 12px;
+      padding: 18px;
+      border: 0;
+      border-radius: 14px;
       background: #06c755;
       color: white;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
     }
 
     button:disabled {
-      background: #999;
+      background: #aaa;
     }
 
     .success {
       color: #06c755;
-      font-weight: bold;
     }
 
     .error {
       color: #d93025;
-      font-weight: bold;
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
@@ -93,53 +82,20 @@
   <h1>📚 學員上課打卡</h1>
 
   <div id="status">
-    正在載入 LIFF SDK...
+    正在載入...
   </div>
 
-  <div id="studentInfo"></div>
+  <div id="student" class="student" style="display:none;"></div>
 
   <button
-    id="loginButton"
-    class="hidden"
-    onclick="login()">
-    使用 LINE 登入
+    id="checkinButton"
+    style="display:none;"
+    onclick="checkin()">
+    📚 今日上課打卡
   </button>
 
-  <div id="bindArea" class="hidden">
-
-    <h3>🔗 綁定學員</h3>
-
-    <p>請輸入你的姓名</p>
-
-    <input
-      id="studentName"
-      type="text"
-      placeholder="請輸入姓名"
-      autocomplete="name">
-
-    <button
-      id="searchButton"
-      onclick="searchStudent()">
-      查詢我的學員資料
-    </button>
-
-  </div>
-
-  <div id="confirmArea" class="hidden">
-
-    <h3>請確認這是你本人</h3>
-
-    <div id="confirmInfo"></div>
-
-    <button
-      id="confirmButton"
-      onclick="confirmBind()">
-      確認綁定
-    </button>
-
-  </div>
-
 </div>
+
 
 <script>
 
@@ -149,407 +105,351 @@ const LIFF_ID =
 const API_URL =
   'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
-let currentLineUserId = '';
-let currentStudent = null;
+let lineUserId = '';
+
+let student = null;
+
 
 const status =
   document.getElementById('status');
 
-const loginButton =
-  document.getElementById('loginButton');
+const studentBox =
+  document.getElementById('student');
 
-const bindArea =
-  document.getElementById('bindArea');
-
-const confirmArea =
-  document.getElementById('confirmArea');
-
-const studentInfo =
-  document.getElementById('studentInfo');
-
-const confirmInfo =
-  document.getElementById('confirmInfo');
+const checkinButton =
+  document.getElementById('checkinButton');
 
 
-async function startLIFF() {
+/* ================================
+   初始化
+================================ */
+
+async function start() {
 
   try {
 
     status.innerText =
-      'LIFF SDK 已載入，正在初始化...';
+      '正在初始化 LINE...';
+
 
     await liff.init({
       liffId: LIFF_ID
     });
+
 
     if (!liff.isLoggedIn()) {
 
       status.innerText =
         '目前尚未登入 LINE';
 
-      loginButton.classList.remove(
-        'hidden'
-      );
-
       return;
     }
 
-    status.innerText =
-      '🎉 LINE 登入成功！\n' +
-      '正在取得學員資料...';
 
     const profile =
       await liff.getProfile();
 
-    currentLineUserId =
+
+    lineUserId =
       profile.userId;
 
-    await findStudent(
-      currentLineUserId
-    );
-
-  } catch (error) {
-
-    console.error(error);
 
     status.innerText =
-      '❌ LIFF 發生錯誤\n\n' +
-      (error.message || error);
+      '正在取得學員資料...';
 
-    status.className =
-      'error';
-  }
-}
-
-
-function login() {
-
-  status.innerText =
-    '正在開啟 LINE 登入...';
-
-  loginButton.disabled =
-    true;
-
-  liff.login();
-}
-
-
-async function findStudent(
-  lineUserId
-) {
-
-  try {
-
-    const url =
-      API_URL +
-      '?action=findStudent' +
-      '&line_user_id=' +
-      encodeURIComponent(lineUserId);
-
-    const response =
-      await fetch(url);
 
     const result =
-      await response.json();
+      await api(
+        'findStudent',
+        {
+          line_user_id: lineUserId
+        }
+      );
+
 
     if (
-      result.success &&
-      result.found
+      !result.success ||
+      !result.found
     ) {
 
-      const student =
-        result.student;
-
-      studentInfo.innerText =
-        '👋 ' +
-        student.name +
-        '，歡迎上課！';
-
       status.innerText =
-        '✅ LINE 已綁定學員\n' +
-        '學員編號：' +
-        student.student_id;
+        '❌ 尚未綁定學員\n\n' +
+        '請先完成學員綁定。';
 
       status.className =
-        'success';
+        'error';
 
       return;
     }
 
-    status.innerText =
-      'LINE 登入成功！\n\n' +
-      '請輸入你的姓名。';
 
-    bindArea.classList.remove(
-      'hidden'
-    );
+    student =
+      result.student;
+
+
+    /* 顯示學員 */
+
+    studentBox.innerHTML =
+      '✅ LINE 已綁定學員<br><br>' +
+
+      '姓名：' +
+      escapeHtml(student.name) +
+      '<br>' +
+
+      '學員編號：<br>' +
+
+      '<span class="id">' +
+      escapeHtml(
+        String(student.student_id)
+      ) +
+      '</span>';
+
+
+    studentBox.style.display =
+      'block';
+
+
+    /* 檢查今天是否已打卡 */
+
+    await checkStatus();
+
 
   } catch (error) {
 
-    console.error(error);
-
     status.innerText =
-      '❌ 無法連線到學員資料庫\n\n' +
+      '❌ 發生錯誤\n\n' +
       (error.message || error);
 
     status.className =
       'error';
+
   }
+
 }
 
 
-async function searchStudent() {
+/* ================================
+   API
+================================ */
 
-  const name =
-    document
-      .getElementById('studentName')
-      .value
-      .trim();
+async function api(
+  action,
+  params = {}
+) {
 
-  if (!name) {
+  const query =
+    new URLSearchParams();
 
-    alert('請先輸入姓名');
+  query.set(
+    'action',
+    action
+  );
+
+
+  Object.keys(params).forEach(
+    key => {
+
+      query.set(
+        key,
+        params[key]
+      );
+
+    }
+  );
+
+
+  const response =
+    await fetch(
+      API_URL +
+      '?' +
+      query.toString()
+    );
+
+
+  return await response.json();
+
+}
+
+
+/* ================================
+   今日打卡狀態
+================================ */
+
+async function checkStatus() {
+
+  const result =
+    await api(
+      'checkinStatus',
+      {
+        line_user_id:
+          lineUserId
+      }
+    );
+
+
+  if (
+    result.checkedIn
+  ) {
+
+    checkinButton.disabled =
+      true;
+
+    checkinButton.innerText =
+      '✅ 今日已完成打卡';
+
+    checkinButton.style.display =
+      'block';
+
+    status.innerText =
+      '今天已經打卡成功！\n\n' +
+      '日期：' +
+      result.date +
+      '\n' +
+      '時間：' +
+      result.time;
+
+    status.className =
+      'success';
+
     return;
   }
 
-  const searchButton =
-    document.getElementById(
-      'searchButton'
-    );
+
+  checkinButton.disabled =
+    false;
+
+  checkinButton.innerText =
+    '📚 今日上課打卡';
+
+  checkinButton.style.display =
+    'block';
+
+
+  status.innerText =
+    '👋 ' +
+    student.name +
+    '，歡迎上課！\n\n' +
+    '請按下面按鈕完成今日打卡。';
+
+}
+
+
+/* ================================
+   打卡
+================================ */
+
+async function checkin() {
+
+  checkinButton.disabled =
+    true;
+
+  checkinButton.innerText =
+    '正在打卡...';
+
+  status.innerText =
+    '正在記錄上課打卡...';
+
 
   try {
 
-    searchButton.disabled =
-      true;
-
-    searchButton.innerText =
-      '正在查詢...';
-
-    status.innerText =
-      '正在從學生資料表查詢...';
-
-    const url =
-      API_URL +
-      '?action=findStudentByName' +
-      '&name=' +
-      encodeURIComponent(name);
-
-    const response =
-      await fetch(url);
-
     const result =
-      await response.json();
+      await api(
+        'checkin',
+        {
+          line_user_id:
+            lineUserId
+        }
+      );
+
 
     if (!result.success) {
 
-      status.innerText =
-        '❌ ' +
-        result.message;
-
-      status.className =
-        'error';
-
-      return;
-    }
-
-    if (!result.found) {
-
-      status.innerText =
-        '❌ 找不到這個姓名\n\n' +
-        '請確認姓名是否與學生資料表完全相同。';
-
-      status.className =
-        'error';
-
-      return;
-    }
-
-    if (result.multiple) {
-
-      status.innerText =
-        '⚠️ 找到多位同名學員\n\n' +
-        '請聯絡管理員處理。';
-
-      status.className =
-        'error';
-
-      return;
-    }
-
-    currentStudent =
-      result.student;
-
-    confirmInfo.innerHTML =
-      '姓名：<strong>' +
-      escapeHtml(
-        currentStudent.name
-      ) +
-      '</strong><br><br>' +
-
-      '學員編號：<strong>' +
-      escapeHtml(
-        String(
-          currentStudent.student_id
-        )
-      ) +
-      '</strong>';
-
-    bindArea.classList.add(
-      'hidden'
-    );
-
-    confirmArea.classList.remove(
-      'hidden'
-    );
-
-    status.innerText =
-      '請確認以下資料是否為本人。';
-
-    status.className = '';
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.innerText =
-      '❌ 查詢發生錯誤\n\n' +
-      (error.message || error);
-
-    status.className =
-      'error';
-
-  } finally {
-
-    searchButton.disabled =
-      false;
-
-    searchButton.innerText =
-      '查詢我的學員資料';
-  }
-}
-
-
-async function confirmBind() {
-
-  if (
-    !currentStudent ||
-    !currentLineUserId
-  ) {
-
-    status.innerText =
-      '❌ 找不到綁定資料';
-
-    status.className =
-      'error';
-
-    return;
-  }
-
-  const confirmButton =
-    document.getElementById(
-      'confirmButton'
-    );
-
-  try {
-
-    confirmButton.disabled =
-      true;
-
-    confirmButton.innerText =
-      '正在綁定...';
-
-    status.innerText =
-      '正在綁定學員...';
-
-    const url =
-      API_URL +
-      '?action=bindStudent' +
-      '&line_user_id=' +
-      encodeURIComponent(
-        currentLineUserId
-      ) +
-      '&student_id=' +
-      encodeURIComponent(
-        currentStudent.student_id
-      ) +
-      '&name=' +
-      encodeURIComponent(
-        currentStudent.name
+      throw new Error(
+        result.message ||
+        '打卡失敗'
       );
 
-    const response =
-      await fetch(url);
+    }
 
-    const result =
-      await response.json();
 
-    if (result.success) {
+    if (
+      result.alreadyCheckedIn
+    ) {
 
-      studentInfo.innerText =
-        '🎉 ' +
-        result.student.name +
-        '，綁定成功！';
+      checkinButton.innerText =
+        '✅ 今日已完成打卡';
 
       status.innerText =
-        '✅ LINE 帳號已成功綁定\n' +
-        '學員編號：' +
-        result.student.student_id;
+        '今天已經打卡過了。\n\n' +
+        '時間：' +
+        result.time;
 
       status.className =
         'success';
 
-      confirmArea.classList.add(
-        'hidden'
-      );
-
-    } else {
-
-      status.innerText =
-        '❌ 綁定失敗\n\n' +
-        result.message;
-
-      status.className =
-        'error';
+      return;
     }
+
+
+    checkinButton.innerText =
+      '✅ 打卡成功';
+
+    status.innerText =
+      '🎉 今日上課打卡成功！\n\n' +
+      '日期：' +
+      result.date +
+      '\n' +
+      '時間：' +
+      result.time;
+
+    status.className =
+      'success';
+
 
   } catch (error) {
 
-    console.error(error);
+    checkinButton.disabled =
+      false;
+
+    checkinButton.innerText =
+      '📚 今日上課打卡';
 
     status.innerText =
-      '❌ 綁定發生錯誤\n\n' +
+      '❌ 打卡失敗\n\n' +
       (error.message || error);
 
     status.className =
       'error';
 
-  } finally {
-
-    confirmButton.disabled =
-      false;
-
-    confirmButton.innerText =
-      '確認綁定';
   }
+
 }
 
 
-function escapeHtml(text) {
+/* ================================
+   防止特殊字元
+================================ */
 
-  const div =
-    document.createElement('div');
+function escapeHtml(value) {
 
-  div.textContent =
-    text;
+  return String(value)
 
-  return div.innerHTML;
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
 }
 
 
-startLIFF();
+/* ================================
+   開始
+================================ */
+
+start();
 
 </script>
 
 </body>
-
 </html>
