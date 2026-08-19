@@ -243,6 +243,12 @@ button:disabled {
 
 }
 
+.btn-purple {
+
+  background: #7c3aed;
+
+}
+
 .toolbar {
 
   display: flex;
@@ -561,6 +567,98 @@ select:focus {
 
 }
 
+.qr-container {
+
+  text-align: center;
+
+  padding: 10px 0;
+
+}
+
+.qr-image-box {
+
+  display: inline-block;
+
+  padding: 15px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 3px 12px
+    rgba(0,0,0,.06);
+
+}
+
+.qr-image {
+
+  width: 280px;
+
+  height: 280px;
+
+  display: block;
+
+}
+
+.qr-info {
+
+  background: #f8fafc;
+
+  border-radius: 14px;
+
+  padding: 15px;
+
+  line-height: 1.8;
+
+  margin-bottom: 18px;
+
+}
+
+.qr-url {
+
+  margin-top: 15px;
+
+  padding: 12px;
+
+  background: #f8fafc;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+
+  word-break: break-all;
+
+  color: #475569;
+
+}
+
+.qr-note {
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  margin-top: 12px;
+
+}
+
+.course-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+}
+
 @media(max-width:700px) {
 
   .container {
@@ -607,6 +705,14 @@ select:focus {
 
   }
 
+  .qr-image {
+
+    width: 240px;
+
+    height: 240px;
+
+  }
+
 }
 
 </style>
@@ -617,6 +723,10 @@ select:focus {
 <body>
 
 <div class="container">
+
+  <!-- =====================================
+       HEADER
+  ====================================== -->
 
   <div class="header">
 
@@ -631,20 +741,33 @@ select:focus {
   </div>
 
 
+  <!-- =====================================
+       LOADING
+  ====================================== -->
+
   <div
     id="loading"
     class="loading"
   >
+
     正在載入管理資料……
+
   </div>
 
+
+  <!-- =====================================
+       APP
+  ====================================== -->
 
   <div
     id="app"
     style="display:none;"
   >
 
-    <!-- 目前課程 -->
+
+    <!-- ===================================
+         目前課程
+    ==================================== -->
 
     <div class="course">
 
@@ -667,7 +790,9 @@ select:focus {
     </div>
 
 
-    <!-- 統計 -->
+    <!-- ===================================
+         統計
+    ==================================== -->
 
     <div class="stats">
 
@@ -715,9 +840,9 @@ select:focus {
     </div>
 
 
-    <!-- ===============================
+    <!-- ===================================
          課程管理
-    ================================ -->
+    ==================================== -->
 
     <div class="section">
 
@@ -752,17 +877,29 @@ select:focus {
 
             <tr>
 
-              <th>課程編號</th>
+              <th>
+                課程編號
+              </th>
 
-              <th>課程名稱</th>
+              <th>
+                課程名稱
+              </th>
 
-              <th>開始日期</th>
+              <th>
+                開始日期
+              </th>
 
-              <th>結束日期</th>
+              <th>
+                結束日期
+              </th>
 
-              <th>狀態</th>
+              <th>
+                狀態
+              </th>
 
-              <th>操作</th>
+              <th>
+                操作
+              </th>
 
             </tr>
 
@@ -778,9 +915,9 @@ select:focus {
     </div>
 
 
-    <!-- ===============================
+    <!-- ===================================
          學員管理
-    ================================ -->
+    ==================================== -->
 
     <div class="section">
 
@@ -806,6 +943,7 @@ select:focus {
 
       </div>
 
+
       <div class="table-wrap">
 
         <table>
@@ -814,11 +952,17 @@ select:focus {
 
             <tr>
 
-              <th>學員編號</th>
+              <th>
+                學員編號
+              </th>
 
-              <th>姓名</th>
+              <th>
+                姓名
+              </th>
 
-              <th>LINE</th>
+              <th>
+                LINE
+              </th>
 
             </tr>
 
@@ -834,9 +978,9 @@ select:focus {
     </div>
 
 
-    <!-- ===============================
+    <!-- ===================================
          最近打卡
-    ================================ -->
+    ==================================== -->
 
     <div class="section">
 
@@ -899,7 +1043,9 @@ select:focus {
     </div>
 
 
-    <!-- CSV -->
+    <!-- ===================================
+         CSV
+    ==================================== -->
 
     <div class="section">
 
@@ -918,6 +1064,10 @@ select:focus {
 
   </div>
 
+
+  <!-- =====================================
+       ERROR
+  ====================================== -->
 
   <div
     id="error"
@@ -1267,6 +1417,93 @@ select:focus {
 </div>
 
 
+<!-- =====================================
+     課程 QR Code Modal
+===================================== -->
+
+<div
+  id="courseQRModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+      📱 課程 QR Code
+    </div>
+
+
+    <div
+      id="qrCourseInfo"
+      class="qr-info"
+    >
+    </div>
+
+
+    <div class="qr-container">
+
+      <div class="qr-image-box">
+
+        <img
+          id="courseQRImage"
+          class="qr-image"
+          alt="課程 QR Code"
+        >
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="qrCourseUrl"
+      class="qr-url"
+    >
+    </div>
+
+
+    <div class="qr-note">
+
+      學員掃描此 QR Code 後，<br>
+      會進入指定課程的 LINE 打卡頁面。
+
+    </div>
+
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-gray"
+        onclick="closeCourseQR()"
+      >
+        關閉
+      </button>
+
+      <button
+        class="btn-blue"
+        onclick="copyCourseQRUrl()"
+      >
+        📋 複製網址
+      </button>
+
+      <button
+        class="btn-green"
+        onclick="downloadCourseQR()"
+      >
+        📥 下載 QR Code
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================
+     TOAST
+===================================== -->
+
 <div
   id="toast"
   class="toast"
@@ -1283,16 +1520,41 @@ select:focus {
 const API_URL =
 'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
+
 const ADMIN_KEY =
 'wushu_admin_2026';
 
-let dashboardData = null;
 
-let coursesData = [];
+/* =========================================
+   學員 LIFF
+========================================= */
 
-let editingCourseId = null;
+const STUDENT_LIFF_URL =
+'https://liff.line.me/2011153247-E8jjjAjB';
 
-let editingCheckinId = null;
+
+/* =========================================
+   全域資料
+========================================= */
+
+let dashboardData =
+  null;
+
+
+let coursesData =
+  [];
+
+
+let editingCourseId =
+  null;
+
+
+let editingCheckinId =
+  null;
+
+
+let currentCourseQR =
+  null;
 
 
 /* =========================================
@@ -1307,21 +1569,25 @@ async function apiGet(
   const query =
     new URLSearchParams();
 
+
   query.set(
     'action',
     action
   );
+
 
   query.set(
     'key',
     ADMIN_KEY
   );
 
+
   Object.keys(params).forEach(
     function(key) {
 
       const value =
         params[key];
+
 
       if (
         value !== undefined &&
@@ -1387,10 +1653,12 @@ async function loadData() {
     .style.display =
     'block';
 
+
   document
     .getElementById('app')
     .style.display =
     'none';
+
 
   document
     .getElementById('error')
@@ -1513,10 +1781,12 @@ function render(data) {
       .innerText =
       '📚 目前沒有進行中的課程';
 
+
     document
       .getElementById('courseId')
       .innerText =
       '';
+
 
     document
       .getElementById('courseDate')
@@ -1578,7 +1848,8 @@ function renderStudents(students) {
       );
 
 
-  tbody.innerHTML = '';
+  tbody.innerHTML =
+    '';
 
 
   if (!students.length) {
@@ -1603,24 +1874,30 @@ function renderStudents(students) {
       tr.innerHTML = `
 
         <td>
+
           <strong>
             ${escapeHTML(
               student.student_id
             )}
           </strong>
+
         </td>
 
         <td>
+
           ${escapeHTML(
             student.name
           )}
+
         </td>
 
         <td>
 
           ${
             student.line_bound
+
             ? '<span class="badge badge-line">已綁定</span>'
+
             : '<span class="badge badge-no">未綁定</span>'
           }
 
@@ -1649,21 +1926,24 @@ function openAddStudent() {
     .getElementById(
       'studentFormId'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'studentFormName'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'studentFormLineId'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
@@ -1748,7 +2028,8 @@ async function saveStudent() {
       );
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
 
   try {
@@ -1765,6 +2046,7 @@ async function saveStudent() {
 
           line_user_id:
             lineUserId
+
         }
       );
 
@@ -1795,7 +2077,8 @@ async function saveStudent() {
 
   finally {
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
   }
 
@@ -1815,7 +2098,8 @@ function renderRecent(records) {
       );
 
 
-  tbody.innerHTML = '';
+  tbody.innerHTML =
+    '';
 
 
   if (!records.length) {
@@ -1840,46 +2124,60 @@ function renderRecent(records) {
       tr.innerHTML = `
 
         <td>
+
           <span class="badge badge-gray">
+
             ${escapeHTML(
               record.checkin_id
             )}
+
           </span>
+
         </td>
 
         <td>
+
           ${escapeHTML(
             record.date
           )}
+
         </td>
 
         <td>
+
           ${escapeHTML(
             record.time
           )}
+
         </td>
 
         <td>
+
           ${escapeHTML(
             record.student_id
           )}
+
         </td>
 
         <td>
+
           ${escapeHTML(
             record.name
           )}
+
         </td>
 
         <td>
 
           ${
             record.course_id
+
             ? '<span class="badge badge-blue">' +
               escapeHTML(
                 record.course_id
               ) +
               '</span>'
+
             : '-'
           }
 
@@ -1974,6 +2272,10 @@ async function loadCourses(
 }
 
 
+/* =========================================
+   課程表
+========================================= */
+
 function renderCourses(courses) {
 
   const tbody =
@@ -1983,7 +2285,8 @@ function renderCourses(courses) {
       );
 
 
-  tbody.innerHTML = '';
+  tbody.innerHTML =
+    '';
 
 
   if (!courses.length) {
@@ -2014,37 +2317,47 @@ function renderCourses(courses) {
       tr.innerHTML = `
 
         <td>
+
           <strong>
             ${escapeHTML(
               course.course_id
             )}
           </strong>
+
         </td>
 
         <td>
+
           ${escapeHTML(
             course.course_name ||
             course.name
           )}
+
         </td>
 
         <td>
+
           ${escapeHTML(
             course.start_date
           )}
+
         </td>
 
         <td>
+
           ${escapeHTML(
             course.end_date
           )}
+
         </td>
 
         <td>
 
           ${
             active
+
             ? '<span class="badge badge-ok">🟢 啟用</span>'
+
             : '<span class="badge badge-no">🔴 停用</span>'
           }
 
@@ -2052,7 +2365,7 @@ function renderCourses(courses) {
 
         <td>
 
-          <div class="toolbar">
+          <div class="course-actions">
 
             <button
               class="btn-blue"
@@ -2060,6 +2373,15 @@ function renderCourses(courses) {
             >
               ✏️ 修改
             </button>
+
+
+            <button
+              class="btn-purple"
+              onclick='openCourseQRById(${JSON.stringify(course.course_id)})'
+            >
+              📱 QR Code
+            </button>
+
 
             <button
               class="btn-red"
@@ -2085,9 +2407,436 @@ function renderCourses(courses) {
 }
 
 
+/* =========================================
+   產生課程 QR Code
+========================================= */
+
+function openCourseQRById(
+  courseId
+) {
+
+  const id =
+    String(
+      courseId || ''
+    ).trim();
+
+
+  if (!id) {
+
+    showToastMessage(
+      '課程編號不存在',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const course =
+    coursesData.find(
+      function(item) {
+
+        return String(
+          item.course_id || ''
+        ) === id;
+
+      }
+    );
+
+
+  if (!course) {
+
+    showToastMessage(
+      '找不到課程資料',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  openCourseQR(
+    course
+  );
+
+}
+
+
+function openCourseQR(
+  course
+) {
+
+  if (!course) {
+
+    showToastMessage(
+      '找不到課程資料',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const courseId =
+    String(
+      course.course_id || ''
+    ).trim();
+
+
+  const courseName =
+    String(
+      course.course_name ||
+      course.name ||
+      '本期課程'
+    ).trim();
+
+
+  if (!courseId) {
+
+    showToastMessage(
+      '此課程沒有課程編號',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * 這就是給學員使用的網址。
+   *
+   * course_id 會跟著 QR Code 一起帶過去。
+   */
+
+  const studentUrl =
+    STUDENT_LIFF_URL +
+    '?course_id=' +
+    encodeURIComponent(
+      courseId
+    );
+
+
+  currentCourseQR = {
+
+    course_id:
+      courseId,
+
+    course_name:
+      courseName,
+
+    start_date:
+      course.start_date ||
+      '',
+
+    end_date:
+      course.end_date ||
+      '',
+
+    url:
+      studentUrl
+
+  };
+
+
+  document
+    .getElementById(
+      'qrCourseInfo'
+    )
+    .innerHTML =
+
+      '<strong>' +
+      escapeHTML(
+        courseName
+      ) +
+      '</strong>' +
+
+      '<br>' +
+
+      '課程編號：' +
+      escapeHTML(
+        courseId
+      ) +
+
+      '<br>' +
+
+      '課程期間：' +
+      escapeHTML(
+        course.start_date ||
+        ''
+      ) +
+
+      ' ～ ' +
+
+      escapeHTML(
+        course.end_date ||
+        ''
+      );
+
+
+  document
+    .getElementById(
+      'qrCourseUrl'
+    )
+    .innerText =
+      studentUrl;
+
+
+  /*
+   * QR Server
+   *
+   * 直接把真正的學員 LIFF URL
+   * 轉成 QR Code。
+   */
+
+  const qrUrl =
+    'https://api.qrserver.com/v1/create-qr-code/' +
+    '?size=800x800' +
+    '&margin=20' +
+    '&data=' +
+    encodeURIComponent(
+      studentUrl
+    );
+
+
+  const qrImage =
+    document
+      .getElementById(
+        'courseQRImage'
+      );
+
+
+  qrImage.src =
+    qrUrl;
+
+
+  qrImage.alt =
+    '課程 ' +
+    courseId +
+    ' QR Code';
+
+
+  document
+    .getElementById(
+      'courseQRModal'
+    )
+    .classList
+    .add('show');
+
+}
+
+
+/* =========================================
+   關閉 QR Code
+========================================= */
+
+function closeCourseQR() {
+
+  document
+    .getElementById(
+      'courseQRModal'
+    )
+    .classList
+    .remove('show');
+
+}
+
+
+/* =========================================
+   複製 QR Code 網址
+========================================= */
+
+async function copyCourseQRUrl() {
+
+  if (
+    !currentCourseQR ||
+    !currentCourseQR.url
+  ) {
+
+    showToastMessage(
+      '目前沒有 QR Code',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const url =
+    currentCourseQR.url;
+
+
+  try {
+
+    if (
+      navigator.clipboard &&
+      navigator.clipboard.writeText
+    ) {
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+    }
+
+    else {
+
+      const textarea =
+        document.createElement(
+          'textarea'
+        );
+
+
+      textarea.value =
+        url;
+
+
+      textarea.style.position =
+        'fixed';
+
+
+      textarea.style.left =
+        '-9999px';
+
+
+      document
+        .body
+        .appendChild(
+          textarea
+        );
+
+
+      textarea.focus();
+
+
+      textarea.select();
+
+
+      document.execCommand(
+        'copy'
+      );
+
+
+      document
+        .body
+        .removeChild(
+          textarea
+        );
+
+    }
+
+
+    showToastMessage(
+      '課程網址已複製',
+      'success'
+    );
+
+  }
+
+  catch(error) {
+
+    showToastMessage(
+      '複製失敗，請手動複製網址',
+      'error'
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   下載 QR Code
+========================================= */
+
+function downloadCourseQR() {
+
+  if (
+    !currentCourseQR ||
+    !currentCourseQR.url
+  ) {
+
+    showToastMessage(
+      '目前沒有 QR Code',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const qrDownloadUrl =
+    'https://api.qrserver.com/v1/create-qr-code/' +
+    '?size=1200x1200' +
+    '&margin=30' +
+    '&data=' +
+    encodeURIComponent(
+      currentCourseQR.url
+    );
+
+
+  const link =
+    document.createElement(
+      'a'
+    );
+
+
+  link.href =
+    qrDownloadUrl;
+
+
+  link.target =
+    '_blank';
+
+
+  link.rel =
+    'noopener';
+
+
+  link.download =
+    '課程QR_' +
+    currentCourseQR.course_id +
+    '.png';
+
+
+  document
+    .body
+    .appendChild(
+      link
+    );
+
+
+  link.click();
+
+
+  document
+    .body
+    .removeChild(
+      link
+    );
+
+
+  showToastMessage(
+    'QR Code 已開啟，請長按或另存圖片',
+    'success'
+  );
+
+}
+
+
+/* =========================================
+   新增課程
+========================================= */
+
 function openAddCourse() {
 
-  editingCourseId = null;
+  editingCourseId =
+    null;
 
 
   document
@@ -2102,42 +2851,48 @@ function openAddCourse() {
     .getElementById(
       'courseFormId'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'courseFormId'
     )
-    .disabled = false;
+    .disabled =
+    false;
 
 
   document
     .getElementById(
       'courseFormName'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'courseFormStart'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'courseFormEnd'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
     .getElementById(
       'courseFormActive'
     )
-    .value = 'true';
+    .value =
+    'true';
 
 
   document
@@ -2178,7 +2933,8 @@ function openEditCourse(course) {
     .getElementById(
       'courseFormId'
     )
-    .disabled = true;
+    .disabled =
+    true;
 
 
   document
@@ -2196,7 +2952,8 @@ function openEditCourse(course) {
       'courseFormStart'
     )
     .value =
-    course.start_date || '';
+    course.start_date ||
+    '';
 
 
   document
@@ -2204,7 +2961,8 @@ function openEditCourse(course) {
       'courseFormEnd'
     )
     .value =
-    course.end_date || '';
+    course.end_date ||
+    '';
 
 
   document
@@ -2342,7 +3100,8 @@ async function saveCourse() {
       );
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
 
   try {
@@ -2356,6 +3115,7 @@ async function saveCourse() {
         await apiGet(
           'updateCourse',
           {
+
             course_id:
               editingCourseId,
 
@@ -2370,6 +3130,7 @@ async function saveCourse() {
 
             active:
               active
+
           }
         );
 
@@ -2381,6 +3142,7 @@ async function saveCourse() {
         await apiGet(
           'addCourse',
           {
+
             course_id:
               courseId,
 
@@ -2395,6 +3157,7 @@ async function saveCourse() {
 
             active:
               active
+
           }
         );
 
@@ -2427,14 +3190,17 @@ async function saveCourse() {
 
   finally {
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
   }
 
 }
 
 
-async function deleteCourse(courseId) {
+async function deleteCourse(
+  courseId
+) {
 
   courseId =
     String(
@@ -2442,7 +3208,11 @@ async function deleteCourse(courseId) {
     );
 
 
-  if (!courseId) return;
+  if (!courseId) {
+
+    return;
+
+  }
 
 
   if (
@@ -2464,8 +3234,10 @@ async function deleteCourse(courseId) {
       await apiGet(
         'deleteCourse',
         {
+
           course_id:
             courseId
+
         }
       );
 
@@ -2498,7 +3270,9 @@ async function deleteCourse(courseId) {
    學員下拉選單
 ========================================= */
 
-function populateStudentSelect(students) {
+function populateStudentSelect(
+  students
+) {
 
   const select =
     document
@@ -2507,7 +3281,8 @@ function populateStudentSelect(students) {
       );
 
 
-  select.innerHTML = '';
+  select.innerHTML =
+    '';
 
 
   if (!students.length) {
@@ -2528,16 +3303,6 @@ function populateStudentSelect(students) {
           'option'
         );
 
-
-      /*
-       * value 只放真正的 student_id
-       *
-       * 顯示：
-       * wushu_0001｜武協測試
-       *
-       * 實際送出：
-       * wushu_0001
-       */
 
       option.value =
         String(
@@ -2569,7 +3334,9 @@ function populateStudentSelect(students) {
    課程下拉
 ========================================= */
 
-function populateCourseSelect(courses) {
+function populateCourseSelect(
+  courses
+) {
 
   const select =
     document
@@ -2621,7 +3388,8 @@ function populateCourseSelect(courses) {
 
 function openAddCheckin() {
 
-  editingCheckinId = null;
+  editingCheckinId =
+    null;
 
 
   document
@@ -2636,7 +3404,8 @@ function openAddCheckin() {
     .getElementById(
       'checkinFormStudent'
     )
-    .disabled = false;
+    .disabled =
+    false;
 
 
   document
@@ -2659,14 +3428,16 @@ function openAddCheckin() {
     .getElementById(
       'checkinFormCourse'
     )
-    .disabled = false;
+    .disabled =
+    false;
 
 
   document
     .getElementById(
       'checkinFormCourse'
     )
-    .value = '';
+    .value =
+    '';
 
 
   document
@@ -2679,7 +3450,9 @@ function openAddCheckin() {
 }
 
 
-function openEditCheckin(record) {
+function openEditCheckin(
+  record
+) {
 
   editingCheckinId =
     String(
@@ -2708,7 +3481,8 @@ function openEditCheckin(record) {
     .getElementById(
       'checkinFormStudent'
     )
-    .disabled = false;
+    .disabled =
+    false;
 
 
   document
@@ -2741,7 +3515,8 @@ function openEditCheckin(record) {
     .getElementById(
       'checkinFormCourse'
     )
-    .disabled = false;
+    .disabled =
+    false;
 
 
   document
@@ -2767,16 +3542,6 @@ function closeCheckinModal() {
 
 
 async function saveCheckin() {
-
-  /*
-   * 這裡直接取得 select 的 value。
-   *
-   * value 是：
-   * wushu_0001
-   *
-   * 畫面看到的是：
-   * wushu_0001｜武協測試
-   */
 
   const studentId =
     document
@@ -2845,7 +3610,8 @@ async function saveCheckin() {
       );
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
 
   try {
@@ -2859,6 +3625,7 @@ async function saveCheckin() {
         await apiGet(
           'adminUpdateCheckin',
           {
+
             checkin_id:
               editingCheckinId,
 
@@ -2873,6 +3640,7 @@ async function saveCheckin() {
 
             course_id:
               courseId
+
           }
         );
 
@@ -2884,6 +3652,7 @@ async function saveCheckin() {
         await apiGet(
           'adminAddCheckin',
           {
+
             student_id:
               studentId,
 
@@ -2895,6 +3664,7 @@ async function saveCheckin() {
 
             course_id:
               courseId
+
           }
         );
 
@@ -2927,14 +3697,21 @@ async function saveCheckin() {
 
   finally {
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
   }
 
 }
 
 
-async function deleteCheckin(checkinId) {
+/* =========================================
+   刪除打卡
+========================================= */
+
+async function deleteCheckin(
+  checkinId
+) {
 
   checkinId =
     String(
@@ -2942,7 +3719,11 @@ async function deleteCheckin(checkinId) {
     );
 
 
-  if (!checkinId) return;
+  if (!checkinId) {
+
+    return;
+
+  }
 
 
   if (
@@ -2964,8 +3745,10 @@ async function deleteCheckin(checkinId) {
       await apiGet(
         'adminDeleteCheckin',
         {
+
           checkin_id:
             checkinId
+
         }
       );
 
@@ -3075,7 +3858,8 @@ function downloadCSV() {
     );
 
 
-  a.href = url;
+  a.href =
+    url;
 
 
   a.download =
@@ -3086,7 +3870,9 @@ function downloadCSV() {
 
   document
     .body
-    .appendChild(a);
+    .appendChild(
+      a
+    );
 
 
   a.click();
@@ -3094,7 +3880,9 @@ function downloadCSV() {
 
   document
     .body
-    .removeChild(a);
+    .removeChild(
+      a
+    );
 
 
   setTimeout(
@@ -3111,7 +3899,9 @@ function downloadCSV() {
 }
 
 
-function csvEscape(value) {
+function csvEscape(
+  value
+) {
 
   const text =
     String(
@@ -3133,7 +3923,9 @@ function csvEscape(value) {
    HTML Escape
 ========================================= */
 
-function escapeHTML(value) {
+function escapeHTML(
+  value
+) {
 
   return String(
     value ?? ''
@@ -3166,7 +3958,9 @@ function escapeHTML(value) {
    Boolean
 ========================================= */
 
-function normalizeBoolean(value) {
+function normalizeBoolean(
+  value
+) {
 
   if (
     value === true ||
@@ -3201,7 +3995,9 @@ function normalizeBoolean(value) {
    時間
 ========================================= */
 
-function normalizeTimeForInput(value) {
+function normalizeTimeForInput(
+  value
+) {
 
   const text =
     String(
@@ -3292,7 +4088,8 @@ function getToday() {
    Toast
 ========================================= */
 
-let toastTimer = null;
+let toastTimer =
+  null;
 
 
 function showToastMessage(
@@ -3346,7 +4143,7 @@ function showToastMessage(
 
 
 /* =========================================
-   點背景關閉
+   Modal 背景關閉
 ========================================= */
 
 document
@@ -3402,6 +4199,26 @@ document
       ) {
 
         closeCheckinModal();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    'courseQRModal'
+  )
+  .addEventListener(
+    'click',
+    function(event) {
+
+      if (
+        event.target === this
+      ) {
+
+        closeCourseQR();
 
       }
 
