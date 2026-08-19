@@ -85,6 +85,12 @@ h1 {
   line-height: 1.8;
 }
 
+.course-id {
+  margin-top: 8px;
+  color: #888;
+  font-size: 14px;
+}
+
 .count-box {
   text-align: center;
   background: #effff4;
@@ -404,6 +410,13 @@ input {
       -
     </div>
 
+    <div
+      id="courseIdDisplay"
+      class="course-id"
+    >
+      課程編號：讀取中……
+    </div>
+
   </div>
 
 
@@ -507,6 +520,28 @@ const API_URL =
 
 
 /* ==========================================
+   課程 QR Code
+========================================== */
+
+/*
+ * 從網址取得 course_id
+ *
+ * 例如：
+ *
+ * https://liff.line.me/2011153247-E8jjjAjB?course_id=2026-A01
+ *
+ * 會取得：
+ *
+ * COURSE_ID = "2026-A01"
+ */
+
+const COURSE_ID =
+  new URLSearchParams(
+    window.location.search
+  ).get('course_id') || '';
+
+
+/* ==========================================
    畫面
 ========================================== */
 
@@ -552,6 +587,42 @@ function status(id, message, type) {
 
 
 /* ==========================================
+   課程資訊顯示
+========================================== */
+
+function updateCourseIdDisplay() {
+
+  const el =
+    document.getElementById(
+      'courseIdDisplay'
+    );
+
+  if (!el) {
+
+    return;
+
+  }
+
+
+  if (COURSE_ID) {
+
+    el.innerText =
+      '課程編號：' +
+      COURSE_ID;
+
+  }
+
+  else {
+
+    el.innerText =
+      '⚠️ 尚未指定課程';
+
+  }
+
+}
+
+
+/* ==========================================
    API
 ========================================== */
 
@@ -572,10 +643,22 @@ async function api(
   Object.keys(params)
     .forEach(function(key) {
 
-      url.searchParams.set(
-        key,
-        params[key]
-      );
+      /*
+       * 避免把 undefined / null
+       * 傳給 Apps Script
+       */
+
+      if (
+        params[key] !== undefined &&
+        params[key] !== null
+      ) {
+
+        url.searchParams.set(
+          key,
+          params[key]
+        );
+
+      }
 
     });
 
@@ -630,6 +713,13 @@ async function initLIFF() {
     }
 
 
+    /*
+     * 先更新課程編號顯示
+     */
+
+    updateCourseIdDisplay();
+
+
     await liff.init({
       liffId: LIFF_ID
     });
@@ -642,6 +732,33 @@ async function initLIFF() {
       hide('loading');
 
       show('loginPage');
+
+      /*
+       * 如果是 QR Code 進來，
+       * 讓登入頁也知道目前指定課程
+       */
+
+      if (COURSE_ID) {
+
+        status(
+          'loginMessage',
+          '目前課程：' +
+          COURSE_ID +
+          '\n\n請使用 LINE 登入',
+          'warning'
+        );
+
+      }
+
+      else {
+
+        status(
+          'loginMessage',
+          '⚠️ 尚未指定課程\n\n請確認你是從課程 QR Code 進入。',
+          'warning'
+        );
+
+      }
 
       return;
 
@@ -692,16 +809,35 @@ async function loadDashboard() {
     show('loading');
 
 
+    /*
+     * 更新課程編號顯示
+     */
+
+    updateCourseIdDisplay();
+
+
     const lineUserId =
       await getLineUserId();
 
+
+    /*
+     * ★ 取得 Dashboard 時
+     * 一併傳送 course_id
+     *
+     * Apps Script 更新後，
+     * 後端即可依指定課程
+     * 回傳正確課程資料。
+     */
 
     const result =
       await api(
         'studentDashboard',
         {
           line_user_id:
-            lineUserId
+            lineUserId,
+
+          course_id:
+            COURSE_ID
         }
       );
 
@@ -798,6 +934,13 @@ async function loadDashboard() {
           : 0;
 
 
+    /*
+     * 課程
+     *
+     * 後端未來可以依照
+     * course_id 回傳指定課程。
+     */
+
     const course =
       result.course || null;
 
@@ -840,7 +983,9 @@ async function loadDashboard() {
           'courseName'
         )
         .innerText =
-          '目前沒有進行中的課程';
+          COURSE_ID
+            ? '指定課程：' + COURSE_ID
+            : '目前沒有進行中的課程';
 
 
       document
@@ -848,7 +993,9 @@ async function loadDashboard() {
           'courseDate'
         )
         .innerText =
-          '';
+          COURSE_ID
+            ? '課程資料等待後端確認'
+            : '';
 
     }
 
@@ -941,7 +1088,7 @@ async function loadDashboard() {
 
 /* ==========================================
    綁定學員
-   ★ 重點：不再傳 student_id
+   ★ 仍然只輸入姓名
 ========================================== */
 
 async function bindStudent() {
@@ -989,10 +1136,14 @@ async function bindStudent() {
 
 
     /*
-     * ★ 只傳 LINE ID + 姓名
+     * ★ 綁定仍然使用：
      *
-     * 不再傳：
-     * student_id
+     * LINE ID + 姓名
+     *
+     * 不傳 student_id。
+     *
+     * course_id 只是保留目前課程狀態，
+     * 不影響學員綁定。
      */
 
     const result =
@@ -1077,6 +1228,29 @@ async function checkin() {
   }
 
 
+  /*
+   * 沒有 course_id 時，
+   * 不允許進行正式課程打卡。
+   *
+   * 這是為了避免學員從錯誤網址
+   * 進來造成不知道屬於哪個課程的紀錄。
+   */
+
+  if (!COURSE_ID) {
+
+    status(
+      'todayStatus',
+      '❌ 無法打卡\n\n' +
+      '目前沒有指定課程。\n' +
+      '請掃描正確的課程 QR Code。',
+      'error'
+    );
+
+    return;
+
+  }
+
+
   button.disabled =
     true;
 
@@ -1097,12 +1271,27 @@ async function checkin() {
       await getLineUserId();
 
 
+    /*
+     * ★ 重要
+     *
+     * 打卡 API 現在開始帶入：
+     *
+     * line_user_id
+     * +
+     * course_id
+     *
+     * Apps Script 下一步會正式接收並驗證。
+     */
+
     const result =
       await api(
         'checkin',
         {
           line_user_id:
-            lineUserId
+            lineUserId,
+
+          course_id:
+            COURSE_ID
         }
       );
 
