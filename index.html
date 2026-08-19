@@ -217,6 +217,35 @@ input {
   padding: 10px 0 25px;
 }
 
+.info-box {
+  background: #f5f7f8;
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 15px;
+  color: #666;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.student-confirm {
+  background: #edfff3;
+  border: 1px solid #d5f4df;
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 15px;
+  line-height: 1.8;
+}
+
+.student-confirm-name {
+  font-size: 21px;
+  font-weight: bold;
+  color: #069b43;
+}
+
+.student-confirm-id {
+  color: #666;
+}
+
 </style>
 
 </head>
@@ -296,7 +325,7 @@ input {
     <h1>學員上課打卡</h1>
 
     <div class="subtitle">
-      第一次使用請綁定學員
+      第一次使用請輸入姓名
     </div>
 
   </div>
@@ -308,27 +337,11 @@ input {
       id="bindMessage"
       class="status warning"
     >
-      請輸入你的學員編號與姓名
+      請輸入你的姓名，系統會自動尋找學員資料
     </div>
 
 
     <div style="margin-top:18px;">
-
-      <label>
-        學員編號
-      </label>
-
-      <input
-        id="studentIdInput"
-        type="text"
-        placeholder="例如：wushu_0001"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div style="margin-top:16px;">
 
       <label>
         姓名
@@ -337,9 +350,17 @@ input {
       <input
         id="nameInput"
         type="text"
-        placeholder="請輸入姓名"
+        placeholder="請輸入你的姓名"
         autocomplete="name"
       >
+
+    </div>
+
+
+    <div class="info-box">
+
+      不需要輸入學員編號。<br>
+      系統會依照姓名尋找你的學員資料。
 
     </div>
 
@@ -349,7 +370,7 @@ input {
       class="green"
       onclick="bindStudent()"
     >
-      綁定學員
+      開始使用
     </button>
 
   </div>
@@ -763,7 +784,7 @@ async function loadDashboard() {
 
 
     /*
-     * 學員
+     * 學員姓名
      */
 
     document
@@ -773,6 +794,10 @@ async function loadDashboard() {
       .innerText =
         student.name || '-';
 
+
+    /*
+     * 學員編號
+     */
 
     document
       .getElementById(
@@ -845,6 +870,7 @@ async function loadDashboard() {
         )
         .innerText =
           course.name ||
+          course.course_name ||
           '本期課程';
 
 
@@ -861,9 +887,9 @@ async function loadDashboard() {
           'courseDate'
         )
         .innerText =
-          start || end
-            ? start + ' ～ ' + end
-            : '課程期間未設定';
+        start || end
+          ? start + ' ～ ' + end
+          : '課程期間未設定';
 
     }
 
@@ -982,19 +1008,10 @@ async function loadDashboard() {
 
 
 /* ==========================================
-   綁定
+   姓名綁定
 ========================================== */
 
 async function bindStudent() {
-
-  const id =
-    document
-      .getElementById(
-        'studentIdInput'
-      )
-      .value
-      .trim();
-
 
   const name =
     document
@@ -1003,19 +1020,6 @@ async function bindStudent() {
       )
       .value
       .trim();
-
-
-  if (!id) {
-
-    status(
-      'bindMessage',
-      '請輸入學員編號',
-      'error'
-    );
-
-    return;
-
-  }
 
 
   if (!name) {
@@ -1042,7 +1046,14 @@ async function bindStudent() {
     true;
 
   button.innerText =
-    '綁定中……';
+    '搜尋學員中……';
+
+
+  status(
+    'bindMessage',
+    '正在搜尋學員資料……',
+    'warning'
+  );
 
 
   try {
@@ -1051,44 +1062,126 @@ async function bindStudent() {
       await getLineUserId();
 
 
+    /*
+     * 注意：
+     * 現在只傳 line_user_id + name
+     * 不再傳 student_id
+     */
+
     const result =
       await api(
         'bindStudent',
         {
+
           line_user_id:
             lineUserId,
 
-          student_id:
-            id,
-
           name:
             name
+
         }
       );
 
 
+    /*
+     * 同名
+     */
+
     if (
-      !result.success
+      result.duplicate === true
     ) {
 
       throw new Error(
         result.message ||
-        '綁定失敗'
+        '找到多位同名學員，請聯絡管理員'
       );
 
     }
 
 
+    /*
+     * 綁定失敗
+     */
+
+    if (
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result.message ||
+        '找不到學員資料'
+      );
+
+    }
+
+
+    /*
+     * 顯示成功
+     */
+
+    const student =
+      result.student || {};
+
+
     status(
       'bindMessage',
-      '✅ 學員綁定成功！\n\n正在載入資料……',
+      '✅ 學員資料確認成功！',
       'success'
     );
 
 
+    /*
+     * 顯示找到的學員
+     */
+
+    const existing =
+      document.getElementById(
+        'bindMessage'
+      );
+
+
+    const confirm =
+      document.createElement(
+        'div'
+      );
+
+
+    confirm.className =
+      'student-confirm';
+
+
+    confirm.innerHTML =
+      '<div class="student-confirm-name">' +
+        escapeHtml(
+          student.name || name
+        ) +
+      '</div>' +
+
+      '<div class="student-confirm-id">' +
+        '學員編號：' +
+        escapeHtml(
+          student.student_id || '-'
+        ) +
+      '</div>';
+
+
+    existing.parentNode.insertBefore(
+      confirm,
+      existing.nextSibling
+    );
+
+
+    button.innerText =
+      '綁定成功';
+
+
+    /*
+     * 稍後進入首頁
+     */
+
     setTimeout(
       loadDashboard,
-      500
+      800
     );
 
   }
@@ -1097,7 +1190,7 @@ async function bindStudent() {
 
     status(
       'bindMessage',
-      '❌ 綁定失敗\n\n' +
+      '❌ ' +
       (error.message || error),
       'error'
     );
@@ -1107,7 +1200,7 @@ async function bindStudent() {
       false;
 
     button.innerText =
-      '綁定學員';
+      '開始使用';
 
   }
 
@@ -1214,7 +1307,7 @@ async function checkin() {
 
 
     /*
-     * 如果後端直接回傳最新堂數
+     * 後端如果直接回傳最新堂數
      */
 
     if (
