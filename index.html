@@ -14,9 +14,6 @@
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-<!-- QR Code 產生器 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
 
 * {
@@ -163,11 +160,6 @@ button {
   color: #333;
 }
 
-.blue {
-  background: #1976d2;
-  color: #fff;
-}
-
 button:disabled {
   background: #bdbdbd;
   color: #fff;
@@ -191,12 +183,6 @@ button:disabled {
 .record-time {
   color: #777;
   font-size: 14px;
-}
-
-.record-course {
-  color: #888;
-  font-size: 12px;
-  margin-top: 3px;
 }
 
 .empty {
@@ -230,47 +216,6 @@ input {
   font-size: 16px;
 }
 
-.qr-box {
-  text-align: center;
-  padding: 10px 0 5px;
-}
-
-#qrcode {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-#qrcode img,
-#qrcode canvas {
-  margin: auto;
-  border: 8px solid #fff;
-}
-
-.qr-url {
-  background: #f5f6f7;
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 13px;
-  color: #666;
-  word-break: break-all;
-  text-align: left;
-  line-height: 1.6;
-}
-
-.qr-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.qr-subtitle {
-  color: #777;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
 .footer {
   text-align: center;
   color: #999;
@@ -285,7 +230,6 @@ input {
 <body>
 
 <div class="container">
-
 
 <!-- ==========================================
      LOADING
@@ -419,9 +363,7 @@ input {
   </div>
 
 
-  <!-- ======================================
-       學員資料
-  ====================================== -->
+  <!-- 學員資料 -->
 
   <div class="card">
 
@@ -445,9 +387,7 @@ input {
   </div>
 
 
-  <!-- ======================================
-       本期課程
-  ====================================== -->
+  <!-- 本期課程 -->
 
   <div class="card">
 
@@ -479,9 +419,7 @@ input {
   </div>
 
 
-  <!-- ======================================
-       累計堂數
-  ====================================== -->
+  <!-- 累計堂數 -->
 
   <div class="card">
 
@@ -507,9 +445,7 @@ input {
   </div>
 
 
-  <!-- ======================================
-       今日打卡
-  ====================================== -->
+  <!-- 今日 -->
 
   <div class="card">
 
@@ -532,27 +468,13 @@ input {
   </div>
 
 
-  <!-- ======================================
-       最近紀錄
-       ★ 只顯示目前 QR Code 課程
-  ====================================== -->
+  <!-- 最近紀錄 -->
 
   <div class="card">
 
     <h3>
-      📋 本課程最近上課紀錄
+      📋 最近上課紀錄
     </h3>
-
-    <div
-      id="recentCourseInfo"
-      style="
-        color:#888;
-        font-size:13px;
-        margin-bottom:10px;
-      "
-    >
-      課程：讀取中……
-    </div>
 
     <div id="recentRecords">
 
@@ -565,103 +487,12 @@ input {
   </div>
 
 
-  <!-- ======================================
-       更新資料
-  ====================================== -->
-
   <button
     class="gray"
     onclick="loadDashboard()"
   >
     🔄 更新資料
   </button>
-
-
-  <!-- ======================================
-       QR CODE 產生器
-  ====================================== -->
-
-  <div class="card">
-
-    <div class="qr-title">
-      📱 產生課程 QR Code
-    </div>
-
-    <div class="qr-subtitle">
-      輸入課程編號後，系統會自動產生該課程專用 QR Code。
-    </div>
-
-
-    <div style="margin-top:18px;">
-
-      <label>
-        課程編號
-      </label>
-
-      <input
-        id="qrCourseIdInput"
-        type="text"
-        placeholder="例如：2026-89"
-      >
-
-    </div>
-
-
-    <button
-      class="blue"
-      onclick="generateCourseQR()"
-    >
-      📱 產生課程 QR Code
-    </button>
-
-
-    <div
-      id="qrResult"
-      class="qr-box hidden"
-    >
-
-      <div
-        style="
-          margin-top:18px;
-          font-size:18px;
-          font-weight:bold;
-        "
-      >
-        課程 QR Code
-      </div>
-
-
-      <div
-        id="generatedCourseId"
-        style="
-          color:#06c755;
-          font-weight:bold;
-          margin-top:6px;
-        "
-      >
-      </div>
-
-
-      <div id="qrcode"></div>
-
-
-      <div
-        id="generatedUrl"
-        class="qr-url"
-      >
-      </div>
-
-
-      <button
-        class="green"
-        onclick="downloadQRCode()"
-      >
-        ⬇️ 下載 QR Code
-      </button>
-
-    </div>
-
-  </div>
 
 
   <div class="footer">
@@ -690,6 +521,18 @@ const API_URL =
 /* ==========================================
    QR Code 課程
 ========================================== */
+
+/*
+ * QR Code 會把 course_id 放在網址後面。
+ *
+ * 例如：
+ *
+ * https://liff.line.me/2011153247-E8jjjAjB?course_id=2026-A01
+ *
+ * 這裡會取得：
+ *
+ * COURSE_ID = "2026-A01"
+ */
 
 const COURSE_ID =
   new URLSearchParams(
@@ -743,7 +586,7 @@ function status(id, message, type) {
 
 
 /* ==========================================
-   課程資訊
+   課程資訊顯示
 ========================================== */
 
 function updateCourseIdDisplay() {
@@ -753,7 +596,9 @@ function updateCourseIdDisplay() {
       'courseIdDisplay'
     );
 
-  if (!el) return;
+  if (!el) {
+    return;
+  }
 
 
   if (COURSE_ID) {
@@ -863,25 +708,6 @@ async function initLIFF() {
     updateCourseIdDisplay();
 
 
-    /*
-     * QR Code 產生器預填
-     *
-     * 如果目前就是從某個課程 QR Code 進來，
-     * 自動把目前課程編號填入。
-     */
-
-    if (COURSE_ID) {
-
-      document
-        .getElementById(
-          'qrCourseIdInput'
-        )
-        .value =
-          COURSE_ID;
-
-    }
-
-
     await liff.init({
       liffId: LIFF_ID
     });
@@ -974,14 +800,20 @@ async function loadDashboard() {
       await getLineUserId();
 
 
-    if (!COURSE_ID) {
-
-      throw new Error(
-        '目前網址沒有 course_id，請使用課程 QR Code 進入。'
-      );
-
-    }
-
+    /*
+     * ★ QR Code 課程
+     *
+     * 這裡會把：
+     *
+     * line_user_id
+     * +
+     * course_id
+     *
+     * 一起傳給 Apps Script。
+     *
+     * Apps Script 會依 course_id
+     * 找到指定課程。
+     */
 
     const result =
       await api(
@@ -1025,10 +857,6 @@ async function loadDashboard() {
     }
 
 
-    /* ======================================
-       學員資料
-    ====================================== */
-
     const student =
       result.student || {};
 
@@ -1048,10 +876,6 @@ async function loadDashboard() {
       .innerText =
         student.student_id || '-';
 
-
-    /* ======================================
-       累計堂數
-    ====================================== */
 
     let count = 0;
 
@@ -1096,9 +920,13 @@ async function loadDashboard() {
           : 0;
 
 
-    /* ======================================
-       課程
-    ====================================== */
+    /*
+     * 指定課程
+     *
+     * Apps Script 更新後，
+     * result.course 就會是 QR Code
+     * 指定的課程。
+     */
 
     const course =
       result.course || null;
@@ -1142,8 +970,9 @@ async function loadDashboard() {
           'courseName'
         )
         .innerText =
-          '指定課程：' +
-          COURSE_ID;
+          COURSE_ID
+            ? '指定課程：' + COURSE_ID
+            : '目前沒有進行中的課程';
 
 
       document
@@ -1151,33 +980,12 @@ async function loadDashboard() {
           'courseDate'
         )
         .innerText =
-          '課程資料等待後端確認';
+          COURSE_ID
+            ? '課程資料等待後端確認'
+            : '';
 
     }
 
-
-    /* ======================================
-       最近紀錄
-       ★ 只顯示目前 QR Code 課程
-    ====================================== */
-
-    document
-      .getElementById(
-        'recentCourseInfo'
-      )
-      .innerText =
-        '目前課程：' +
-        COURSE_ID;
-
-
-    renderRecent(
-      result.recent || []
-    );
-
-
-    /* ======================================
-       今日
-    ====================================== */
 
     const today =
       result.today || {};
@@ -1233,6 +1041,11 @@ async function loadDashboard() {
         '📚 今日上課打卡';
 
     }
+
+
+    renderRecent(
+      result.recent || []
+    );
 
 
     hide('loading');
@@ -1390,6 +1203,11 @@ async function checkin() {
   }
 
 
+  /*
+   * 沒有 course_id 時，
+   * 不允許正式打卡。
+   */
+
   if (!COURSE_ID) {
 
     status(
@@ -1424,6 +1242,14 @@ async function checkin() {
     const lineUserId =
       await getLineUserId();
 
+
+    /*
+     * ★ 打卡正式傳送：
+     *
+     * line_user_id
+     * +
+     * course_id
+     */
 
     const result =
       await api(
@@ -1534,7 +1360,6 @@ async function checkin() {
 
 /* ==========================================
    最近紀錄
-   ★ 只顯示目前 course_id
 ========================================== */
 
 function renderRecent(records) {
@@ -1547,7 +1372,8 @@ function renderRecent(records) {
 
 
   if (
-    !Array.isArray(records)
+    !Array.isArray(records) ||
+    records.length === 0
   ) {
 
     container.innerHTML =
@@ -1560,48 +1386,10 @@ function renderRecent(records) {
   }
 
 
-  /*
-   * ★ 關鍵：
-   *
-   * 只保留目前 QR Code 課程。
-   *
-   * 後端 recent 每筆紀錄需要有
-   * record.course_id。
-   */
-
-  const filtered =
-    records.filter(
-      function(record) {
-
-        return String(
-          record.course_id || ''
-        ).trim() ===
-        String(
-          COURSE_ID
-        ).trim();
-
-      }
-    );
-
-
-  if (
-    filtered.length === 0
-  ) {
-
-    container.innerHTML =
-      '<div class="empty">' +
-      '目前這門課程還沒有打卡紀錄' +
-      '</div>';
-
-    return;
-
-  }
-
-
   container.innerHTML = '';
 
 
-  filtered.forEach(
+  records.forEach(
     function(record) {
 
       const row =
@@ -1627,19 +1415,8 @@ function renderRecent(records) {
 
 
       row.innerHTML =
-        '<div>' +
-
-          '<div class="record-date">' +
-            date +
-          '</div>' +
-
-          '<div class="record-course">' +
-            '課程：' +
-            escapeHtml(
-              record.course_id || COURSE_ID
-            ) +
-          '</div>' +
-
+        '<div class="record-date">' +
+          date +
         '</div>' +
 
         '<div class="record-time">' +
@@ -1659,241 +1436,17 @@ function renderRecent(records) {
 
 
 /* ==========================================
-   QR Code 產生器
-========================================== */
-
-let generatedQR = null;
-
-
-function generateCourseQR() {
-
-  const input =
-    document
-      .getElementById(
-        'qrCourseIdInput'
-      );
-
-
-  const courseId =
-    input.value.trim();
-
-
-  if (!courseId) {
-
-    alert(
-      '請先輸入課程編號，例如：2026-89'
-    );
-
-    return;
-
-  }
-
-
-  /*
-   * 產生 LIFF 課程網址
-   */
-
-  const liffUrl =
-    'https://liff.line.me/' +
-    LIFF_ID +
-    '?course_id=' +
-    encodeURIComponent(
-      courseId
-    );
-
-
-  /*
-   * 清除舊 QR Code
-   */
-
-  const qrContainer =
-    document.getElementById(
-      'qrcode'
-    );
-
-
-  qrContainer.innerHTML =
-    '';
-
-
-  /*
-   * 產生新的 QR Code
-   */
-
-  generatedQR =
-    new QRCode(
-      qrContainer,
-      {
-        text: liffUrl,
-
-        width: 240,
-
-        height: 240,
-
-        colorDark: '#000000',
-
-        colorLight: '#ffffff',
-
-        correctLevel:
-          QRCode.CorrectLevel.H
-      }
-    );
-
-
-  document
-    .getElementById(
-      'generatedCourseId'
-    )
-    .innerText =
-      '課程編號：' +
-      courseId;
-
-
-  document
-    .getElementById(
-      'generatedUrl'
-    )
-    .innerText =
-      liffUrl;
-
-
-  show('qrResult');
-
-}
-
-
-/* ==========================================
-   下載 QR Code
-========================================== */
-
-function downloadQRCode() {
-
-  const container =
-    document.getElementById(
-      'qrcode'
-    );
-
-
-  const canvas =
-    container.querySelector(
-      'canvas'
-    );
-
-
-  if (canvas) {
-
-    const link =
-      document.createElement(
-        'a'
-      );
-
-
-    const courseId =
-      document
-        .getElementById(
-          'qrCourseIdInput'
-        )
-        .value
-        .trim();
-
-
-    link.download =
-      '課程QR-Code-' +
-      courseId +
-      '.png';
-
-
-    link.href =
-      canvas.toDataURL(
-        'image/png'
-      );
-
-
-    link.click();
-
-    return;
-
-  }
-
-
-  /*
-   * 某些瀏覽器可能使用 img
-   */
-
-  const img =
-    container.querySelector(
-      'img'
-    );
-
-
-  if (img) {
-
-    const link =
-      document.createElement(
-        'a'
-      );
-
-
-    const courseId =
-      document
-        .getElementById(
-          'qrCourseIdInput'
-        )
-        .value
-        .trim();
-
-
-    link.download =
-      '課程QR-Code-' +
-      courseId +
-      '.png';
-
-
-    link.href =
-      img.src;
-
-
-    link.click();
-
-    return;
-
-  }
-
-
-  alert(
-    'QR Code 尚未產生'
-  );
-
-}
-
-
-/* ==========================================
    安全處理
 ========================================== */
 
 function escapeHtml(value) {
 
   return String(value || '')
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 
 }
 
