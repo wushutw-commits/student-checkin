@@ -217,45 +217,13 @@ input {
   padding: 10px 0 25px;
 }
 
-.info-box {
-  background: #f5f7f8;
-  border-radius: 14px;
-  padding: 14px;
-  margin-top: 15px;
-  color: #666;
-  line-height: 1.7;
-  font-size: 14px;
-}
-
-.student-confirm {
-  background: #edfff3;
-  border: 1px solid #d5f4df;
-  border-radius: 15px;
-  padding: 15px;
-  margin-top: 15px;
-  line-height: 1.8;
-}
-
-.student-confirm-name {
-  font-size: 21px;
-  font-weight: bold;
-  color: #069b43;
-}
-
-.student-confirm-id {
-  color: #666;
-}
-
 </style>
 
 </head>
 
-
 <body>
 
-
 <div class="container">
-
 
 <!-- ==========================================
      LOADING
@@ -314,6 +282,7 @@ input {
 
 <!-- ==========================================
      BIND
+     只輸入姓名，不輸入學員編號
 ========================================== -->
 
 <div id="bindPage" class="hidden">
@@ -337,7 +306,7 @@ input {
       id="bindMessage"
       class="status warning"
     >
-      請輸入你的姓名，系統會自動尋找學員資料
+      請輸入你在學員名單中的姓名
     </div>
 
 
@@ -350,17 +319,9 @@ input {
       <input
         id="nameInput"
         type="text"
-        placeholder="請輸入你的姓名"
+        placeholder="請輸入姓名"
         autocomplete="name"
       >
-
-    </div>
-
-
-    <div class="info-box">
-
-      不需要輸入學員編號。<br>
-      系統會依照姓名尋找你的學員資料。
 
     </div>
 
@@ -370,7 +331,7 @@ input {
       class="green"
       onclick="bindStudent()"
     >
-      開始使用
+      確認學員
     </button>
 
   </div>
@@ -383,7 +344,6 @@ input {
 ========================================== -->
 
 <div id="mainPage" class="hidden">
-
 
   <div class="header">
 
@@ -515,8 +475,6 @@ input {
   </div>
 
 
-  <!-- 更新 -->
-
   <button
     class="gray"
     onclick="loadDashboard()"
@@ -531,12 +489,10 @@ input {
 
 </div>
 
-
 </div>
 
 
 <script>
-
 
 /* ==========================================
    正式設定
@@ -783,10 +739,6 @@ async function loadDashboard() {
       result.student || {};
 
 
-    /*
-     * 學員姓名
-     */
-
     document
       .getElementById(
         'studentName'
@@ -795,10 +747,6 @@ async function loadDashboard() {
         student.name || '-';
 
 
-    /*
-     * 學員編號
-     */
-
     document
       .getElementById(
         'studentId'
@@ -806,10 +754,6 @@ async function loadDashboard() {
       .innerText =
         student.student_id || '-';
 
-
-    /*
-     * 本期堂數
-     */
 
     let count = 0;
 
@@ -853,10 +797,6 @@ async function loadDashboard() {
           ? count
           : 0;
 
-
-    /*
-     * 課程
-     */
 
     const course =
       result.course || null;
@@ -912,10 +852,6 @@ async function loadDashboard() {
 
     }
 
-
-    /*
-     * 今日
-     */
 
     const today =
       result.today || {};
@@ -973,10 +909,6 @@ async function loadDashboard() {
     }
 
 
-    /*
-     * 最近紀錄
-     */
-
     renderRecent(
       result.recent || []
     );
@@ -1008,7 +940,8 @@ async function loadDashboard() {
 
 
 /* ==========================================
-   姓名綁定
+   綁定學員
+   ★ 重點：不再傳 student_id
 ========================================== */
 
 async function bindStudent() {
@@ -1046,14 +979,7 @@ async function bindStudent() {
     true;
 
   button.innerText =
-    '搜尋學員中……';
-
-
-  status(
-    'bindMessage',
-    '正在搜尋學員資料……',
-    'warning'
-  );
+    '查詢中……';
 
 
   try {
@@ -1063,45 +989,24 @@ async function bindStudent() {
 
 
     /*
-     * 注意：
-     * 現在只傳 line_user_id + name
-     * 不再傳 student_id
+     * ★ 只傳 LINE ID + 姓名
+     *
+     * 不再傳：
+     * student_id
      */
 
     const result =
       await api(
         'bindStudent',
         {
-
           line_user_id:
             lineUserId,
 
           name:
             name
-
         }
       );
 
-
-    /*
-     * 同名
-     */
-
-    if (
-      result.duplicate === true
-    ) {
-
-      throw new Error(
-        result.message ||
-        '找到多位同名學員，請聯絡管理員'
-      );
-
-    }
-
-
-    /*
-     * 綁定失敗
-     */
 
     if (
       result.success !== true
@@ -1109,79 +1014,22 @@ async function bindStudent() {
 
       throw new Error(
         result.message ||
-        '找不到學員資料'
+        '找不到學員'
       );
 
     }
 
 
-    /*
-     * 顯示成功
-     */
-
-    const student =
-      result.student || {};
-
-
     status(
       'bindMessage',
-      '✅ 學員資料確認成功！',
+      '✅ 學員確認成功！\n\n正在載入資料……',
       'success'
     );
 
 
-    /*
-     * 顯示找到的學員
-     */
-
-    const existing =
-      document.getElementById(
-        'bindMessage'
-      );
-
-
-    const confirm =
-      document.createElement(
-        'div'
-      );
-
-
-    confirm.className =
-      'student-confirm';
-
-
-    confirm.innerHTML =
-      '<div class="student-confirm-name">' +
-        escapeHtml(
-          student.name || name
-        ) +
-      '</div>' +
-
-      '<div class="student-confirm-id">' +
-        '學員編號：' +
-        escapeHtml(
-          student.student_id || '-'
-        ) +
-      '</div>';
-
-
-    existing.parentNode.insertBefore(
-      confirm,
-      existing.nextSibling
-    );
-
-
-    button.innerText =
-      '綁定成功';
-
-
-    /*
-     * 稍後進入首頁
-     */
-
     setTimeout(
       loadDashboard,
-      800
+      500
     );
 
   }
@@ -1200,7 +1048,7 @@ async function bindStudent() {
       false;
 
     button.innerText =
-      '開始使用';
+      '確認學員';
 
   }
 
@@ -1306,10 +1154,6 @@ async function checkin() {
     }
 
 
-    /*
-     * 後端如果直接回傳最新堂數
-     */
-
     if (
       result.total_points !==
       undefined
@@ -1328,10 +1172,6 @@ async function checkin() {
     button.innerText =
       '✅ 今日已完成打卡';
 
-
-    /*
-     * 重新抓完整資料
-     */
 
     setTimeout(
       loadDashboard,
