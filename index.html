@@ -288,7 +288,6 @@ input {
 
 <!-- ==========================================
      BIND
-     只輸入姓名，不輸入學員編號
 ========================================== -->
 
 <div id="bindPage" class="hidden">
@@ -520,17 +519,17 @@ const API_URL =
 
 
 /* ==========================================
-   課程 QR Code
+   QR Code 課程
 ========================================== */
 
 /*
- * 從網址取得 course_id
+ * QR Code 會把 course_id 放在網址後面。
  *
  * 例如：
  *
  * https://liff.line.me/2011153247-E8jjjAjB?course_id=2026-A01
  *
- * 會取得：
+ * 這裡會取得：
  *
  * COURSE_ID = "2026-A01"
  */
@@ -598,9 +597,7 @@ function updateCourseIdDisplay() {
     );
 
   if (!el) {
-
     return;
-
   }
 
 
@@ -642,11 +639,6 @@ async function api(
 
   Object.keys(params)
     .forEach(function(key) {
-
-      /*
-       * 避免把 undefined / null
-       * 傳給 Apps Script
-       */
 
       if (
         params[key] !== undefined &&
@@ -713,10 +705,6 @@ async function initLIFF() {
     }
 
 
-    /*
-     * 先更新課程編號顯示
-     */
-
     updateCourseIdDisplay();
 
 
@@ -733,10 +721,6 @@ async function initLIFF() {
 
       show('loginPage');
 
-      /*
-       * 如果是 QR Code 進來，
-       * 讓登入頁也知道目前指定課程
-       */
 
       if (COURSE_ID) {
 
@@ -809,10 +793,6 @@ async function loadDashboard() {
     show('loading');
 
 
-    /*
-     * 更新課程編號顯示
-     */
-
     updateCourseIdDisplay();
 
 
@@ -821,12 +801,18 @@ async function loadDashboard() {
 
 
     /*
-     * ★ 取得 Dashboard 時
-     * 一併傳送 course_id
+     * ★ QR Code 課程
      *
-     * Apps Script 更新後，
-     * 後端即可依指定課程
-     * 回傳正確課程資料。
+     * 這裡會把：
+     *
+     * line_user_id
+     * +
+     * course_id
+     *
+     * 一起傳給 Apps Script。
+     *
+     * Apps Script 會依 course_id
+     * 找到指定課程。
      */
 
     const result =
@@ -935,10 +921,11 @@ async function loadDashboard() {
 
 
     /*
-     * 課程
+     * 指定課程
      *
-     * 後端未來可以依照
-     * course_id 回傳指定課程。
+     * Apps Script 更新後，
+     * result.course 就會是 QR Code
+     * 指定的課程。
      */
 
     const course =
@@ -1088,7 +1075,6 @@ async function loadDashboard() {
 
 /* ==========================================
    綁定學員
-   ★ 仍然只輸入姓名
 ========================================== */
 
 async function bindStudent() {
@@ -1134,17 +1120,6 @@ async function bindStudent() {
     const lineUserId =
       await getLineUserId();
 
-
-    /*
-     * ★ 綁定仍然使用：
-     *
-     * LINE ID + 姓名
-     *
-     * 不傳 student_id。
-     *
-     * course_id 只是保留目前課程狀態，
-     * 不影響學員綁定。
-     */
 
     const result =
       await api(
@@ -1230,10 +1205,7 @@ async function checkin() {
 
   /*
    * 沒有 course_id 時，
-   * 不允許進行正式課程打卡。
-   *
-   * 這是為了避免學員從錯誤網址
-   * 進來造成不知道屬於哪個課程的紀錄。
+   * 不允許正式打卡。
    */
 
   if (!COURSE_ID) {
@@ -1272,15 +1244,11 @@ async function checkin() {
 
 
     /*
-     * ★ 重要
-     *
-     * 打卡 API 現在開始帶入：
+     * ★ 打卡正式傳送：
      *
      * line_user_id
      * +
      * course_id
-     *
-     * Apps Script 下一步會正式接收並驗證。
      */
 
     const result =
