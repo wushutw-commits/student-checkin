@@ -1221,6 +1221,7 @@ select:focus {
           id="courseFormId"
           type="text"
           placeholder="例如：2026-01"
+          autocomplete="off"
         >
 
       </div>
@@ -1236,6 +1237,7 @@ select:focus {
           id="courseFormName"
           type="text"
           placeholder="例如：2026 秋季班"
+          autocomplete="off"
         >
 
       </div>
@@ -2257,8 +2259,9 @@ function openEditCourse(
 
 
   /*
-   * course_id 修改函式本身不支援改編號，
-   * 所以修改模式鎖定。
+   * 現有 Apps Script 的 updateCourse
+   * 是依照 course_id 找課程。
+   * 因此修改模式不修改課程編號。
    */
 
   document
@@ -2337,6 +2340,7 @@ function closeCourseModal() {
 
 /* =========================================
    儲存課程
+   ★ 已與 Apps Script 參數完全對齊
 ========================================= */
 
 async function saveCourse() {
@@ -2449,30 +2453,46 @@ async function saveCourse() {
     let data;
 
 
+    /* =====================================
+       修改課程
+    ====================================== */
+
     if (editingCourseId) {
 
       data =
         await apiGet(
           'updateCourse',
           {
-            courseId:
+
+            /*
+             * Apps Script 要求：
+             * course_id
+             */
+
+            course_id:
               editingCourseId,
 
-            courseName:
+            course_name:
               courseName,
 
-            startDate:
+            start_date:
               startDate,
 
-            endDate:
+            end_date:
               endDate,
 
             active:
               active
+
           }
         );
 
     }
+
+
+    /* =====================================
+       新增課程
+    ====================================== */
 
     else {
 
@@ -2480,20 +2500,27 @@ async function saveCourse() {
         await apiGet(
           'addCourse',
           {
-            courseId:
+
+            /*
+             * Apps Script 要求：
+             * course_id
+             */
+
+            course_id:
               courseId,
 
-            courseName:
+            course_name:
               courseName,
 
-            startDate:
+            start_date:
               startDate,
 
-            endDate:
+            end_date:
               endDate,
 
             active:
               active
+
           }
         );
 
@@ -2507,11 +2534,6 @@ async function saveCourse() {
       data.message ||
       '課程儲存成功',
       'success'
-    );
-
-
-    await loadCourses(
-      false
     );
 
 
@@ -2541,6 +2563,7 @@ async function saveCourse() {
 
 /* =========================================
    刪除課程
+   ★ 已與 Apps Script 參數完全對齊
 ========================================= */
 
 async function deleteCourse(
@@ -2550,21 +2573,30 @@ async function deleteCourse(
   courseId =
     String(
       courseId || ''
-    );
+    ).trim();
 
 
-  if (!courseId) return;
+  if (!courseId) {
+
+    return;
+
+  }
 
 
   const ok =
     confirm(
       '確定要刪除課程「' +
       courseId +
-      '」嗎？\n\n刪除課程不會自動刪除既有打卡紀錄。'
+      '」嗎？\n\n' +
+      '刪除課程不會自動刪除既有打卡紀錄。'
     );
 
 
-  if (!ok) return;
+  if (!ok) {
+
+    return;
+
+  }
 
 
   try {
@@ -2573,8 +2605,15 @@ async function deleteCourse(
       await apiGet(
         'deleteCourse',
         {
-          courseId:
+
+          /*
+           * Apps Script 要求：
+           * course_id
+           */
+
+          course_id:
             courseId
+
         }
       );
 
@@ -2583,11 +2622,6 @@ async function deleteCourse(
       data.message ||
       '課程刪除成功',
       'success'
-    );
-
-
-    await loadCourses(
-      false
     );
 
 
@@ -3066,18 +3100,27 @@ async function deleteCheckin(
     );
 
 
-  if (!checkinId) return;
+  if (!checkinId) {
+
+    return;
+
+  }
 
 
   const ok =
     confirm(
       '確定要刪除打卡紀錄 #' +
       checkinId +
-      ' 嗎？\n\n刪除後會重新計算該學員本期堂數。'
+      ' 嗎？\n\n' +
+      '刪除後會重新計算該學員本期堂數。'
     );
 
 
-  if (!ok) return;
+  if (!ok) {
+
+    return;
+
+  }
 
 
   try {
