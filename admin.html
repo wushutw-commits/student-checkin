@@ -58,12 +58,18 @@ body {
   opacity: .8;
 }
 
+
+/* ================================
+   課程
+================================ */
+
 .course {
   background: white;
   border-radius: 18px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.06);
 }
 
 .course-title {
@@ -76,9 +82,15 @@ body {
   margin-top: 5px;
 }
 
+
+/* ================================
+   統計
+================================ */
+
 .stats {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns:
+    repeat(3,1fr);
   gap: 15px;
   margin-bottom: 20px;
 }
@@ -87,7 +99,8 @@ body {
   background: white;
   border-radius: 18px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.06);
 }
 
 .stat-number {
@@ -108,17 +121,28 @@ body {
   color: #2563eb;
 }
 
+
+/* ================================
+   Section
+================================ */
+
 .section {
   background: white;
   border-radius: 18px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.06);
 }
 
 .section h2 {
   margin-top: 0;
 }
+
+
+/* ================================
+   Button
+================================ */
 
 button {
   border: 0;
@@ -155,12 +179,26 @@ button:disabled {
   background: #64748b;
 }
 
+.btn-orange {
+  background: #ea580c;
+}
+
+
+/* ================================
+   Toolbar
+================================ */
+
 .toolbar {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 15px;
 }
+
+
+/* ================================
+   Table
+================================ */
 
 .table-wrap {
   overflow-x: auto;
@@ -169,7 +207,7 @@ button:disabled {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 750px;
+  min-width: 700px;
 }
 
 th,
@@ -187,6 +225,11 @@ th {
 td {
   vertical-align: middle;
 }
+
+
+/* ================================
+   Badge
+================================ */
 
 .badge {
   display: inline-block;
@@ -220,9 +263,15 @@ td {
   color: #374151;
 }
 
+
+/* ================================
+   Form
+================================ */
+
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns:
+    repeat(2,1fr);
   gap: 15px;
 }
 
@@ -255,8 +304,15 @@ input:focus,
 select:focus {
   outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+  box-shadow:
+    0 0 0 3px
+    rgba(37,99,235,.12);
 }
+
+
+/* ================================
+   Modal
+================================ */
 
 .modal {
   position: fixed;
@@ -297,6 +353,11 @@ select:focus {
   flex-wrap: wrap;
 }
 
+
+/* ================================
+   Loading / Error / Toast
+================================ */
+
 .loading {
   text-align: center;
   padding: 40px;
@@ -316,7 +377,8 @@ select:focus {
   border-radius: 12px;
   color: white;
   background: #111827;
-  box-shadow: 0 5px 20px rgba(0,0,0,.2);
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.2);
   display: none;
   z-index: 2000;
   max-width: 90%;
@@ -331,11 +393,21 @@ select:focus {
   background: #b91c1c;
 }
 
+
+/* ================================
+   Empty
+================================ */
+
 .empty {
   text-align: center;
   color: #64748b;
   padding: 30px;
 }
+
+
+/* ================================
+   Responsive
+================================ */
 
 @media(max-width:700px) {
 
@@ -374,9 +446,16 @@ select:focus {
 
 </head>
 
+
 <body>
 
+
 <div class="container">
+
+
+  <!-- ================================
+       Header
+  ================================= -->
 
   <div class="header">
 
@@ -385,11 +464,15 @@ select:focus {
     </h1>
 
     <p>
-      學員上課打卡管理系統 · 管理員後台
+      學員上課打卡管理系統 · 第 34 版
     </p>
 
   </div>
 
+
+  <!-- ================================
+       Loading
+  ================================= -->
 
   <div
     id="loading"
@@ -399,12 +482,19 @@ select:focus {
   </div>
 
 
+  <!-- ================================
+       App
+  ================================= -->
+
   <div
     id="app"
     style="display:none;"
   >
 
-    <!-- 目前課程 -->
+
+    <!-- ==============================
+         目前課程
+    =============================== -->
 
     <div class="course">
 
@@ -427,7 +517,9 @@ select:focus {
     </div>
 
 
-    <!-- 統計 -->
+    <!-- ==============================
+         統計
+    =============================== -->
 
     <div class="stats">
 
@@ -475,13 +567,16 @@ select:focus {
     </div>
 
 
-    <!-- 課程管理 -->
+    <!-- ==============================
+         課程管理
+    =============================== -->
 
     <div class="section">
 
       <h2>
         📚 課程管理
       </h2>
+
 
       <div class="toolbar">
 
@@ -511,10 +606,15 @@ select:focus {
             <tr>
 
               <th>課程編號</th>
+
               <th>課程名稱</th>
+
               <th>開始日期</th>
+
               <th>結束日期</th>
+
               <th>狀態</th>
+
               <th>操作</th>
 
             </tr>
@@ -532,13 +632,16 @@ select:focus {
     </div>
 
 
-    <!-- 學員 -->
+    <!-- ==============================
+         學員名單
+    =============================== -->
 
     <div class="section">
 
       <h2>
         👥 學員名單
       </h2>
+
 
       <div class="toolbar">
 
@@ -566,9 +669,13 @@ select:focus {
             <tr>
 
               <th>學員編號</th>
+
               <th>姓名</th>
+
               <th>本期堂數</th>
+
               <th>今日</th>
+
               <th>LINE</th>
 
             </tr>
@@ -586,7 +693,9 @@ select:focus {
     </div>
 
 
-    <!-- 最近打卡 -->
+    <!-- ==============================
+         最近打卡
+    =============================== -->
 
     <div class="section">
 
@@ -623,11 +732,17 @@ select:focus {
             <tr>
 
               <th>ID</th>
+
               <th>日期</th>
+
               <th>時間</th>
+
               <th>學員編號</th>
+
               <th>姓名</th>
+
               <th>課程</th>
+
               <th>操作</th>
 
             </tr>
@@ -644,8 +759,13 @@ select:focus {
 
     </div>
 
+
   </div>
 
+
+  <!-- ================================
+       Error
+  ================================= -->
 
   <div
     id="error"
@@ -653,12 +773,13 @@ select:focus {
     style="display:none;"
   ></div>
 
+
 </div>
 
 
 <!-- ================================
-     課程 Modal
-================================ -->
+     Course Modal
+================================= -->
 
 <div
   id="courseModal"
@@ -677,6 +798,7 @@ select:focus {
 
     <div class="form-grid">
 
+
       <div class="form-group">
 
         <label>
@@ -687,6 +809,7 @@ select:focus {
           id="courseFormId"
           type="text"
           placeholder="例如：2026-01"
+          autocomplete="off"
         >
 
       </div>
@@ -757,6 +880,7 @@ select:focus {
 
       </div>
 
+
     </div>
 
 
@@ -785,8 +909,8 @@ select:focus {
 
 
 <!-- ================================
-     補打卡 Modal
-================================ -->
+     Checkin Modal
+================================= -->
 
 <div
   id="checkinModal"
@@ -808,13 +932,12 @@ select:focus {
 
       <!--
         注意：
-        這裡只有「一個學員欄位」。
+        這裡仍然只有一個學員欄位。
+        顯示：
+        wushu_0001｜武協測試
 
-        畫面顯示：
-        S001｜王小明
-
-        送 API 時會自動拆成：
-        studentId = S001
+        value 實際為：
+        wushu_0001
       -->
 
       <div class="form-group full">
@@ -877,6 +1000,7 @@ select:focus {
 
       </div>
 
+
     </div>
 
 
@@ -904,6 +1028,10 @@ select:focus {
 </div>
 
 
+<!-- ================================
+     Toast
+================================= -->
+
 <div
   id="toast"
   class="toast"
@@ -912,20 +1040,25 @@ select:focus {
 
 <script>
 
+
 /* =========================================
-   API
+   後端 API
 ========================================= */
 
 const API_URL =
 'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
+
 
 const ADMIN_KEY =
 'wushu_admin_2026';
 
 
 let dashboardData = null;
+
 let coursesData = [];
+
 let editingCourseId = null;
+
 let editingCheckinId = null;
 
 
@@ -941,10 +1074,12 @@ async function apiGet(
   const query =
     new URLSearchParams();
 
+
   query.set(
     'action',
     action
   );
+
 
   query.set(
     'key',
@@ -1021,9 +1156,11 @@ async function loadData() {
     .getElementById('loading')
     .style.display = 'block';
 
+
   document
     .getElementById('app')
     .style.display = 'none';
+
 
   document
     .getElementById('error')
@@ -1037,10 +1174,13 @@ async function loadData() {
         'adminDashboard'
       );
 
+
     dashboardData =
       data;
 
+
     render(data);
+
 
     await loadCourses(false);
 
@@ -1048,6 +1188,7 @@ async function loadData() {
     document
       .getElementById('loading')
       .style.display = 'none';
+
 
     document
       .getElementById('app')
@@ -1061,14 +1202,20 @@ async function loadData() {
       .getElementById('loading')
       .style.display = 'none';
 
+
     const errorBox =
-      document.getElementById('error');
+      document.getElementById(
+        'error'
+      );
+
 
     errorBox.innerText =
       '❌ 管理資料取得失敗\n\n' +
       error.message;
 
-    errorBox.style.display = 'block';
+
+    errorBox.style.display =
+      'block';
 
   }
 
@@ -1111,11 +1258,13 @@ function render(data) {
       .getElementById('courseDate')
       .innerText =
       (
-        course.start_date || ''
+        course.start_date ||
+        ''
       ) +
       ' ～ ' +
       (
-        course.end_date || ''
+        course.end_date ||
+        ''
       );
 
   }
@@ -1188,6 +1337,7 @@ function renderStudents(students) {
       'studentTable'
     );
 
+
   tbody.innerHTML = '';
 
 
@@ -1209,22 +1359,30 @@ function renderStudents(students) {
     function(student) {
 
       const tr =
-        document.createElement('tr');
+        document.createElement(
+          'tr'
+        );
 
 
       tr.innerHTML = `
 
         <td>
-          ${escapeHTML(student.student_id)}
+          ${escapeHTML(
+            student.student_id
+          )}
         </td>
 
         <td>
-          ${escapeHTML(student.name)}
+          ${escapeHTML(
+            student.name
+          )}
         </td>
 
         <td>
           <strong>
-            ${Number(student.course_count || 0)}
+            ${Number(
+              student.course_count || 0
+            )}
           </strong>
         </td>
 
@@ -1266,6 +1424,7 @@ function renderRecent(records) {
       'recentTable'
     );
 
+
   tbody.innerHTML = '';
 
 
@@ -1287,38 +1446,52 @@ function renderRecent(records) {
     function(record) {
 
       const tr =
-        document.createElement('tr');
+        document.createElement(
+          'tr'
+        );
 
 
       tr.innerHTML = `
 
         <td>
           <span class="badge badge-gray">
-            ${escapeHTML(record.checkin_id)}
+            ${escapeHTML(
+              record.checkin_id
+            )}
           </span>
         </td>
 
         <td>
-          ${escapeHTML(record.date)}
+          ${escapeHTML(
+            record.date
+          )}
         </td>
 
         <td>
-          ${escapeHTML(record.time)}
+          ${escapeHTML(
+            record.time
+          )}
         </td>
 
         <td>
-          ${escapeHTML(record.student_id)}
+          ${escapeHTML(
+            record.student_id
+          )}
         </td>
 
         <td>
-          ${escapeHTML(record.name)}
+          ${escapeHTML(
+            record.name
+          )}
         </td>
 
         <td>
           ${
             record.course_id
               ? '<span class="badge badge-blue">' +
-                escapeHTML(record.course_id) +
+                escapeHTML(
+                  record.course_id
+                ) +
                 '</span>'
               : '-'
           }
@@ -1358,11 +1531,11 @@ function renderRecent(records) {
 
 
 /* =========================================
-   課程列表
+   課程
 ========================================= */
 
 async function loadCourses(
-  showMessage = true
+  showToast = true
 ) {
 
   try {
@@ -1387,7 +1560,7 @@ async function loadCourses(
     );
 
 
-    if (showMessage) {
+    if (showToast) {
 
       showToastMessage(
         '課程列表已更新',
@@ -1412,7 +1585,7 @@ async function loadCourses(
 
 
 /* =========================================
-   課程列表 Render
+   課程表
 ========================================= */
 
 function renderCourses(courses) {
@@ -1421,6 +1594,7 @@ function renderCourses(courses) {
     document.getElementById(
       'courseTable'
     );
+
 
   tbody.innerHTML = '';
 
@@ -1443,7 +1617,9 @@ function renderCourses(courses) {
     function(course) {
 
       const tr =
-        document.createElement('tr');
+        document.createElement(
+          'tr'
+        );
 
 
       const active =
@@ -1456,24 +1632,29 @@ function renderCourses(courses) {
 
         <td>
           <strong>
-            ${escapeHTML(course.course_id)}
+            ${escapeHTML(
+              course.course_id
+            )}
           </strong>
         </td>
 
         <td>
           ${escapeHTML(
             course.course_name ||
-            course.name ||
-            ''
+            course.name
           )}
         </td>
 
         <td>
-          ${escapeHTML(course.start_date)}
+          ${escapeHTML(
+            course.start_date
+          )}
         </td>
 
         <td>
-          ${escapeHTML(course.end_date)}
+          ${escapeHTML(
+            course.end_date
+          )}
         </td>
 
         <td>
@@ -1527,43 +1708,59 @@ function openAddCourse() {
 
 
   document
-    .getElementById('courseModalTitle')
+    .getElementById(
+      'courseModalTitle'
+    )
     .innerText =
     '➕ 新增課程';
 
 
-  const idInput =
-    document.getElementById(
+  document
+    .getElementById(
       'courseFormId'
-    );
-
-
-  idInput.value = '';
-  idInput.disabled = false;
-
-
-  document
-    .getElementById('courseFormName')
+    )
     .value = '';
 
 
   document
-    .getElementById('courseFormStart')
+    .getElementById(
+      'courseFormId'
+    )
+    .disabled = false;
+
+
+  document
+    .getElementById(
+      'courseFormName'
+    )
     .value = '';
 
 
   document
-    .getElementById('courseFormEnd')
+    .getElementById(
+      'courseFormStart'
+    )
     .value = '';
 
 
   document
-    .getElementById('courseFormActive')
+    .getElementById(
+      'courseFormEnd'
+    )
+    .value = '';
+
+
+  document
+    .getElementById(
+      'courseFormActive'
+    )
     .value = 'true';
 
 
   document
-    .getElementById('courseModal')
+    .getElementById(
+      'courseModal'
+    )
     .classList
     .add('show');
 
@@ -1579,29 +1776,36 @@ function openEditCourse(course) {
   editingCourseId =
     String(
       course.course_id || ''
-    ).trim();
+    );
 
 
   document
-    .getElementById('courseModalTitle')
+    .getElementById(
+      'courseModalTitle'
+    )
     .innerText =
     '✏️ 修改課程';
 
 
-  const idInput =
-    document.getElementById(
+  document
+    .getElementById(
       'courseFormId'
-    );
-
-
-  idInput.value =
+    )
+    .value =
     course.course_id || '';
-
-  idInput.disabled = true;
 
 
   document
-    .getElementById('courseFormName')
+    .getElementById(
+      'courseFormId'
+    )
+    .disabled = true;
+
+
+  document
+    .getElementById(
+      'courseFormName'
+    )
     .value =
     course.course_name ||
     course.name ||
@@ -1609,27 +1813,37 @@ function openEditCourse(course) {
 
 
   document
-    .getElementById('courseFormStart')
+    .getElementById(
+      'courseFormStart'
+    )
     .value =
     course.start_date || '';
 
 
   document
-    .getElementById('courseFormEnd')
+    .getElementById(
+      'courseFormEnd'
+    )
     .value =
     course.end_date || '';
 
 
   document
-    .getElementById('courseFormActive')
+    .getElementById(
+      'courseFormActive'
+    )
     .value =
-    normalizeBoolean(course.active)
+    normalizeBoolean(
+      course.active
+    )
       ? 'true'
       : 'false';
 
 
   document
-    .getElementById('courseModal')
+    .getElementById(
+      'courseModal'
+    )
     .classList
     .add('show');
 
@@ -1643,7 +1857,9 @@ function openEditCourse(course) {
 function closeCourseModal() {
 
   document
-    .getElementById('courseModal')
+    .getElementById(
+      'courseModal'
+    )
     .classList
     .remove('show');
 
@@ -1658,41 +1874,47 @@ async function saveCourse() {
 
   const courseId =
     document
-      .getElementById('courseFormId')
+      .getElementById(
+        'courseFormId'
+      )
       .value
       .trim();
 
 
   const courseName =
     document
-      .getElementById('courseFormName')
+      .getElementById(
+        'courseFormName'
+      )
       .value
       .trim();
 
 
   const startDate =
     document
-      .getElementById('courseFormStart')
+      .getElementById(
+        'courseFormStart'
+      )
       .value
       .trim();
 
 
   const endDate =
     document
-      .getElementById('courseFormEnd')
+      .getElementById(
+        'courseFormEnd'
+      )
       .value
       .trim();
 
 
   const active =
     document
-      .getElementById('courseFormActive')
+      .getElementById(
+        'courseFormActive'
+      )
       .value;
 
-
-  /*
-   * 前端檢查
-   */
 
   if (!courseId) {
 
@@ -1747,6 +1969,7 @@ async function saveCourse() {
       'courseSaveButton'
     );
 
+
   button.disabled = true;
 
 
@@ -1756,15 +1979,10 @@ async function saveCourse() {
 
 
     /*
-     * ⭐ 重要
+     * 修改課程
      *
-     * Apps Script 接收的名稱：
-     *
-     * course_id
-     * course_name
-     * start_date
-     * end_date
-     * active
+     * Apps Script：
+     * e.parameter.course_id
      */
 
     if (editingCourseId) {
@@ -1791,6 +2009,10 @@ async function saveCourse() {
         );
 
     }
+
+    /*
+     * 新增課程
+     */
 
     else {
 
@@ -1828,6 +2050,8 @@ async function saveCourse() {
     );
 
 
+    await loadCourses(false);
+
     await loadData();
 
   }
@@ -1858,24 +2082,24 @@ async function saveCourse() {
 async function deleteCourse(courseId) {
 
   courseId =
-    String(courseId || '').trim();
+    String(
+      courseId || ''
+    ).trim();
 
 
   if (!courseId) return;
 
 
-  if (
-    !confirm(
+  const ok =
+    confirm(
       '確定要刪除課程「' +
       courseId +
       '」嗎？\n\n' +
       '刪除課程不會自動刪除既有打卡紀錄。'
-    )
-  ) {
+    );
 
-    return;
 
-  }
+  if (!ok) return;
 
 
   try {
@@ -1897,6 +2121,8 @@ async function deleteCourse(courseId) {
     );
 
 
+    await loadCourses(false);
+
     await loadData();
 
   }
@@ -1915,7 +2141,7 @@ async function deleteCourse(courseId) {
 
 
 /* =========================================
-   ⭐ 學員下拉選單
+   學員下拉選單
 ========================================= */
 
 function populateStudentSelect(students) {
@@ -1949,30 +2175,30 @@ function populateStudentSelect(students) {
 
 
       /*
-       * ⭐ value 只放 student_id
+       * 非常重要：
        *
-       * 例如：
+       * value = 學員編號
        *
-       * value = S001
+       * 顯示 = 學員編號｜姓名
        *
-       * 顯示：
-       * S001｜王小明
+       * 所以畫面只有一欄，
+       * Apps Script 仍能收到 student_id。
        */
 
       option.value =
         String(
           student.student_id || ''
-        ).trim();
+        );
 
 
       option.textContent =
         String(
           student.student_id || ''
-        ).trim() +
+        ) +
         '｜' +
         String(
           student.name || ''
-        ).trim();
+        );
 
 
       select.appendChild(
@@ -1986,7 +2212,7 @@ function populateStudentSelect(students) {
 
 
 /* =========================================
-   課程下拉
+   課程下拉選單
 ========================================= */
 
 function populateCourseSelect(courses) {
@@ -2010,22 +2236,28 @@ function populateCourseSelect(courses) {
         );
 
 
+      /*
+       * value = 課程編號
+       *
+       * 顯示 = 課程編號｜課程名稱
+       */
+
       option.value =
         String(
           course.course_id || ''
-        ).trim();
+        );
 
 
       option.textContent =
         String(
           course.course_id || ''
-        ).trim() +
+        ) +
         '｜' +
         String(
           course.course_name ||
           course.name ||
           ''
-        ).trim();
+        );
 
 
       select.appendChild(
@@ -2048,40 +2280,54 @@ function openAddCheckin() {
 
 
   document
-    .getElementById('checkinModalTitle')
+    .getElementById(
+      'checkinModalTitle'
+    )
     .innerText =
     '➕ 管理員補打卡';
 
 
   document
-    .getElementById('checkinFormStudent')
+    .getElementById(
+      'checkinFormStudent'
+    )
     .disabled = false;
 
 
   document
-    .getElementById('checkinFormDate')
+    .getElementById(
+      'checkinFormDate'
+    )
     .value =
     getToday();
 
 
   document
-    .getElementById('checkinFormTime')
+    .getElementById(
+      'checkinFormTime'
+    )
     .value =
     '12:00';
 
 
   document
-    .getElementById('checkinFormCourse')
+    .getElementById(
+      'checkinFormCourse'
+    )
     .disabled = false;
 
 
   document
-    .getElementById('checkinFormCourse')
+    .getElementById(
+      'checkinFormCourse'
+    )
     .value = '';
 
 
   document
-    .getElementById('checkinModal')
+    .getElementById(
+      'checkinModal'
+    )
     .classList
     .add('show');
 
@@ -2089,7 +2335,7 @@ function openAddCheckin() {
 
 
 /* =========================================
-   修改補打卡
+   修改打卡
 ========================================= */
 
 function openEditCheckin(record) {
@@ -2097,44 +2343,47 @@ function openEditCheckin(record) {
   editingCheckinId =
     String(
       record.checkin_id || ''
-    ).trim();
+    );
 
 
   document
-    .getElementById('checkinModalTitle')
+    .getElementById(
+      'checkinModalTitle'
+    )
     .innerText =
     '✏️ 修改打卡紀錄 #' +
     editingCheckinId;
 
 
-  const studentSelect =
-    document.getElementById(
+  document
+    .getElementById(
       'checkinFormStudent'
+    )
+    .value =
+    String(
+      record.student_id || ''
     );
 
 
-  /*
-   * record.student_id
-   * 直接對應 option.value
-   */
-
-  studentSelect.value =
-    String(
-      record.student_id || ''
-    ).trim();
-
-
-  studentSelect.disabled = false;
+  document
+    .getElementById(
+      'checkinFormStudent'
+    )
+    .disabled = false;
 
 
   document
-    .getElementById('checkinFormDate')
+    .getElementById(
+      'checkinFormDate'
+    )
     .value =
     record.date || '';
 
 
   document
-    .getElementById('checkinFormTime')
+    .getElementById(
+      'checkinFormTime'
+    )
     .value =
     normalizeTimeForInput(
       record.time
@@ -2142,20 +2391,24 @@ function openEditCheckin(record) {
 
 
   document
-    .getElementById('checkinFormCourse')
+    .getElementById(
+      'checkinFormCourse'
+    )
     .value =
-    String(
-      record.course_id || ''
-    ).trim();
+    record.course_id || '';
 
 
   document
-    .getElementById('checkinFormCourse')
+    .getElementById(
+      'checkinFormCourse'
+    )
     .disabled = false;
 
 
   document
-    .getElementById('checkinModal')
+    .getElementById(
+      'checkinModal'
+    )
     .classList
     .add('show');
 
@@ -2169,7 +2422,9 @@ function openEditCheckin(record) {
 function closeCheckinModal() {
 
   document
-    .getElementById('checkinModal')
+    .getElementById(
+      'checkinModal'
+    )
     .classList
     .remove('show');
 
@@ -2177,22 +2432,10 @@ function closeCheckinModal() {
 
 
 /* =========================================
-   ⭐ 儲存補打卡
+   儲存補打卡
 ========================================= */
 
 async function saveCheckin() {
-
-  /*
-   * ⭐ 這裡只有一個學員欄位
-   *
-   * select.value 本身就是：
-   *
-   * S001
-   *
-   * 而不是：
-   *
-   * S001｜王小明
-   */
 
   const studentId =
     document
@@ -2230,6 +2473,10 @@ async function saveCheckin() {
       .trim();
 
 
+  /*
+   * 前端檢查
+   */
+
   if (!studentId) {
 
     showToastMessage(
@@ -2259,6 +2506,7 @@ async function saveCheckin() {
       'checkinSaveButton'
     );
 
+
   button.disabled = true;
 
 
@@ -2268,17 +2516,19 @@ async function saveCheckin() {
 
 
     /*
-     * ⭐ 這裡送給 Apps Script：
+     * =====================================
+     * 修改打卡
      *
+     * 注意：
+     *
+     * HTML → Apps Script
+     *
+     * checkin_id
      * student_id
      * date
      * time
      * course_id
-     *
-     * 如果你的 Apps Script
-     * adminAddCheckin / adminUpdateCheckin
-     * 是使用 studentId / courseId，
-     * 那就需要與後端名稱一致。
+     * =====================================
      */
 
     if (editingCheckinId) {
@@ -2305,6 +2555,12 @@ async function saveCheckin() {
         );
 
     }
+
+    /*
+     * =====================================
+     * 新增補打卡
+     * =====================================
+     */
 
     else {
 
@@ -2366,27 +2622,29 @@ async function saveCheckin() {
    刪除打卡
 ========================================= */
 
-async function deleteCheckin(checkinId) {
+async function deleteCheckin(
+  checkinId
+) {
 
   checkinId =
-    String(checkinId || '').trim();
+    String(
+      checkinId || ''
+    ).trim();
 
 
   if (!checkinId) return;
 
 
-  if (
-    !confirm(
+  const ok =
+    confirm(
       '確定要刪除打卡紀錄 #' +
       checkinId +
       ' 嗎？\n\n' +
       '刪除後會重新計算該學員本期堂數。'
-    )
-  ) {
+    );
 
-    return;
 
-  }
+  if (!ok) return;
 
 
   try {
@@ -2455,11 +2713,17 @@ function downloadCSV() {
     function(student) {
 
       csv +=
-        csvEscape(student.student_id) +
+        csvEscape(
+          student.student_id
+        ) +
         ',' +
-        csvEscape(student.name) +
+        csvEscape(
+          student.name
+        ) +
         ',' +
-        Number(student.course_count || 0) +
+        Number(
+          student.course_count || 0
+        ) +
         ',' +
         (
           student.today
@@ -2498,17 +2762,24 @@ function downloadCSV() {
 
   a.href = url;
 
+
   a.download =
     '學員出席_' +
     getToday() +
     '.csv';
 
 
-  document.body.appendChild(a);
+  document
+    .body
+    .appendChild(a);
+
 
   a.click();
 
-  document.body.removeChild(a);
+
+  document
+    .body
+    .removeChild(a);
 
 
   setTimeout(
@@ -2530,7 +2801,9 @@ function downloadCSV() {
 function csvEscape(value) {
 
   const text =
-    String(value ?? '');
+    String(
+      value ?? ''
+    );
 
 
   return '"' +
@@ -2549,12 +2822,29 @@ function csvEscape(value) {
 
 function escapeHTML(value) {
 
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return String(
+    value ?? ''
+  )
+  .replace(
+    /&/g,
+    '&amp;'
+  )
+  .replace(
+    /</g,
+    '&lt;'
+  )
+  .replace(
+    />/g,
+    '&gt;'
+  )
+  .replace(
+    /"/g,
+    '&quot;'
+  )
+  .replace(
+    /'/g,
+    '&#039;'
+  );
 
 }
 
@@ -2576,9 +2866,11 @@ function normalizeBoolean(value) {
 
 
   const text =
-    String(value ?? '')
-      .trim()
-      .toLowerCase();
+    String(
+      value ?? ''
+    )
+    .trim()
+    .toLowerCase();
 
 
   return !(
@@ -2593,13 +2885,15 @@ function normalizeBoolean(value) {
 
 
 /* =========================================
-   時間
+   Time
 ========================================= */
 
 function normalizeTimeForInput(value) {
 
   const text =
-    String(value || '').trim();
+    String(
+      value || ''
+    ).trim();
 
 
   if (!text) {
@@ -2625,7 +2919,10 @@ function normalizeTimeForInput(value) {
   return (
     String(
       Number(match[1])
-    ).padStart(2, '0') +
+    ).padStart(
+      2,
+      '0'
+    ) +
     ':' +
     match[2]
   );
@@ -2634,12 +2931,13 @@ function normalizeTimeForInput(value) {
 
 
 /* =========================================
-   今天
+   Today
 ========================================= */
 
 function getToday() {
 
-  const d = new Date();
+  const d =
+    new Date();
 
 
   const year =
@@ -2649,13 +2947,21 @@ function getToday() {
   const month =
     String(
       d.getMonth() + 1
-    ).padStart(2, '0');
+    )
+    .padStart(
+      2,
+      '0'
+    );
 
 
   const day =
     String(
       d.getDate()
-    ).padStart(2, '0');
+    )
+    .padStart(
+      2,
+      '0'
+    );
 
 
   return (
@@ -2726,11 +3032,13 @@ function showToastMessage(
 
 
 /* =========================================
-   點背景關閉
+   點背景關閉 Modal
 ========================================= */
 
 document
-  .getElementById('courseModal')
+  .getElementById(
+    'courseModal'
+  )
   .addEventListener(
     'click',
     function(event) {
@@ -2748,7 +3056,9 @@ document
 
 
 document
-  .getElementById('checkinModal')
+  .getElementById(
+    'checkinModal'
+  )
   .addEventListener(
     'click',
     function(event) {
@@ -2772,6 +3082,7 @@ document
 loadData();
 
 </script>
+
 
 </body>
 
