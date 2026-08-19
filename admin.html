@@ -19,94 +19,132 @@
 }
 
 body {
+
   margin: 0;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Noto Sans TC",
     Arial,
     sans-serif;
+
   background: #f4f6f8;
+
   color: #222;
+
 }
 
 .container {
+
   max-width: 1200px;
+
   margin: auto;
+
   padding: 20px;
+
 }
 
 .header {
+
   background:
     linear-gradient(
       135deg,
       #111827,
       #374151
     );
+
   color: white;
+
   border-radius: 20px;
+
   padding: 25px;
+
   margin-bottom: 20px;
+
 }
 
 .header h1 {
+
   margin: 0 0 8px;
+
 }
 
 .header p {
+
   margin: 0;
+
   opacity: .8;
+
 }
 
-
-/* ================================
-   課程
-================================ */
-
 .course {
+
   background: white;
+
   border-radius: 18px;
+
   padding: 20px;
+
   margin-bottom: 20px;
+
   box-shadow:
-    0 4px 15px rgba(0,0,0,.06);
+    0 4px 15px
+    rgba(0,0,0,.06);
+
 }
 
 .course-title {
+
   font-size: 22px;
+
   font-weight: bold;
+
 }
 
 .course-id {
+
   color: #64748b;
+
   margin-top: 5px;
+
 }
 
-
-/* ================================
-   統計
-================================ */
-
 .stats {
+
   display: grid;
+
   grid-template-columns:
     repeat(3,1fr);
+
   gap: 15px;
+
   margin-bottom: 20px;
+
 }
 
 .stat {
+
   background: white;
+
   border-radius: 18px;
+
   padding: 20px;
+
   box-shadow:
-    0 4px 15px rgba(0,0,0,.06);
+    0 4px 15px
+    rgba(0,0,0,.06);
+
 }
 
 .stat-number {
+
   font-size: 32px;
+
   font-weight: bold;
+
   margin-top: 8px;
+
 }
 
 .green {
@@ -121,323 +159,452 @@ body {
   color: #2563eb;
 }
 
-
-/* ================================
-   Section
-================================ */
-
 .section {
+
   background: white;
+
   border-radius: 18px;
+
   padding: 20px;
+
   margin-bottom: 20px;
+
   box-shadow:
-    0 4px 15px rgba(0,0,0,.06);
+    0 4px 15px
+    rgba(0,0,0,.06);
+
 }
 
 .section h2 {
+
   margin-top: 0;
+
 }
 
-
-/* ================================
-   Button
-================================ */
-
 button {
+
   border: 0;
+
   border-radius: 10px;
+
   padding: 10px 16px;
+
   background: #111827;
+
   color: white;
+
   font-size: 14px;
+
   cursor: pointer;
+
 }
 
 button:hover {
+
   opacity: .9;
+
 }
 
 button:disabled {
+
   opacity: .5;
+
   cursor: not-allowed;
+
 }
 
 .btn-green {
+
   background: #16a34a;
+
 }
 
 .btn-blue {
+
   background: #2563eb;
+
 }
 
 .btn-red {
+
   background: #dc2626;
+
 }
 
 .btn-gray {
+
   background: #64748b;
+
 }
 
 .btn-orange {
+
   background: #ea580c;
+
 }
-
-
-/* ================================
-   Toolbar
-================================ */
 
 .toolbar {
+
   display: flex;
+
   gap: 10px;
+
   flex-wrap: wrap;
+
   margin-bottom: 15px;
+
 }
 
-
-/* ================================
-   Table
-================================ */
-
 .table-wrap {
+
   overflow-x: auto;
+
 }
 
 table {
+
   width: 100%;
+
   border-collapse: collapse;
+
   min-width: 700px;
+
 }
 
 th,
 td {
+
   padding: 12px 10px;
+
   border-bottom: 1px solid #eee;
+
   text-align: left;
+
 }
 
 th {
+
   background: #f8fafc;
+
   white-space: nowrap;
+
 }
 
 td {
+
   vertical-align: middle;
+
 }
 
-
-/* ================================
-   Badge
-================================ */
-
 .badge {
+
   display: inline-block;
+
   padding: 5px 10px;
+
   border-radius: 20px;
+
   font-size: 13px;
+
 }
 
 .badge-ok {
+
   background: #dcfce7;
+
   color: #15803d;
+
 }
 
 .badge-no {
+
   background: #fee2e2;
+
   color: #b91c1c;
+
 }
 
 .badge-line {
+
   background: #dcfce7;
+
   color: #15803d;
+
 }
 
 .badge-blue {
+
   background: #dbeafe;
+
   color: #1d4ed8;
+
 }
 
 .badge-gray {
+
   background: #e5e7eb;
+
   color: #374151;
+
 }
 
-
-/* ================================
-   Form
-================================ */
-
 .form-grid {
+
   display: grid;
+
   grid-template-columns:
     repeat(2,1fr);
+
   gap: 15px;
+
 }
 
 .form-group {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 6px;
+
 }
 
 .form-group.full {
+
   grid-column: 1 / -1;
+
 }
 
 label {
+
   font-weight: 600;
+
   font-size: 14px;
+
 }
 
 input,
 select {
+
   width: 100%;
+
   padding: 11px 12px;
+
   border: 1px solid #d1d5db;
+
   border-radius: 10px;
+
   font-size: 15px;
+
   background: white;
+
 }
 
 input:focus,
 select:focus {
+
   outline: none;
+
   border-color: #2563eb;
+
   box-shadow:
     0 0 0 3px
     rgba(37,99,235,.12);
+
 }
 
-
-/* ================================
-   Modal
-================================ */
-
 .modal {
+
   position: fixed;
+
   inset: 0;
+
   background: rgba(0,0,0,.55);
+
   display: none;
+
   align-items: center;
+
   justify-content: center;
+
   padding: 20px;
+
   z-index: 1000;
+
 }
 
 .modal.show {
+
   display: flex;
+
 }
 
 .modal-box {
+
   width: 100%;
+
   max-width: 650px;
+
   max-height: 90vh;
+
   overflow-y: auto;
+
   background: white;
+
   border-radius: 18px;
+
   padding: 22px;
+
 }
 
 .modal-title {
+
   font-size: 21px;
+
   font-weight: bold;
+
   margin-bottom: 20px;
+
 }
 
 .modal-actions {
+
   display: flex;
+
   gap: 10px;
+
   justify-content: flex-end;
+
   margin-top: 20px;
+
   flex-wrap: wrap;
+
 }
 
-
-/* ================================
-   Loading / Error / Toast
-================================ */
-
 .loading {
+
   text-align: center;
+
   padding: 40px;
+
 }
 
 .error {
+
   color: #d93025;
+
   white-space: pre-line;
+
 }
 
 .toast {
+
   position: fixed;
+
   left: 50%;
+
   bottom: 25px;
+
   transform: translateX(-50%);
+
   padding: 12px 20px;
+
   border-radius: 12px;
+
   color: white;
+
   background: #111827;
+
   box-shadow:
-    0 5px 20px rgba(0,0,0,.2);
+    0 5px 20px
+    rgba(0,0,0,.2);
+
   display: none;
+
   z-index: 2000;
+
   max-width: 90%;
+
   text-align: center;
+
 }
 
 .toast.success {
+
   background: #15803d;
+
 }
 
 .toast.error {
+
   background: #b91c1c;
+
 }
-
-
-/* ================================
-   Empty
-================================ */
 
 .empty {
+
   text-align: center;
+
   color: #64748b;
+
   padding: 30px;
+
 }
 
+.help-text {
 
-/* ================================
-   Responsive
-================================ */
+  color: #64748b;
+
+  font-size: 13px;
+
+  margin-top: 4px;
+
+}
 
 @media(max-width:700px) {
 
   .container {
+
     padding: 12px;
+
   }
 
   .header {
+
     padding: 20px;
+
     border-radius: 15px;
+
   }
 
   .stats {
+
     grid-template-columns: 1fr;
+
   }
 
   .form-grid {
+
     grid-template-columns: 1fr;
+
   }
 
   .form-group.full {
+
     grid-column: auto;
+
   }
 
   .modal {
+
     padding: 10px;
+
   }
 
   .modal-box {
+
     padding: 18px;
+
   }
 
 }
@@ -449,13 +616,7 @@ select:focus {
 
 <body>
 
-
 <div class="container">
-
-
-  <!-- ================================
-       Header
-  ================================= -->
 
   <div class="header">
 
@@ -470,10 +631,6 @@ select:focus {
   </div>
 
 
-  <!-- ================================
-       Loading
-  ================================= -->
-
   <div
     id="loading"
     class="loading"
@@ -482,19 +639,12 @@ select:focus {
   </div>
 
 
-  <!-- ================================
-       App
-  ================================= -->
-
   <div
     id="app"
     style="display:none;"
   >
 
-
-    <!-- ==============================
-         目前課程
-    =============================== -->
+    <!-- 目前課程 -->
 
     <div class="course">
 
@@ -508,18 +658,16 @@ select:focus {
       <div
         id="courseId"
         class="course-id"
-      ></div>
+      >
+      </div>
 
-      <div
-        id="courseDate"
-      ></div>
+      <div id="courseDate">
+      </div>
 
     </div>
 
 
-    <!-- ==============================
-         統計
-    =============================== -->
+    <!-- 統計 -->
 
     <div class="stats">
 
@@ -567,16 +715,15 @@ select:focus {
     </div>
 
 
-    <!-- ==============================
+    <!-- ===============================
          課程管理
-    =============================== -->
+    ================================ -->
 
     <div class="section">
 
       <h2>
         📚 課程管理
       </h2>
-
 
       <div class="toolbar">
 
@@ -621,9 +768,8 @@ select:focus {
 
           </thead>
 
-          <tbody
-            id="courseTable"
-          ></tbody>
+          <tbody id="courseTable">
+          </tbody>
 
         </table>
 
@@ -632,33 +778,33 @@ select:focus {
     </div>
 
 
-    <!-- ==============================
-         學員名單
-    =============================== -->
+    <!-- ===============================
+         學員管理
+    ================================ -->
 
     <div class="section">
 
       <h2>
-        👥 學員名單
+        👥 學員管理
       </h2>
-
 
       <div class="toolbar">
 
         <button
+          class="btn-green"
+          onclick="openAddStudent()"
+        >
+          ➕ 新增學員
+        </button>
+
+        <button
+          class="btn-gray"
           onclick="loadData()"
         >
           🔄 重新整理
         </button>
 
-        <button
-          onclick="downloadCSV()"
-        >
-          📥 匯出 CSV
-        </button>
-
       </div>
-
 
       <div class="table-wrap">
 
@@ -672,19 +818,14 @@ select:focus {
 
               <th>姓名</th>
 
-              <th>本期堂數</th>
-
-              <th>今日</th>
-
               <th>LINE</th>
 
             </tr>
 
           </thead>
 
-          <tbody
-            id="studentTable"
-          ></tbody>
+          <tbody id="studentTable">
+          </tbody>
 
         </table>
 
@@ -693,16 +834,15 @@ select:focus {
     </div>
 
 
-    <!-- ==============================
+    <!-- ===============================
          最近打卡
-    =============================== -->
+    ================================ -->
 
     <div class="section">
 
       <h2>
         📋 最近打卡紀錄
       </h2>
-
 
       <div class="toolbar">
 
@@ -749,9 +889,8 @@ select:focus {
 
           </thead>
 
-          <tbody
-            id="recentTable"
-          ></tbody>
+          <tbody id="recentTable">
+          </tbody>
 
         </table>
 
@@ -760,26 +899,39 @@ select:focus {
     </div>
 
 
+    <!-- CSV -->
+
+    <div class="section">
+
+      <h2>
+        📥 資料匯出
+      </h2>
+
+      <button
+        class="btn-blue"
+        onclick="downloadCSV()"
+      >
+        📥 匯出學員 CSV
+      </button>
+
+    </div>
+
   </div>
 
-
-  <!-- ================================
-       Error
-  ================================= -->
 
   <div
     id="error"
     class="section error"
     style="display:none;"
-  ></div>
-
+  >
+  </div>
 
 </div>
 
 
-<!-- ================================
-     Course Modal
-================================= -->
+<!-- =====================================
+     課程 Modal
+===================================== -->
 
 <div
   id="courseModal"
@@ -792,12 +944,10 @@ select:focus {
       id="courseModalTitle"
       class="modal-title"
     >
-      新增課程
+      ➕ 新增課程
     </div>
 
-
     <div class="form-grid">
-
 
       <div class="form-group">
 
@@ -809,7 +959,6 @@ select:focus {
           id="courseFormId"
           type="text"
           placeholder="例如：2026-01"
-          autocomplete="off"
         >
 
       </div>
@@ -864,9 +1013,7 @@ select:focus {
           狀態
         </label>
 
-        <select
-          id="courseFormActive"
-        >
+        <select id="courseFormActive">
 
           <option value="true">
             啟用
@@ -879,7 +1026,6 @@ select:focus {
         </select>
 
       </div>
-
 
     </div>
 
@@ -908,9 +1054,109 @@ select:focus {
 </div>
 
 
-<!-- ================================
-     Checkin Modal
-================================= -->
+<!-- =====================================
+     新增學員 Modal
+===================================== -->
+
+<div
+  id="studentModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+      ➕ 新增學員
+    </div>
+
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label>
+          學員編號
+        </label>
+
+        <input
+          id="studentFormId"
+          type="text"
+          placeholder="例如：wushu_0002"
+          autocomplete="off"
+        >
+
+        <div class="help-text">
+          學員編號不能與現有學員重複
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          姓名
+        </label>
+
+        <input
+          id="studentFormName"
+          type="text"
+          placeholder="例如：王小明"
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          LINE User ID
+        </label>
+
+        <input
+          id="studentFormLineId"
+          type="text"
+          placeholder="沒有 LINE 綁定可以留空"
+          autocomplete="off"
+        >
+
+        <div class="help-text">
+          如果目前還沒有 LINE 綁定，這欄可以留空。
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-gray"
+        onclick="closeStudentModal()"
+      >
+        取消
+      </button>
+
+      <button
+        class="btn-blue"
+        id="studentSaveButton"
+        onclick="saveStudent()"
+      >
+        儲存
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================
+     補打卡 Modal
+===================================== -->
 
 <div
   id="checkinModal"
@@ -923,22 +1169,11 @@ select:focus {
       id="checkinModalTitle"
       class="modal-title"
     >
-      管理員補打卡
+      ➕ 管理員補打卡
     </div>
 
 
     <div class="form-grid">
-
-
-      <!--
-        注意：
-        這裡仍然只有一個學員欄位。
-        顯示：
-        wushu_0001｜武協測試
-
-        value 實際為：
-        wushu_0001
-      -->
 
       <div class="form-group full">
 
@@ -948,7 +1183,12 @@ select:focus {
 
         <select
           id="checkinFormStudent"
-        ></select>
+        >
+        </select>
+
+        <div class="help-text">
+          顯示格式：學員編號｜姓名
+        </div>
 
       </div>
 
@@ -1000,7 +1240,6 @@ select:focus {
 
       </div>
 
-
     </div>
 
 
@@ -1028,30 +1267,24 @@ select:focus {
 </div>
 
 
-<!-- ================================
-     Toast
-================================= -->
-
 <div
   id="toast"
   class="toast"
-></div>
+>
+</div>
 
 
 <script>
 
-
 /* =========================================
-   後端 API
+   API
 ========================================= */
 
 const API_URL =
 'https://script.google.com/macros/s/AKfycbxvI_ERZ_yv_4nlS1geikXjNseA1tjuHAcYqAySc6RujlfJWG0egt7qZvkuKd2NU-cZuw/exec';
 
-
 const ADMIN_KEY =
 'wushu_admin_2026';
-
 
 let dashboardData = null;
 
@@ -1074,18 +1307,15 @@ async function apiGet(
   const query =
     new URLSearchParams();
 
-
   query.set(
     'action',
     action
   );
 
-
   query.set(
     'key',
     ADMIN_KEY
   );
-
 
   Object.keys(params).forEach(
     function(key) {
@@ -1100,7 +1330,7 @@ async function apiGet(
 
         query.set(
           key,
-          String(value)
+          value
         );
 
       }
@@ -1154,17 +1384,18 @@ async function loadData() {
 
   document
     .getElementById('loading')
-    .style.display = 'block';
-
+    .style.display =
+    'block';
 
   document
     .getElementById('app')
-    .style.display = 'none';
-
+    .style.display =
+    'none';
 
   document
     .getElementById('error')
-    .style.display = 'none';
+    .style.display =
+    'none';
 
 
   try {
@@ -1179,20 +1410,26 @@ async function loadData() {
       data;
 
 
-    render(data);
+    render(
+      data
+    );
 
 
-    await loadCourses(false);
+    await loadCourses(
+      false
+    );
 
 
     document
       .getElementById('loading')
-      .style.display = 'none';
+      .style.display =
+      'none';
 
 
     document
       .getElementById('app')
-      .style.display = 'block';
+      .style.display =
+      'block';
 
   }
 
@@ -1200,13 +1437,13 @@ async function loadData() {
 
     document
       .getElementById('loading')
-      .style.display = 'none';
+      .style.display =
+      'none';
 
 
     const errorBox =
-      document.getElementById(
-        'error'
-      );
+      document
+        .getElementById('error');
 
 
     errorBox.innerText =
@@ -1278,11 +1515,13 @@ function render(data) {
 
     document
       .getElementById('courseId')
-      .innerText = '';
+      .innerText =
+      '';
 
     document
       .getElementById('courseDate')
-      .innerText = '';
+      .innerText =
+      '';
 
   }
 
@@ -1327,15 +1566,16 @@ function render(data) {
 
 
 /* =========================================
-   學員
+   學員表
 ========================================= */
 
 function renderStudents(students) {
 
   const tbody =
-    document.getElementById(
-      'studentTable'
-    );
+    document
+      .getElementById(
+        'studentTable'
+      );
 
 
   tbody.innerHTML = '';
@@ -1344,11 +1584,7 @@ function renderStudents(students) {
   if (!students.length) {
 
     tbody.innerHTML =
-      '<tr>' +
-      '<td colspan="5" class="empty">' +
-      '目前沒有學員資料' +
-      '</td>' +
-      '</tr>';
+      '<tr><td colspan="3" class="empty">目前沒有學員資料</td></tr>';
 
     return;
 
@@ -1367,9 +1603,11 @@ function renderStudents(students) {
       tr.innerHTML = `
 
         <td>
-          ${escapeHTML(
-            student.student_id
-          )}
+          <strong>
+            ${escapeHTML(
+              student.student_id
+            )}
+          </strong>
         </td>
 
         <td>
@@ -1379,36 +1617,187 @@ function renderStudents(students) {
         </td>
 
         <td>
-          <strong>
-            ${Number(
-              student.course_count || 0
-            )}
-          </strong>
-        </td>
 
-        <td>
-          ${
-            student.today
-              ? '<span class="badge badge-ok">✅ 已到</span>'
-              : '<span class="badge badge-no">❌ 未到</span>'
-          }
-        </td>
-
-        <td>
           ${
             student.line_bound
-              ? '<span class="badge badge-line">已綁定</span>'
-              : '<span class="badge badge-no">未綁定</span>'
+            ? '<span class="badge badge-line">已綁定</span>'
+            : '<span class="badge badge-no">未綁定</span>'
           }
+
         </td>
 
       `;
 
 
-      tbody.appendChild(tr);
+      tbody.appendChild(
+        tr
+      );
 
     }
   );
+
+}
+
+
+/* =========================================
+   新增學員
+========================================= */
+
+function openAddStudent() {
+
+  document
+    .getElementById(
+      'studentFormId'
+    )
+    .value = '';
+
+
+  document
+    .getElementById(
+      'studentFormName'
+    )
+    .value = '';
+
+
+  document
+    .getElementById(
+      'studentFormLineId'
+    )
+    .value = '';
+
+
+  document
+    .getElementById(
+      'studentModal'
+    )
+    .classList
+    .add('show');
+
+}
+
+
+function closeStudentModal() {
+
+  document
+    .getElementById(
+      'studentModal'
+    )
+    .classList
+    .remove('show');
+
+}
+
+
+async function saveStudent() {
+
+  const studentId =
+    document
+      .getElementById(
+        'studentFormId'
+      )
+      .value
+      .trim();
+
+
+  const name =
+    document
+      .getElementById(
+        'studentFormName'
+      )
+      .value
+      .trim();
+
+
+  const lineUserId =
+    document
+      .getElementById(
+        'studentFormLineId'
+      )
+      .value
+      .trim();
+
+
+  if (!studentId) {
+
+    showToastMessage(
+      '請輸入學員編號',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  if (!name) {
+
+    showToastMessage(
+      '請輸入學員姓名',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document
+      .getElementById(
+        'studentSaveButton'
+      );
+
+
+  button.disabled = true;
+
+
+  try {
+
+    const data =
+      await apiGet(
+        'addStudent',
+        {
+          student_id:
+            studentId,
+
+          name:
+            name,
+
+          line_user_id:
+            lineUserId
+        }
+      );
+
+
+    closeStudentModal();
+
+
+    showToastMessage(
+      data.message ||
+      '學員新增成功',
+      'success'
+    );
+
+
+    await loadData();
+
+  }
+
+  catch(error) {
+
+    showToastMessage(
+      '學員新增失敗：' +
+      error.message,
+      'error'
+    );
+
+  }
+
+  finally {
+
+    button.disabled = false;
+
+  }
 
 }
 
@@ -1420,9 +1809,10 @@ function renderStudents(students) {
 function renderRecent(records) {
 
   const tbody =
-    document.getElementById(
-      'recentTable'
-    );
+    document
+      .getElementById(
+        'recentTable'
+      );
 
 
   tbody.innerHTML = '';
@@ -1431,11 +1821,7 @@ function renderRecent(records) {
   if (!records.length) {
 
     tbody.innerHTML =
-      '<tr>' +
-      '<td colspan="7" class="empty">' +
-      '目前沒有打卡紀錄' +
-      '</td>' +
-      '</tr>';
+      '<tr><td colspan="7" class="empty">目前沒有打卡紀錄</td></tr>';
 
     return;
 
@@ -1486,15 +1872,17 @@ function renderRecent(records) {
         </td>
 
         <td>
+
           ${
             record.course_id
-              ? '<span class="badge badge-blue">' +
-                escapeHTML(
-                  record.course_id
-                ) +
-                '</span>'
-              : '-'
+            ? '<span class="badge badge-blue">' +
+              escapeHTML(
+                record.course_id
+              ) +
+              '</span>'
+            : '-'
           }
+
         </td>
 
         <td>
@@ -1522,7 +1910,9 @@ function renderRecent(records) {
       `;
 
 
-      tbody.appendChild(tr);
+      tbody.appendChild(
+        tr
+      );
 
     }
   );
@@ -1584,16 +1974,13 @@ async function loadCourses(
 }
 
 
-/* =========================================
-   課程表
-========================================= */
-
 function renderCourses(courses) {
 
   const tbody =
-    document.getElementById(
-      'courseTable'
-    );
+    document
+      .getElementById(
+        'courseTable'
+      );
 
 
   tbody.innerHTML = '';
@@ -1602,11 +1989,7 @@ function renderCourses(courses) {
   if (!courses.length) {
 
     tbody.innerHTML =
-      '<tr>' +
-      '<td colspan="6" class="empty">' +
-      '目前沒有課程' +
-      '</td>' +
-      '</tr>';
+      '<tr><td colspan="6" class="empty">目前沒有課程</td></tr>';
 
     return;
 
@@ -1658,11 +2041,13 @@ function renderCourses(courses) {
         </td>
 
         <td>
+
           ${
             active
-              ? '<span class="badge badge-ok">🟢 啟用</span>'
-              : '<span class="badge badge-no">🔴 停用</span>'
+            ? '<span class="badge badge-ok">🟢 啟用</span>'
+            : '<span class="badge badge-no">🔴 停用</span>'
           }
+
         </td>
 
         <td>
@@ -1690,17 +2075,15 @@ function renderCourses(courses) {
       `;
 
 
-      tbody.appendChild(tr);
+      tbody.appendChild(
+        tr
+      );
 
     }
   );
 
 }
 
-
-/* =========================================
-   新增課程
-========================================= */
 
 function openAddCourse() {
 
@@ -1766,10 +2149,6 @@ function openAddCourse() {
 
 }
 
-
-/* =========================================
-   修改課程
-========================================= */
 
 function openEditCourse(course) {
 
@@ -1850,10 +2229,6 @@ function openEditCourse(course) {
 }
 
 
-/* =========================================
-   關閉課程
-========================================= */
-
 function closeCourseModal() {
 
   document
@@ -1865,10 +2240,6 @@ function closeCourseModal() {
 
 }
 
-
-/* =========================================
-   儲存課程
-========================================= */
 
 async function saveCourse() {
 
@@ -1965,9 +2336,10 @@ async function saveCourse() {
 
 
   const button =
-    document.getElementById(
-      'courseSaveButton'
-    );
+    document
+      .getElementById(
+        'courseSaveButton'
+      );
 
 
   button.disabled = true;
@@ -1977,13 +2349,6 @@ async function saveCourse() {
 
     let data;
 
-
-    /*
-     * 修改課程
-     *
-     * Apps Script：
-     * e.parameter.course_id
-     */
 
     if (editingCourseId) {
 
@@ -2009,10 +2374,6 @@ async function saveCourse() {
         );
 
     }
-
-    /*
-     * 新增課程
-     */
 
     else {
 
@@ -2050,8 +2411,6 @@ async function saveCourse() {
     );
 
 
-    await loadCourses(false);
-
     await loadData();
 
   }
@@ -2075,31 +2434,28 @@ async function saveCourse() {
 }
 
 
-/* =========================================
-   刪除課程
-========================================= */
-
 async function deleteCourse(courseId) {
 
   courseId =
     String(
       courseId || ''
-    ).trim();
+    );
 
 
   if (!courseId) return;
 
 
-  const ok =
-    confirm(
+  if (
+    !confirm(
       '確定要刪除課程「' +
       courseId +
-      '」嗎？\n\n' +
-      '刪除課程不會自動刪除既有打卡紀錄。'
-    );
+      '」嗎？'
+    )
+  ) {
 
+    return;
 
-  if (!ok) return;
+  }
 
 
   try {
@@ -2120,8 +2476,6 @@ async function deleteCourse(courseId) {
       'success'
     );
 
-
-    await loadCourses(false);
 
     await loadData();
 
@@ -2147,9 +2501,10 @@ async function deleteCourse(courseId) {
 function populateStudentSelect(students) {
 
   const select =
-    document.getElementById(
-      'checkinFormStudent'
-    );
+    document
+      .getElementById(
+        'checkinFormStudent'
+      );
 
 
   select.innerHTML = '';
@@ -2175,14 +2530,13 @@ function populateStudentSelect(students) {
 
 
       /*
-       * 非常重要：
+       * value 只放真正的 student_id
        *
-       * value = 學員編號
+       * 顯示：
+       * wushu_0001｜武協測試
        *
-       * 顯示 = 學員編號｜姓名
-       *
-       * 所以畫面只有一欄，
-       * Apps Script 仍能收到 student_id。
+       * 實際送出：
+       * wushu_0001
        */
 
       option.value =
@@ -2212,15 +2566,16 @@ function populateStudentSelect(students) {
 
 
 /* =========================================
-   課程下拉選單
+   課程下拉
 ========================================= */
 
 function populateCourseSelect(courses) {
 
   const select =
-    document.getElementById(
-      'checkinFormCourse'
-    );
+    document
+      .getElementById(
+        'checkinFormCourse'
+      );
 
 
   select.innerHTML =
@@ -2236,24 +2591,14 @@ function populateCourseSelect(courses) {
         );
 
 
-      /*
-       * value = 課程編號
-       *
-       * 顯示 = 課程編號｜課程名稱
-       */
-
       option.value =
-        String(
-          course.course_id || ''
-        );
+        course.course_id;
 
 
       option.textContent =
-        String(
-          course.course_id || ''
-        ) +
+        course.course_id +
         '｜' +
-        String(
+        (
           course.course_name ||
           course.name ||
           ''
@@ -2334,10 +2679,6 @@ function openAddCheckin() {
 }
 
 
-/* =========================================
-   修改打卡
-========================================= */
-
 function openEditCheckin(record) {
 
   editingCheckinId =
@@ -2360,9 +2701,7 @@ function openEditCheckin(record) {
       'checkinFormStudent'
     )
     .value =
-    String(
-      record.student_id || ''
-    );
+    record.student_id || '';
 
 
   document
@@ -2415,10 +2754,6 @@ function openEditCheckin(record) {
 }
 
 
-/* =========================================
-   關閉補打卡
-========================================= */
-
 function closeCheckinModal() {
 
   document
@@ -2431,11 +2766,17 @@ function closeCheckinModal() {
 }
 
 
-/* =========================================
-   儲存補打卡
-========================================= */
-
 async function saveCheckin() {
+
+  /*
+   * 這裡直接取得 select 的 value。
+   *
+   * value 是：
+   * wushu_0001
+   *
+   * 畫面看到的是：
+   * wushu_0001｜武協測試
+   */
 
   const studentId =
     document
@@ -2473,10 +2814,6 @@ async function saveCheckin() {
       .trim();
 
 
-  /*
-   * 前端檢查
-   */
-
   if (!studentId) {
 
     showToastMessage(
@@ -2502,9 +2839,10 @@ async function saveCheckin() {
 
 
   const button =
-    document.getElementById(
-      'checkinSaveButton'
-    );
+    document
+      .getElementById(
+        'checkinSaveButton'
+      );
 
 
   button.disabled = true;
@@ -2514,22 +2852,6 @@ async function saveCheckin() {
 
     let data;
 
-
-    /*
-     * =====================================
-     * 修改打卡
-     *
-     * 注意：
-     *
-     * HTML → Apps Script
-     *
-     * checkin_id
-     * student_id
-     * date
-     * time
-     * course_id
-     * =====================================
-     */
 
     if (editingCheckinId) {
 
@@ -2555,12 +2877,6 @@ async function saveCheckin() {
         );
 
     }
-
-    /*
-     * =====================================
-     * 新增補打卡
-     * =====================================
-     */
 
     else {
 
@@ -2618,33 +2934,28 @@ async function saveCheckin() {
 }
 
 
-/* =========================================
-   刪除打卡
-========================================= */
-
-async function deleteCheckin(
-  checkinId
-) {
+async function deleteCheckin(checkinId) {
 
   checkinId =
     String(
       checkinId || ''
-    ).trim();
+    );
 
 
   if (!checkinId) return;
 
 
-  const ok =
-    confirm(
+  if (
+    !confirm(
       '確定要刪除打卡紀錄 #' +
       checkinId +
-      ' 嗎？\n\n' +
-      '刪除後會重新計算該學員本期堂數。'
-    );
+      ' 嗎？'
+    )
+  ) {
 
+    return;
 
-  if (!ok) return;
+  }
 
 
   try {
@@ -2753,11 +3064,15 @@ function downloadCSV() {
 
 
   const url =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+      blob
+    );
 
 
   const a =
-    document.createElement('a');
+    document.createElement(
+      'a'
+    );
 
 
   a.href = url;
@@ -2785,7 +3100,9 @@ function downloadCSV() {
   setTimeout(
     function() {
 
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(
+        url
+      );
 
     },
     100
@@ -2793,10 +3110,6 @@ function downloadCSV() {
 
 }
 
-
-/* =========================================
-   CSV Escape
-========================================= */
 
 function csvEscape(value) {
 
@@ -2885,7 +3198,7 @@ function normalizeBoolean(value) {
 
 
 /* =========================================
-   Time
+   時間
 ========================================= */
 
 function normalizeTimeForInput(value) {
@@ -2918,7 +3231,9 @@ function normalizeTimeForInput(value) {
 
   return (
     String(
-      Number(match[1])
+      Number(
+        match[1]
+      )
     ).padStart(
       2,
       '0'
@@ -2931,7 +3246,7 @@ function normalizeTimeForInput(value) {
 
 
 /* =========================================
-   Today
+   今日日期
 ========================================= */
 
 function getToday() {
@@ -2947,8 +3262,7 @@ function getToday() {
   const month =
     String(
       d.getMonth() + 1
-    )
-    .padStart(
+    ).padStart(
       2,
       '0'
     );
@@ -2957,8 +3271,7 @@ function getToday() {
   const day =
     String(
       d.getDate()
-    )
-    .padStart(
+    ).padStart(
       2,
       '0'
     );
@@ -2988,9 +3301,10 @@ function showToastMessage(
 ) {
 
   const toast =
-    document.getElementById(
-      'toast'
-    );
+    document
+      .getElementById(
+        'toast'
+      );
 
 
   toast.innerText =
@@ -3032,7 +3346,7 @@ function showToastMessage(
 
 
 /* =========================================
-   點背景關閉 Modal
+   點背景關閉
 ========================================= */
 
 document
@@ -3048,6 +3362,26 @@ document
       ) {
 
         closeCourseModal();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    'studentModal'
+  )
+  .addEventListener(
+    'click',
+    function(event) {
+
+      if (
+        event.target === this
+      ) {
+
+        closeStudentModal();
 
       }
 
@@ -3076,13 +3410,12 @@ document
 
 
 /* =========================================
-   開始
+   啟動
 ========================================= */
 
 loadData();
 
 </script>
-
 
 </body>
 
